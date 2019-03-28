@@ -1,0 +1,296 @@
+<div class="menu_dropdown bk_2 hide" id="summary">
+	<dl id="menu-article" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['SELLCARD'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['DAILYREPORT'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['RECHARGE'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe616;</i> 财务报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['SELLCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/sellCard")}" href="javascript:void(0)">售卡报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/recharge")}" href="javascript:void(0)">充值报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/consume")}" href="javascript:void(0)">消费明细报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['TBCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/tbconsume")}" href="javascript:void(0)">通宝+消费明细报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['DAILYREPORT'])||$_SESSION['panterid']=='FFFFFFFF'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/dailyReport")}" href="javascript:void(0)">商户日结算报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['WDAILYREPORT'])||$_SESSION['panterid']=='FFFFFFFF'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/WdailyReport")}" href="javascript:void(0)">网联商户日结算报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['OUTDALIYJYCOIN'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/outDaliyJycoin")}" href="javascript:void(0)">外拓通宝日结</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['OUTDALIYTRADE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/outDaliyTrade")}" href="javascript:void(0)">外拓交易合计</a></li>
+			</ul>
+		</dd>
+    </dl>
+
+    <dl id="menu-picture" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND'])||$_SESSION['username']=='admin'
+        ){ echo 'style="display:block;"' ; } ?>>
+        <dt><i class="Hui-iconfont">&#xe616;</i> 结转备付金<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+        <dd>
+            <ul>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['MASHUP'])||$_SESSION['username']=='admin'
+                    ){ echo 'style="display:block;"' ; } ?>><a _href="{:U("EquityFund/mashup")}" href="javascript:void(0)">数据聚合</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['CANCEL'])||$_SESSION['username']=='admin'
+                    ){ echo 'style="display:block;"' ; } ?>><a _href="{:U("EquityFund/cancel")}" href="javascript:void(0)">数据核销</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['AUDIT'])||$_SESSION['username']=='admin'
+                    ){ echo 'style="display:block;"' ; } ?>><a _href="{:U("EquityFund/audit")}" href="javascript:void(0)">审核</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['CLOSE'])||$_SESSION['username']=='admin'
+                    ){ echo 'style="display:block;"' ; } ?>><a _href="{:U("EquityFund/close")}" href="javascript:void(0)">结算</a></li>
+            </ul>
+        </dd>
+    </dl>
+    
+	<dl id="menu-picture" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+        <dt><i class="Hui-iconfont">&#xe616;</i> 自有资金报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+        <dd>
+            <ul>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['WITHDRAW_AUDIT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("EquityFund/withdraw_audit")}" href="javascript:void(0)">赎回审核</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['WITHDRAW_CONFIRM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("EquityFund/withdraw_confirm")}" href="javascript:void(0)">赎回确认</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("EquityFund/recharge")}" href="javascript:void(0)">充值报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("EquityFund/consume")}" href="javascript:void(0)">消费明细报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['FREEZE_UN'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("EquityFund/freeze_un")}" href="javascript:void(0)">冻结解冻报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['SETTLEMENT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("EquityFund/settlement")}" href="javascript:void(0)">商户日结算报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['EQUITYFUND']['BALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("EquityFund/balance")}" href="javascript:void(0)">用户资金报表</a></li>
+            </ul>
+        </dd>
+    </dl>
+
+	<dl id="menu-picture" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe613;</i> 卡售后报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['MENDCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/mendCard")}" href="javascript:void(0)">补卡统计</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['RETURNCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/returnCard")}" href="javascript:void(0)">退卡统计</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['ACTIVECARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/activeCard")}" href="javascript:void(0)">卡激活报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['BALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/balance")}" href="javascript:void(0)">卡余额报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['INTERCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/interConsume")}" href="javascript:void(0)">异地消费报表</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+	<dl id="menu-product" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe620;</i> 酒店财务报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['SELLCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/sellCard")}" href="javascript:void(0)">酒店售卡报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/recharge")}" href="javascript:void(0)">酒店充值报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['NEWCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/newConsume")}" href="javascript:void(0)">酒店消费明细报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['BALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/balance")}" href="javascript:void(0)">酒店卡余额报表</a></li>
+				<!--li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['DAILYREPORT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/dailyReport")}" href="javascript:void(0)">当日交易结算报表</a></li-->
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['DAILYTICKET'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/dailyticket")}" href="javascript:void(0)">营销券当日交易统计</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['TICKETCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/ticketConsume")}" href="javascript:void(0)">营销券交易统计</a></li>
+		<!-- 		<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['INTERCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/interConsume")}" href="javascript:void(0)">酒店异地消费统计</a></li> -->
+               <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['MENDCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/mendCard")}" href="javascript:void(0)">酒店补卡统计</a></li>
+               <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['RETURNCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/returnCard")}" href="javascript:void(0)">酒店退卡统计</a></li>
+               <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['PRODUCTQUERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/productquery")}" href="javascript:void(0)">营销劵余额报表</a></li>
+               <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['NEWPRODUCTQUERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/newProductQuery")}" href="javascript:void(0)">新营销劵余额报表</a></li>
+         	   <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['RECHARGTION'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/rechargtion")}" href="javascript:void(0)">酒店充值排行</a></li>
+			   <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['CONSUMPTION'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/consumption")}" href="javascript:void(0)">酒店消费排行</a></li>
+			   <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['RETURNCOUPON'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/returnCoupon")}" href="javascript:void(0)">酒店营销券过期报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['GIFTCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/giftCard")}" href="javascript:void(0)">酒店礼品卡过期报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['GIFTCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/consumeGiftCard")}" href="javascript:void(0)">酒店过期消费报表</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['TRANSACTIONAUDIT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/transactionAudit")}" href="javascript:void(0)">酒店交易撤销审核</a></li>
+				 <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['EXTREMECONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/extremeConsume")}" href="javascript:void(0)">酒店至尊卡消费报表</a></li>
+				 <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['VIPDISCOUNT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/vipDiscount")}" href="javascript:void(0)">贵宾卡折扣明细报表</a></li>
+				 <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['VIPTRADE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/vipTrade")}" href="javascript:void(0)">贵宾卡消费明细报表</a></li>
+				 <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['POINTRECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/pointRecharge")}" href="javascript:void(0)">贵宾卡积分充值报表</a></li>
+				 <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['POINTCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/pointConsume")}" href="javascript:void(0)">贵宾卡积分消费报表</a></li>
+				 <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['QUANSHARE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Hotels/quanShare")}" href="javascript:void(0)">贵宾卡券转赠报表</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+    <dl id="menu-newcards" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWHOTELS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe620;</i> 酒店新卡财务报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWHOTELS']['SELLCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewHotels/sellCard")}" href="javascript:void(0)">售卡报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWHOTELS']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewHotels/recharge")}" href="javascript:void(0)">充值报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWHOTELS']['NEWCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewHotels/newConsume")}" href="javascript:void(0)">消费报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWHOTELS']['INVOICE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewHotels/invoice")}" href="javascript:void(0)">发票报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWHOTELS']['DAILYREPORT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewHotels/dailyReport")}" href="javascript:void(0)">日结算报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWHOTELS']['BALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewHotels/balance")}" href="javascript:void(0)">余额报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWHOTELS']['CUSTOMS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewHotels/customs")}" href="javascript:void(0)">会员报表</a></li>
+        </ul>
+    </dd>
+    </dl>
+
+	<dl id="menu-correct" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MISTAKE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe622;</i> 差错管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MISTAKE']['CORRECT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Mistake/recharge")}" href="javascript:;">充值金额更改处理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MISTAKE']['CORRECT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Mistake/correct")}" href="javascript:;">现金长短款处理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MISTAKE']['POINTS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Mistake/points")}" href="javascript:void(0)">积分长短款处理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MISTAKE']['MARKET'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Mistake/market")}" href="javascript:void(0)">营销券长短款处理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MISTAKE']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Mistake/index")}" href="javascript:void(0)">长短款处理报表</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+	<dl id="menu-comments" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['BUSINESS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe622;</i> 商业报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['BUSINESS']['CONSUMEREP'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Business/consumeRep")}" href="javascript:;">商家日消费报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['BUSINESS']['POINTEXCHANGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Business/pointExchange")}" href="javascript:void(0)">积分兑换报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['BUSINESS']['EXCARDREP'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Business/excardRep")}" href="javascript:void(0)">积分/交易异常报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['BUSINESS']['CONSUMESTAT1'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Business/consumeStat1")}" href="javascript:void(0)">消费统计（行业分类）</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['BUSINESS']['CONSUMESTAT2'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Business/consumeStat2")}" href="javascript:void(0)">消费分析（商户分类）</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<!--<dl  <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['OLDCARD']['SELLCARD'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['OLDCARD']['DAILYREPORT'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['OLDCARD']['RECHARGE'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['OLDCARD']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>-->
+	<!--<dt><i class="Hui-iconfont">&#xe616;</i> 老卡备份<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>-->
+	<!--<dd>-->
+		<!--<ul>-->
+			<!--<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['OLDCARD']['SELLCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Oldcard/sellCard")}" href="javascript:void(0)">售卡充卡报表</a></li>-->
+			<!--&lt;!&ndash; <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Oldcard/cardbatchbuy")}" href="javascript:void(0)">售卡批量导入</a></li>-->
+			<!--<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Oldcard/cardconsum")}" href="javascript:void(0)">消费批量导入</a></li> &ndash;&gt;-->
+			<!--<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['OLDCARD']['CONSUM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Oldcard/consum")}" href="javascript:void(0)">消费明细报表</a></li>-->
+			<!--&lt;!&ndash; <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Oldcard/importremain")}" href="javascript:void(0)">批量导入余额</a></li> &ndash;&gt;-->
+			<!--<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['OLDCARD']['REMAIN'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Oldcard/remain")}" href="javascript:void(0)">余额报表</a></li>-->
+			<!--&lt;!&ndash; <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Oldcard/importcustom")}" href="javascript:void(0)">批量导入会员</a></li> &ndash;&gt;-->
+			<!--<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['OLDCARD']['CUSTOM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Oldcard/custom")}" href="javascript:void(0)">会员报表</a></li>-->
+			<!--&lt;!&ndash; <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FINANCE']['DAILYREPORT'])||$_SESSION['panterid']=='FFFFFFFF'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Finance/dailyReport")}" href="javascript:void(0)">商户日结算报表</a></li> &ndash;&gt;-->
+		<!--</ul>-->
+	<!--</dd>-->
+<!--</dl>-->
+    <dl id="menu-coin" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe622;</i> 建业通宝核销<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['ISSUE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/issue")}" href="javascript:;">赠送报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/consume")}" href="javascript:;">兑换报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['ISSUEPANTERS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/issuePanters")}" href="javascript:;">赠送方核销</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['CONSUMEPANTERS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/consumePanters")}" href="javascript:;">兑换方核销</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['UNCALCULATE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/uncalculate")}" href="javascript:;">未结算报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['CALCULATED'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/calculated")}" href="javascript:;">已结算报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['INVOICE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/invoice")}" href="javascript:;">发票报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['CARDDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/carddetail")}" href="javascript:;">通宝查询</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['QJS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/qjs")}" href="javascript:;">清结算报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['TBCOUNT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/tbcount")}" href="javascript:;">通宝系统统计</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['AREA_QUERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/area_query")}" href="javascript:;">区域公司通宝统计</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['CONVERSIONRATE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/conversionRate")}" href="javascript:;">各兑换业态年度兑换统计</a></li>
+          <!--   <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['SPECIALCOUNT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/specialCount")}" href="javascript:;">上月23号至月底通宝数据</a></li> -->
+             <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['MONTHSEND'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/monthSend")}" href="javascript:;">截止上月累计七天赠送率</a></li>
+              <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['MONTHSEND2'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/monthSend2")}" href="javascript:;">月度七天赠送率</a></li>
+              <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['MONTHSEND3'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/monthSend3")}" href="javascript:;">月度赠送率</a></li>
+               <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['LOWACCOUNT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/lowAccount")}" href="javascript:;">低余额账户信息</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['COUNTPEPLOE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/countPeploe")}" href="javascript:;">建业通宝兑换人数统计</a></li>
+             <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['EAPPCONSUMER'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/eappConsumer")}" href="javascript:;">各业态一家APP平台兑换</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['MONTHANALYZE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/monthAnalyze")}" href="javascript:;">通宝月度分析</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['COINTENEMENT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/coinTenement")}" href="javascript:;">物业通宝消费明细</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['COINBALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/coinBalance")}" href="javascript:;">通宝余额报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['COINEXPIRED'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/coinExpired")}" href="javascript:;">通宝过期报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COINACCOUNT']['JYCOINSERVICE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CoinAccount/jycoinService")}" href="javascript:;">通宝服务费</a></li>
+        </ul>
+    </dd>
+    </dl>
+    <dl id="menu-point" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTACCOUNT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe622;</i> 至尊积分核销<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTACCOUNT']['ISSUE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointAccount/issue")}" href="javascript:;">赠送报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTACCOUNT']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointAccount/consume")}" href="javascript:;">消费报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTACCOUNT']['ISSUEPANTERS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointAccount/issuePanters")}" href="javascript:;">赠送方核销</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTACCOUNT']['CONSUMEPANTERS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointAccount/consumePanters")}" href="javascript:;">消费方核销</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTACCOUNT']['UNCALCULATED'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointAccount/uncalculate")}" href="javascript:;">未结算报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTACCOUNT']['CALCULATED'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointAccount/calculated")}" href="javascript:;">已结算报表</a></li>
+        </ul>
+    </dd>
+    </dl>
+    <dl id="menu-jlh" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['JUNLH'])||$_SESSION['username']=='admin'||$_SESSION['username']=='lijun'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe620;</i> 君邻会报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <!--<li-->
+            <!--<?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['JUNLH']['CARDS_CONSUMPTIONS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>-->
+            <!--<a _href="{:U("Junlh/cards_consumptions")}" href="javascript:void(0)">卡消费明细报表</a>-->
+            <!--</li>-->
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['JUNLH']['TICKETCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+                <a _href="{:U("Junlh/ticketConsume")}" href="javascript:void(0)">营销券交易统计</a>
+            </li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['JUNLH']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+                <a _href="{:U("Junlh/index")}" href="javascript:void(0)">会员列表</a>
+            </li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['JUNLH']['TICKETDECUTE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+                <a _href="{:U("Junlh/ticketDecute")}" href="javascript:void(0)">君邻会扣劵</a>
+            </li>
+        </ul>
+    </dd>
+    </dl>
+		<dl id="menu-green" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['GREEN'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe620;</i>大食堂报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['GREEN']['DALIY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+				         <a _href="{:U("Green/every")}" href="javascript:void(0)">各个窗口交易明细</a>
+                 <a _href="{:U("Green/daliy")}" href="javascript:void(0)">日充值统计报表</a>
+								 <a _href="{:U("Green/getExcel")}" href="javascript:void(0)">档口交易报表导出</a></li>
+						<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['GREEN']['TRADEDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Green/tradeDetail")}" href="javascript:void(0)">卡交易明细查询</a></li>
+						<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['GREEN']['TEAMDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Green/teamDetail")}" href="javascript:void(0)">大食堂团购卡明细</a></li>
+        </ul>
+    </dd>
+    </dl>
+
+    <dl id="menu-point" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe622;</i> 天筑卡报表管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['CARDRECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/cardRecharge")}" href="javascript:;">充值管理</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/recharge")}" href="javascript:;">普通充值报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['PROPERTYRECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/propertyRecharge")}" href="javascript:;">物业充值报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['TBRECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/tbrecharge")}" href="javascript:;">通宝充值报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/consume")}" href="javascript:;">消费明细报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['PRODUCTSTAT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/productStat")}" href="javascript:;">商品交易统计</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['CATESTAT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/cateStat")}" href="javascript:;">商户交易统计</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['CUSTOMS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/customs")}" href="javascript:;">会员管理</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['CATEMANAGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/cateManage")}" href="javascript:;">商品管理</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['POINTSTAT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/pointStat")}" href="javascript:;">统计数据</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['POINTSTAT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/lossCard")}" href="javascript:;">卡挂失管理</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['POINTSTAT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/reissueCard")}" href="javascript:;">补卡管理</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['BALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/balance")}" href="javascript:;">余额报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['PENDDATE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/penddate")}" href="javascript:;">卡积分赠送明细有效期报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['TZPOINT_EXCEL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/tzpoint_excel")}" href="javascript:;">根据积分充值单号批量更改积分有效期</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TIANZHU']['TZCXPOINT_EXCEL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tianzhu/tzcxpoint_excel")}" href="javascript:;">天筑批量返还积分</a></li>
+        </ul>
+    </dd>
+    </dl>
+    <dl id="menu-green" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['KFFINANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe620;</i>开封九道弯<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['KFFINANCE']['DALIY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("KfFinance/daliy")}" href="javascript:void(0)">日充值统计报表</a></a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['KFFINANCE']['GIFT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("KfFinance/gift")}" href="javascript:void(0)">特惠充值统计报表</a></a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['KFFINANCE']['TRADEDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("KfFinance/tradeDetail")}" href="javascript:void(0)">卡交易明细查询</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['KFFINANCE']['EVERYSUM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("KfFinance/everySum")}" href="javascript:void(0)">各个档口交易统计</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['KFFINANCE']['EVERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("KfFinance/every")}" href="javascript:void(0)">各个档口交易明细</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['KFFINANCE']['TEAM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("KfFinance/team")}" href="javascript:void(0)">团卡交易报表</a></li>
+        </ul>
+    </dd>
+    </dl>
+
+    <dl id="menu-green" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe620;</i>大食堂报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['DALIY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/daliy")}" href="javascript:void(0)">日充值统计报表</a></a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['EVERYSUM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/everySum")}" href="javascript:void(0)">各个档口交易统计</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['EVERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/every")}" href="javascript:void(0)">各个档口交易明细</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['TEAM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/team")}" href="javascript:void(0)">团卡交易报表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['TRADEDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/tradeDetail")}" href="javascript:void(0)">卡交易明细查询</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['CHARGETOTAL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/chargeTotal")}" href="javascript:void(0)">充值合计(含特惠)</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['GIFTINFO'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/giftInfo")}" href="javascript:void(0)">特惠充值详情</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['TEAMCHARGEINFO'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/teamChargeInfo")}" href="javascript:void(0)">团队充值详情</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['TEAMCARDCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/teamCardConsume")}" href="javascript:void(0)">团队消费详情</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CATERING']['GIFTCARDQUERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Catering/giftCardQuery")}" href="javascript:void(0)">会员卡消费</a></li>
+        </ul>
+    </dd>
+    </dl>
+    <dl id="menu-green" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FOOTBALLTOWN'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe620;</i>足球小镇大食堂<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FOOTBALLTOWN']['CHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("FootballTown/charge")}" href="javascript:void(0)">充值统计</a></a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FOOTBALLTOWN']['BALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("FootballTown/balance")}" href="javascript:void(0)">查询余额</a></a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FOOTBALLTOWN']['TRADEDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("FootballTown/tradeDetail")}" href="javascript:void(0)">卡交易查询</a></a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FOOTBALLTOWN']['STALL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("FootballTown/stall")}" href="javascript:void(0)">各个档口交易明细</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FOOTBALLTOWN']['STALLSTATISTICS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("FootballTown/stallStatistics")}" href="javascript:void(0)">各个档口交易合计</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FOOTBALLTOWN']['TEAM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("FootballTown/team")}" href="javascript:void(0)">团卡明细</a></li>
+        </ul>
+    </dd>
+    </dl>
+</div>

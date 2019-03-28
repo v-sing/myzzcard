@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>日结算</title>
+    <link href="__PUBLIC__/kfcarnteen/css.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+</head>
+
+<body>
+<div class="top ">
+    <ul>
+        <li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png"/></li>
+        <li class="text_center_02">日结算</li>
+    </ul>
+</div>
+<div class="main" style="max-height:560px; overflow-y:scroll;">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>日期</th>
+            <th>收入金额</th>
+            <th>退款金额</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="data" id="vo">
+            <tr>
+                <td>{$vo.datetime}</td>
+                <td>¥{$vo.consume}</td>
+                <td>¥{$vo.refund}</td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<a class="dishes_plus"  href="{$printUrl}1&panterid={$panterid}&pantername={$pantername|json_encode|encode}&income={$data[0]['consume']}&refund={$data[0]['refund']}" target="_blank">打&nbsp;&nbsp;&nbsp;&nbsp;印</a>
+</body>
+<script>
+    //返回上一级
+    $(".text_l").click(function(){
+        window.location.href = "{:U('KfCarnteen/elseFunction')}";
+    });
+</script>
+</html>

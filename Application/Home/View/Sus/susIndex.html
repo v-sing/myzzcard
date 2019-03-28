@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>大额交易初审表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#date').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#cb").click(function(){
+            $(":checkbox[name='accountid[]']").attr("checked",this.checked);
+        });
+    })
+</script>
+<div  class="dv">
+    <form class="form-inline definewidth m20" action='{:U("Sus/susIndex")}' method="get">
+        日期:<input type="text" name="date" id="date" class="abc input-default" value="{$date}" style="width:100px;"/>
+        <button type="submit" class="btn btn-mini btn-primary">查询</button>
+        <input type="reset" value="重置"  class="btn btn-mini btn-danger" />
+    </form>
+
+    <table class="table table-bordered table-hover definewidth m10" >
+        <thead>
+        <tr>
+            <th>客户姓名</th><th>证件类别</th><th>证件号</th><th>联系方式</th>
+            <th>职业</th><th>国籍</th>
+            <th>当日充值金额</th><th>充值频次</th>
+            <th>当日消费金额</th><th>消费频次</th>
+            <th>交易时间</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <volist name="data" id="vo">
+            <tr>
+                <td>{$vo.namechinese}</td><td>{$vo.personidtype}</td>
+                <td>{$vo.personid}</td><td>{$vo.linktel}</td><td>{$vo.unitname}</td>
+                <td>{$vo.countyid}</td><td>{$vo.chargeamount}</td>
+                <td>{$vo.chargenu}</td>
+                <td>{$vo.tradeamount}</td><td>{$vo.tradenu}</td>
+                <td>{$vo.placeddate}</td><td></td>
+                <td class="f-14 td-manage">
+                    <a style="text-decoration:none" class="ml-5" onclick="first_check('{$vo.traceid}')" href="#" title="初步审核">
+                        <i class="Hui-iconfont">审核</i></a>
+
+            </tr>
+        </volist>
+
+    </table>
+
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+<script>
+    $(function(){
+        if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+            $('[placeholder]').focus(function() {
+                var input = $(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                    input.removeClass('placeholder');
+                }
+            }).blur(function() {
+                var input = $(this);
+                if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                    input.addClass('placeholder');
+                    input.val(input.attr('placeholder'));
+                }
+            }).blur();
+        };
+        layer.config({
+            extend: 'extend/layer.ext.js'
+        });
+    });
+    function first_check(traceid) {
+        var traceid = traceid;
+        layer.prompt({title: '请填写初审意见', formType: 2}, function(text, index){
+            $.ajax({
+                type: "POST",
+                url:"{:U('Sus/firstCheck')}",
+                data:{"traceid":traceid,"comment":text},
+                dataType:'json',
+                success: function(data){
+                    if(data.code == 1){
+                        layer.close(index);
+                        layer.msg("初审成功",function () {
+                            location.reload();
+                        });
+                    }else{
+                        layer.alert("初审失败"+data.msg);
+                    }
+                },
+                error:function () {
+                    layer.alert("与后端通信失败");
+                }
+            });
+
+        });
+
+
+
+    }
+
+    function placeholderSupport() {
+        return 'placeholder' in document.createElement('input');
+    }
+</script>

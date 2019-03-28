@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>接收卡片</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .tb-box{overflow-y:auto; width:100%;min-height:120px;max-height:300px;}
+        .tb-box td{width:160px;}
+        .tb-box td.td-f{border-left:none;width:159px}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#cb").click(function(){
+            var bool=$(this).attr('checked');
+            if(bool=='checked'){
+                bool=true;
+            }else{
+                bool=false;
+            }
+            $(":checkbox[name='cardno[]']").each(function(){
+                if($(this).attr('disabled')!='disabled'){
+                    $(this).attr('checked',bool);
+                }
+            })
+        });
+    })
+    function checkForm(){
+        document.getElementById('sub').disabled=true;
+        document.getElementById('sub').value='正在接收中...';
+    }
+</script>
+<div  class="dv">
+
+<form name="form3" method="post"  class="form-inline definewidth m10" style="border: 1px solid #D6D6D6;padding: 5px;" >
+    <span style="font-weight: bold;font-size:16px;">派送单</span><br/><br/>
+    派送流水号:&nbsp;<span style="font-weight: bold;color:#ffca22;">{$appInfo.id}</span>&nbsp;&nbsp;
+    卡类型:&nbsp;<span style="font-weight: bold;color:#ffca22;">{$appInfo.brandid}</span>&nbsp;&nbsp;
+    卡类型名称:&nbsp;<span style="font-weight: bold;color:#ffca22;">{$appInfo.brandname}</span>&nbsp;&nbsp;
+    申请机构编号:&nbsp;<span style="font-weight: bold;color:#ffca22;">{$appInfo.applicant}</span>&nbsp;&nbsp;
+    申请机构:&nbsp;<span style="font-weight: bold;color:#ffca22;">{$appInfo.pname}</span>&nbsp;&nbsp;
+    申请数量:&nbsp;<span style="font-weight: bold;color:#ffca22;">{$appInfo.count}</span>&nbsp;&nbsp;
+    申请时间:&nbsp;<span style="font-weight: bold;color:#ffca22;">{$appInfo.appdate} {$appInfo.apptime}</span>&nbsp;&nbsp;
+    备注:&nbsp;<span style="font-weight: bold;color:#ffca22;">{$appInfo.memo}</span>&nbsp;&nbsp;
+    </form>
+<form class="form-inline definewidth m20" action="{:U("CardStock/receive")}" method="get">
+    <input type="hidden" name="id" value="{$appInfo.id}">
+    制卡流水号:<input type="text" name="makecardid" value='{$makecardid}' style="width:120px; margin-right:7px;"/>
+    起始卡号:<input type="text" name="startcardno" value='{$startcardno}' style="width:160px; margin-right:7px;"/>
+    终止卡号:<input type="text" name="endcardno" value='{$endcardno}' style="width:160px; margin-right:7px;"/>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    <br/>
+</form>
+    <form class="form-inline m20" action='{:U("CardStock/receiveDo")}' method="post" onsubmit="return checkForm();">
+    <input type="hidden" name="id" value="{$appInfo.id}"/>
+    <input type="hidden" name="amount" value="{$appInfo.count}"/>
+    <input type="hidden" name="panterid" value="{$appInfo.applicant}"/>
+    <input type="hidden" name="brandid" value="{$appInfo.brandid}"/>
+        <if condition="$list neq null">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" class="btn btn-mini btn-primary" value="确定接收" id="sub"/>
+        </if>
+    <table class="table table-bordered table-hover definewidth m10" id="lists">
+    <thead>
+    <tr>
+        <th>卡号</th>
+        <th>卡号生成日期</th>
+        <th>制卡流水号</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="key">
+        <tr>
+            <td>{$vo.cardno}</td>
+            <td>{$vo.makedate}</td>
+            <td>{$vo.makecardid}</td>
+        </tr>
+        </volist>
+        </table>
+<!--div class="inline pull-right page sabrosus">{$page}</div-->
+    </div>
+    </div>
+</body>
+</html>

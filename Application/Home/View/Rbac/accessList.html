@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="dv">
+<volist name="a" id="vo">
+<form action="__URL__/setAccess" method="post" class="definewidth m20">
+<input type="hidden" value="{$id}" name="role_id" />
+<input type="checkbox" name="access[]" value="{$vo.id}_1" checked='checked' style="display:none" />
+    <table class="table table-bordered table-hover definewidth m10">
+        <!--tr>
+            <td width="10%" class="tableleft">角色名称</td>
+            <td><input type="text" name="title"/></td>
+        </tr-->
+        <tr>
+            <td class="tableleft">权限</td>
+            <td>
+                <ul>
+					<volist name="vo.child" id="vol">
+					<li>
+						<label class='checkbox inline'><input type='checkbox' name='access[]' value='{$vol.id}_2' <if condition='$vol["access"]'>checked</if> />{$vol.title}</label>
+						<ul>
+							<volist name="vol.child" id="voli">
+								<li><label class='checkbox inline'><input type='checkbox' name='access[]' value='{$voli.id}_3' <if condition='$voli["access"]'>checked</if> />{$voli.title}</label></li>
+							</volist>
+						</ul>
+					</li>
+					</volist>			
+				</ul> 
+            </td>
+        </tr>
+        <tr>
+            <td class="tableleft"></td>
+            <td>
+                <button type="submit" class="btn btn-primary" type="button">保存</button> &nbsp;&nbsp;<button type="button" class="btn btn-success" name="backid" id="backid" onclick="window.location='{:U('Rbac/roleList')}'">返回列表</button>
+            </td>
+        </tr>
+    </table>
+</form>
+</volist>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        $(':checkbox[name="access[]"]').click(function () {
+            $(':checkbox', $(this).closest('li')).prop('checked', this.checked);
+        });
+
+    });
+</script>

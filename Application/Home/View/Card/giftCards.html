@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>礼品卡绑定充值</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+
+        $('#subup').click(function(){
+            var cardno = $.trim($('#cardno').val());
+            var namechinese = $.trim($('#namechinese').val());
+      //      var linktel = $.trim($('#linktel').val());
+       //     var personid = $.trim($('#personid').val());
+            var residaddress = $.trim($('#residaddress').val());
+            var totalmoney = $.trim($('#totalmoney').val());
+            if(cardno==''){
+                alert('卡号不能为空,请选择!');
+                return false;
+            }
+            if(namechinese==''){
+                alert('用户名不能为空,请选择!');
+                return false;
+            }
+            if(residaddress==''){
+                alert('用户地址不能为空,请选择!');
+                return false;
+            }
+//            if(linktel==''){
+//                alert('联系方式必须填写');
+//                return false;
+//            }
+//            var d = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
+//            var r = d.test(linktel);
+//            if(!r){
+//                alert("手机号码格式错误");
+//                return false;
+//            }
+//            if(personid==''){
+//                alert('证件号码必须填写');
+//                return false;
+//            }
+//            var c = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(personid);
+//            if(!c){
+//                alert("身份证号格式错误!!");
+//                return false;
+//            }
+            if(totalmoney==''){
+                alert('充值金额不能为空');
+                return false;
+            }
+            $("#subup").attr("disabled", true);
+            document.form3.submit();
+        })
+    })
+</script>
+<div  class="dv" style="margin-left:25px;">
+    <form name="form3" method="post" action="{:U('card/giftCards')}">
+        <table class="table table-bordered table-hover m10 " >
+            <tr>
+                <td>卡号</td><td><input type="text" class="abc input-default" name="cardno" id="cardno"/></td>
+            </tr>
+            <tr><td>客户名称</td><td><input type="text" name="namechinese" class="abc input-default"  id="namechinese"/></td></tr>
+            <tr><td>家庭住址</td><td><input type="text" name="residaddress" class="abc input-default" id="residaddress"/></td></tr>
+            <!--<tr><td>身份证号码</td><td><input type="text" name="personid" class="abc input-default"  id="personid"/></td></tr>
+            <tr><td>联系电话</td><td><input type="text" class="abc input-default" name="linktel"
+            id="linktel"/></td></tr>-->
+            <tr>
+                <td>充值金额</td><td><input type="text" class="abc input-default" name="totalmoney" id="totalmoney"/></td>
+            </tr>
+            <tr><td>支付类型</td><td><select name="paymenttype" id="paymenttype" class="abc input-default" >
+                <foreach name="paytype" item="vo"><option value="{$key}">{$vo}</option></foreach></select></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit" class="btn btn-mini btn-primary" id="subup" style="width:80px;right:10px;">绑定充值</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

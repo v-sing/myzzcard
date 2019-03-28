@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>退菜</title>
+<link href="__PUBLIC__/kfcarnteen/css.css" rel="stylesheet" type="text/css">
+<script src="http://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+
+<script type="text/javascript">
+$(function(){
+
+	$("#a").Spinner({value:0, min:0, len:3, max:100});
+	
+	$("#b").Spinner({value:0, min:0, len:3, max:100});
+	
+	$("#c").Spinner({value:0, min:0, len:3, max:100});
+	
+	$("#d").Spinner({value:0, min:0, len:3, max:100});
+	
+	$("#e").Spinner({value:0, min:0, len:3, max:100});
+	
+	$("#f").Spinner({value:0, min:0, len:3, max:100});
+	
+	$("#g").Spinner({value:0, min:0, len:3, max:100});
+	
+	$("#u").Spinner({value:0, min:0, len:3, max:100});
+
+
+});
+</script>
+
+
+<script>
+	$(function(){
+		
+		
+		//退菜刷卡弹窗
+		$("#a").click(function(){
+            var amount = $(this).find('.Amount').val();
+            if(amount>6){
+                $(this).find('.Amount').val(6)
+            }
+		});
+		
+		$(".off").click(function(){
+			$("#mask").hide();
+			$(".tk_yue").hide();	
+		})
+
+		
+	})
+</script>
+
+
+
+</head>
+
+<body>
+		<div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;"></div>
+         <!--退菜刷卡弹窗开始-->
+        
+        <div class="tk_yue" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:20%; background:#fff; padding-bottom:3%; display:none;">
+        	<span class="tk_off"><img src="__PUBLIC__/kfcarnteen/img/tk_off.png" class="off"/></span>
+            <div class="meun" style="margin-top:3%;">
+                 <ul style=" width:60%; margin-left:24%; padding:6% 0 4% 0;">
+                	<li><img src="__PUBLIC__/kfcarnteen/img/card_icon.png" style="vertical-align:middle; display:inline-block; width:48px;"/></li>
+                    <li style=" font-size:30px; margin-left:4%; vertical-align:middle; display:inline-block;">请刷卡或者挥卡</li>
+                </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--退菜刷卡弹窗结束-->
+        
+        
+        
+ 
+    	<div class="top ">
+        	<ul>
+            	<li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png" onclick="window.history.back()"/></li>
+                <li class="text_center_02">设置菜品</li>
+            </ul>
+        </div>
+    
+    
+        <div class="main" style="max-height:560px; overflow-y:scroll;">
+       		<table class="table table-striped">
+               <thead>
+                 <tr>
+                   <th>菜品名称</th>
+                   <th>菜品单价</th>
+                   <th>购买数量</th>
+                   <th>退货数量</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <td>干锅有机花菜</td>
+                   <td>¥12.00</td>
+                   <td>1</td>
+                   <td style=" width:30%; padding:0 3%;">
+                   	 <div class="center">
+                        <div id="a" class="Spinner"></div>
+                    </div>  
+                   </td>
+                 </tr>
+                 <tr>
+                   <td>干锅有机花菜</td>
+                   <td>¥12.00</td>
+                   <td>1</td>
+                    <td style=" width:30%; padding:0 3%;">
+                   	 <div class="center">
+                        <div id="b" class="Spinner"></div>
+                    </div>  
+                   </td>
+                 </tr>
+                 <tr>
+                   <td>干锅有机花菜</td>
+                   <td>¥12.00</td>
+                   <td>1</td>
+                    <td style=" width:30%; padding:0 3%;">
+                   	 <div class="center">
+                        <div id="c" class="Spinner"></div>
+                    </div>  
+                   </td>
+                 </tr>
+                 <tr>
+                   <td>干锅有机花菜</td>
+                   <td>¥12.00</td>
+                   <td>1</td>
+                    <td style=" width:30%; padding:0 3%;">
+                   	 <div class="center">
+                        <div id="d" class="Spinner"></div>
+                    </div>  
+                   </td>
+                 </tr>
+                 <tr>
+                   <td>干锅有机花菜</td>
+                   <td>¥12.00</td>
+                   <td>1</td>
+                    <td style=" width:30%; padding:0 3%;">
+                   	 <div class="center">
+                        <div id="e" class="Spinner"></div>
+                    </div>  
+                   </td>
+                 </tr>
+                 <tr>
+                   <td>干锅有机花菜</td>
+                   <td>¥12.00</td>
+                   <td>1</td>
+                    <td style=" width:30%; padding:0 3%;">
+                   	 <div class="center">
+                        <div id="f" class="Spinner"></div>
+                    </div>  
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+            
+            
+        </div>
+        
+        <button class="dishes_plus" type="submit">退菜</button>
+
+    	
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+ip:127.0.0.1||2018-12-26  12:00:49：admin人员--execute操作： update users set wrpass='0',login_flag='1',session_id='a5ptif84ljkq7g9kt4591ubaf5' where loginname='admin'
+ip:127.0.0.1||2018-12-26  12:00:51：admin人员--execute操作： insert into safety_monitoring values('0000000000000000','20181226','12:00:49','后台登录','admin密码已过期，请尽快修改密码','03')
+ip:127.0.0.1||2018-12-26  12:00:56：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545796856','20181226','20181226','125600','0000000000000000','127.0.0.1','系统首页/系统首页')
+ip:127.0.0.1||2018-12-26  12:00:57：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545796857','20181226','20181226','125700','0000000000000000','127.0.0.1','数据图表分析/通宝统计')
+ip:127.0.0.1||2018-12-26  13:40:44：admin人员--execute操作： update users set wrpass='0',login_flag='1',session_id='a5ptif84ljkq7g9kt4591ubaf5' where loginname='admin'
+ip:127.0.0.1||2018-12-26  13:40:46：admin人员--execute操作： insert into safety_monitoring values('0000000000000000','20181226','13:40:44','后台登录','admin密码已过期，请尽快修改密码','03')
+ip:127.0.0.1||2018-12-26  13:40:51：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545802851','20181226','20181226','135140','0000000000000000','127.0.0.1','系统首页/系统首页')
+ip:127.0.0.1||2018-12-26  13:40:53：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545802853','20181226','20181226','135240','0000000000000000','127.0.0.1','数据图表分析/通宝统计')
+ip:127.0.0.1||2018-12-26  13:41:56：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545802916','20181226','20181226','135641','0000000000000000','127.0.0.1','商户管理/门店列表')
+ip:127.0.0.1||2018-12-26  13:41:56：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545802916','20181226','20181226','135641','0000000000000000','127.0.0.1','商户管理/门店列表')

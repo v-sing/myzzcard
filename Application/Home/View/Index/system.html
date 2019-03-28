@@ -1,0 +1,111 @@
+<div class="menu_dropdown bk_2 hide" id="system">
+	<dl id="menu-article" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RBAC'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe616;</i> 权限管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RBAC']['ROLELIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Rbac/roleList")}" href="javascript:void(0)">角色管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RBAC']['NODELIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Rbac/nodeList")}" href="javascript:void(0)">节点管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RBAC']['USERLIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Rbac/userList")}" href="javascript:void(0)">操作员管理</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RBAC']['BATCHOPENOUTACCOUNT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Rbac/batchOpenOutAccount")}" href="javascript:void(0)">外拓分账户</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+	<dl id="menu-system" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SYSTEM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe613;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SYSTEM']['PROVINCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("System/province")}" href="javascript:void(0)">区域信息管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SYSTEM']['CITY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("System/city")}" href="javascript:void(0)">县区信息管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SYSTEM']['UPPASSWORD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("System/upPassword")}" href="javascript:void(0)">修改密码</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SYSTEM']['ALLOCATEAREA'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("System/allocateArea")}" href="javascript:void(0)">物业小区分配</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SHOWLOG']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Showlog/index")}" href="javascript:void(0)">系统操作日志</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+	<dl id="menu-message" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SYSTEM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe613;</i> 短信平台<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SYSTEM']['SEND'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Message/send")}" href="javascript:void(0)">短信发送</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+    <dl id="menu-card" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe613;</i> 卡库存管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK']['CARDFILE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardStock/cardFile")}" href="javascript:void(0)">生成制卡文件</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK']['CARDRESTORE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardStock/cardRestore")}" href="javascript:void(0)">卡片入库</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK']['CARDSEND'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardStock/cardSend")}" href="javascript:void(0)">卡片派送</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK']['CARDRECEIVE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardStock/cardReceive")}" href="javascript:void(0)">卡片接收</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK']['CARDGROUP'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardStock/cardGroup")}" href="javascript:void(0)">商圈发卡管理</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK']['CARDINVENTORY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardStock/cardInventory")}" href="javascript:void(0)">卡库存监控</a></li>
+        </ul>
+    </dd>
+    </dl>
+      <dl id="menu-card" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['ANTIMONEY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe613;</i> 反洗钱管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['ANTIMONEY']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AntiMoney/index")}" href="javascript:void(0)">分类评级表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['ANTIMONEY']['LISTRISK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AntiMoney/listRisk")}" href="javascript:void(0)">反洗钱名单</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['LARGE']['RELARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Large/reLarge")}" href="javascript:void(0)">大额交易初审表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['LARGE']['RCHECK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Large/rcheck")}" href="javascript:void(0)">大额交易复审表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['LARGE']['REPORTLIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Large/reportList")}" href="javascript:void(0)">大额交易报告</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SUS']['SUSINDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Sus/susIndex")}" href="javascript:void(0)">可疑交易初审表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SUS']['RCHECK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Sus/rcheck")}" href="javascript:void(0)">可疑交易复审表</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SUS']['REPORTLIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Sus/reportList")}" href="javascript:void(0)">可疑交易报告</a></li>
+        </ul>
+    </dd>
+    </dl>
+
+    <dl id="menu-brand" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe613;</i> 卡段管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK']['CARDBRAND'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardStock/cardBrand")}" href="javascript:void(0)">卡类型管理</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDSTOCK']['ALLOTBRAND'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardStock/allotBrand")}" href="javascript:void(0)">卡种分配</a></li>
+        </ul>
+    </dd>
+    </dl>
+
+    <dl id="menu-cards" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDWITHHOLD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe613;</i> 至尊卡后台处理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDWITHHOLD']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardWithhold/index")}" href="javascript:void(0)">后台扣款</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDWITHHOLD']['AUDIT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardWithhold/audit")}" href="javascript:void(0)">扣款审核</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARDWITHHOLD']['WITHHOLDLIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("CardWithhold/withholdList")}" href="javascript:void(0)">扣款记录</a></li>
+        </ul>
+    </dd>
+    </dl>
+
+    <dl id="menu-brand" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CONFIG'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe613;</i>系统开关<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CONFIG']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Config/index")}" href="javascript:void(0)">配置管理</a></li>
+        </ul>
+    </dd>
+    </dl>
+    <dl id="menu-cards" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AUDIO'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe613;</i>系统监控<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AUDIO']['ASSETS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Audio/assets")}" href="javascript:void(0)">资产监控</a></li>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AUDIO']['SECURITY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Audio/security")}" href="javascript:void(0)">安全事件</a></li>
+        </ul>
+    </dd>
+    </dl>
+    <dl id="menu-item" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['ITEM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe613;</i>系统配置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['ITEM']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Item/index")}" href="javascript:void(0)">常规设置</a></li>
+        </ul>
+    </dd>
+    </dl>
+</div>

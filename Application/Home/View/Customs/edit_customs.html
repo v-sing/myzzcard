@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+	<script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+	<style type="text/css">
+		body {
+			padding-bottom: 40px;
+		}
+		.sidebar-nav {
+			padding: 9px 0;
+		}
+
+		@media (max-width: 980px) {
+			/* Enable use of floated navbar text */
+			.navbar-text.pull-right {
+				float: none;
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+		}
+		#remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+		#key{margin:0;}
+		#remind #key li:hover{background-color:#ccc;cursor: pointer;}
+		.tabBar span {background-color: #f5f5f5;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px; padding-bottom: 4px;padding-top: 8px;margin-bottom: 10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;}
+		.tabBar span.current{background-color: #222;color: #fff;margin-bottom: 10px;}
+		.tabCon {display: none;}
+		.nume{margin: 0 0 5px;}
+	</style>
+	<script>
+        jQuery.choice =function(tabBar,tabCon,class_name,tabEvent,i){
+            var $tab_menu=$(tabBar);
+            // 初始化操作
+            $tab_menu.removeClass(class_name);
+            $(tabBar).eq(i).addClass(class_name);
+            $(tabCon).hide();
+            $(tabCon).eq(i).show();
+
+            $tab_menu.bind(tabEvent,function(){
+                $tab_menu.removeClass(class_name);
+                $(this).addClass(class_name);
+                var index=$tab_menu.index(this);
+                $(tabCon).hide();
+                $(tabCon).eq(index).show();
+            });
+        }
+        $(function(){
+            $.choice("#tab_xuan .tabBar span","#tab_xuan .tabCon","current","click","0");
+        });
+	</script>
+</head>
+<body>
+
+<div class="dv">
+	<div class="nume">
+		<div id="tab_xuan" class="choice m10  table definewidth" >
+			<form method="post" id="form1" enctype="multipart/form-data">
+				<table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+					<input type="hidden" name="customid" id="customid" value="{$info.customid}"/>
+					<tr>
+						<td style="width:150px;text-align:right;background-color:#f5f5f5;">会员编号</td>
+						<td>{$info.customid}</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">会员名称</td>
+						<td><input type="text" name="namechinese" id="namechinese" value="{$info.namechinese}" maxlength="30" /></td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">手机号</td>
+						<td><input type="text" name="linktel" id="linktel" value="{$info.linktel}" maxlength="20" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>性别</td>
+						<td>
+							<label style="display: inline;"><input type="radio" name="sex" value="男"<if condition="$info.sex eq '男'">checked="checked"</if>/>男</label>
+							<label style="display: inline;"><input type="radio" name="sex" value="女"<if condition="$info.sex eq '女'">checked="checked"</if>/>女</label>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> </span>会员职业</td>
+						<td><input type="text" name="career" id="career" value="{$info.career}" maxlength="50" /></td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">证件号码</td>
+						<td><input type="text" name="personid" id="personid" value="{$info.personid}" maxlength="30"/></td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">常驻住址</td>
+						<td><input type="text" name="residaddress" id="residaddress" value="{$info.residaddress}" maxlength="50" /></td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">
+							<span class="emphasis"> *</span>所属商户</td>
+						<td>
+							<div>
+								<input id="pname" type="text" onkeyup="autoComplete(this.value)" value="{$info.pname}" autocomplete="off" placeholder="请输入你想要查询的机构名称" name="pname"/>
+								<input type="hidden" name="panterid" id="panterid" value="{$info.panterid}" />
+							</div>
+							<div id="remind">
+								<ul id="key"></ul>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">会员类型</td>
+						<td>
+							<select name="customlevel" class="form-control">
+								<option value="建业线上会员">建业线上会员</option>
+								<option value="一般客户">一般客户</option>
+								<option value="团购客户">团购客户</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">证件有效期</td>
+						<td><input type="text" name="personidexdate" maxlength="20" id="personidexdate" value="{$info.personidexdate}" /></td>
+					</tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">状态</td>
+						<td>
+							<select name="linkman" class="form-control">
+								<option value="启用" <if condition="$info.linkman eq '启用'">selected="selected"</if>>启用</option>
+								<option value="不启用" <if condition="$info.linkman eq '不启用'">selected="selected"</if>>不启用</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<table class=" table-bordered  table-hover " style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;border-top-left-radius: 0;border-top-right-radius: 0;width:100%;border-width: 0 1px 1px 0;">
+					<tr>
+						<td colspan="2" style="padding-left:150px;background-color:#f5f5f5;">
+							<button type="submit" class="btn btn-primary" type="button">保存</button>&nbsp;&nbsp;
+							<a type="button" class="btn btn-success" name="backid" id="backid" href="__URL__/customs">返回列表</a>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $('#personidexdate').datepicker({dateFormat: 'yymmdd',yearRange:"1980:2099"});
+        $('#form1').submit(function(){
+            var namechinese= $.trim($('#namechinese').val());
+            var personid=$.trim($('#personid').val());
+            var career= $.trim($('#career').val());
+            var linktel= $.trim($('#linktel').val());
+            var panterid= $.trim($('#panterid').val());
+            var pname= $.trim($('#pname').val());
+            var m = /^[\u4e00-\u9fa5 ]{2,20}$/;
+            var result = m.test(namechinese);
+            if(namechinese==''){
+                alert('会员名称必须填写');
+                return false;
+            }
+            if(!result)
+            {
+                alert("会员名必须为中文");
+                return false;
+            }
+            if(personid==''){
+                alert('证件号码必须填写');
+                return false;
+            }
+            if(linktel==''){
+                alert('联系方式必须填写');
+                return false;
+            }
+            if(pname==''&&panterid==''){
+                alert('所属商户必须填写');
+                return false;
+            }
+            if(career==''){
+                alert('会员职业必须填写');
+                return false;
+            }
+        });
+    });
+    function autoComplete(value){
+        $.ajax({
+            type:'GET',
+            url:'{:U("Common/getComplete")}',
+            data:{keys:value},
+            dataType:'json',
+            success:function(data){
+                $('#remind').find('ul').html('');
+                if(typeof(data)=='object'){
+                    var childObj='';
+                    for(var i=0;i<data.length;i++){
+                        childObj+='<li style="list-style:none;" onclick="addVal(this,'+"'pname'"+',\''+data[i].panterid+'\')">'+data[i].pname+'</li>';
+                    }
+                    $('#remind').css('display','block');
+                    $('#remind').find('ul').append(childObj);
+                    if($('#remind').find('ul').height()<180){
+                        var height=$('#remind').find('ul').height();
+                        $('#remind').height(height);
+                    }else{
+                        $('#remind').height(180);
+                    }
+                }else{
+                    $('#remind').css('display','none');
+                }
+            }
+        })
+    }
+    function addVal(a,id,pid){
+        var value=$(a).text();
+        $('#'+id).siblings('input').val(pid);
+        $('#'+id).val(value);
+        $(a).parent().parent().css('display','none');
+    }
+
+</script>
+</body>
+</html>

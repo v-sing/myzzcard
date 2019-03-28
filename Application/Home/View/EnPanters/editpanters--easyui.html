@@ -1,0 +1,461 @@
+<head>
+  <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
+  <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+  <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+</head>
+<style>
+  table {
+    max-width: 100%;
+    background-color: transparent;
+    border-spacing: 0;
+  }
+  .table-bordered {
+    border: 1px solid #dddddd;
+    border-collapse: separate;
+    border-left: 0;
+    border-radius: 4px;
+  }
+  .table th, .table td {
+    padding: 8px;
+    vertical-align: top;
+    border-top: 1px solid #dddddd;
+  }
+  .table td, .table th {
+    padding-top: 8px;
+    padding-bottom: 4px;
+    line-height: 20px;
+    height: 25px;
+  }
+  .table-bordered th, .table-bordered td {
+    border-left: 1px solid #dddddd;
+  }
+  tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    }
+  td, th {
+    border-bottom:1px solid #dddddd;
+    display: table-cell;
+  }
+</style>
+<!-- <form method="post" id="editform" action="__URL__/test" enctype="multipart/form-data"> -->
+<div class="easyui-accordion"  style="border-top:none;border-bottom:none;">
+    <div title="商户基本信息"  style="overflow:auto;padding:4px;">
+      <table  class="table-bordered" style="border-bottom:none;" width="100%">
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">商户编号:</td> <td>&nbsp;{$info.panterid}</td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>商户名称:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editnamechinese" name="editnamechinese" style="width:170px;" value="{$info.namechinese}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>商户地址:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editaddress" name="editaddress" style="width:170px;" value="{$info.address}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>经营范围:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editoperatescope" name="editoperatescope" style="width:170px;" value="{$info.operatescope}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>组织机构代码:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editoragnizationcode" name="editoragnizationcode" style="width:170px;" value="{$info.oragnizationcode}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>营业执照:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editbusiness" name="editbusiness" style="width:170px;" value="{$info.business}"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>税务登记:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="edittaxation" name="edittaxation" style="width:170px;" value="{$info.taxation}"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>商户简称:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editnameenglish" name="editnameenglish" style="width:170px;" value="{$info.nameenglish}"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>所属省市:</td>
+            <td>
+                &nbsp;
+                <input class="easyui-combobox" id="editprovinceid" name="editprovinceid" style="width:170px;" value="{$info.provinceid}">
+                <input class="easyui-combobox" id="editcityid" name="editcityid" style="width:170px;" value="{$info.cityid}">
+            </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>营业电话:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editgoingteleno" name="edigoingteleno" style="width:170px;" value="{$info.goingteleno}"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>所属机构:</td>
+          <td>&nbsp;<select class="easyui-combobox" id="editparent" name="editparent" style="width:170px;">
+                        <foreach name='parents' item='val'>
+                          <option value="{$val.panterid}" <if condition="$info['parent'] eq $val['panterid']">selected="selected"</if>>{$val.namechinese}</option>
+                        </foreach>
+                   </select>
+        </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>所属商圈:</td>
+          <td>&nbsp;<select class="easyui-combobox" id="editpantergroup" name="editpantergroup" style="width:170px;">
+                        <foreach name='pantergroups' item='val'>
+                          <option value="{$val.groupid}" <if condition="$info['pantergroup'] eq $val['groupid']">selected="selected"</if>>{$val.groupname}</option>
+                        </foreach>
+                   </select>
+        </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>行业属性:</td>
+          <td>&nbsp;<select class="easyui-combobox" id="edithysx" name="edithysx" style="width:170px;">
+                        <foreach name='hysxs' item='val'>
+                          <option value="{$val}" <if condition="$info['hysx'] eq $val">selected="selected"</if>>{$val}</option>
+                        </foreach>
+                   </select>
+        </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:100px;height:100px;"><font color="red">*</font>营业执照:</td>
+          <td>
+            <div id="box">
+            	<div id="test" ></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:100px;height:100px;"><font color="red">*</font>商户门头:</td>
+          <td>
+            <div id="box">
+            	<div id="test" ></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>撤消状态:</td>
+          <td>&nbsp;<select class="easyui-combobox" id="editrevorkflg" name="editrevorkflg" style="width:170px;">
+                        <foreach name='revork' item='val' key='k'>
+                          <option value="{$k}" <if condition="$info['revorkflg'] eq $k">selected="selected"</if>>{$val}</option>
+                        </foreach>
+                   </select>
+        </td>
+        </tr>
+      </table>
+    </div>
+    </form>
+    <div title="联系人信息"  style="overflow:auto;padding:4px;">
+      <table  class="table-bordered" style="border-bottom:none;" width="100%">
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">法人代表:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editlegalperson" name="editlegalperson"  style="width:170px;" value="{$info.legalperson}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">证件类型:</td>
+          <td>&nbsp;
+                  <select class="easyui-combobox" id="editconperbtype" name="editconperbtype" style="width:170px;">
+                       <option value="身份证">身份证</option>
+                       <option value="护照">护照</option>
+                       <option value="军官证">军官证</option>
+                   </select>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">法人代表证件号:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editconperbpno" name="editconperbpno" style="width:170px;" value="{$info.conperbpno}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;">证件正面照片:</td>
+          <td>
+              <input type="file" name="frontImg0" onchange="gx_idcard('frontImg',this)" />
+              <empty name="info.frontimg">
+                <img style="height:120px;" id="frontImg" />
+              <else />
+                <img src="__PUBLIC__/{$info.frontimg}" style="height:120px;" id="frontImg" />
+              </empty>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;">证件反面照片:</td>
+          <td>
+              <input type="file" name="reserveImg" onchange="gx_idcard('reserveImg',this)"/>
+              <empty name="info.reserveimg">
+                <img style="height:120px;" id="reserveImg" />
+              <else />
+                <img src="__PUBLIC__/{$info.reserveimg}" style="height:120px;" id="reserveImg" />
+              </empty>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">法人代表手机:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editconpermobno" name="editconpermobno"  style="width:170px;" value="{$info.conpermobno}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">证件有效期:</td>
+          <td>&nbsp;<input class="easyui-datebox" type="text" id="editperiod" name="editperiod"  style="width:170px;" value="{$info.period}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">常用联系人:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editconpername" name="editconpername"  style="width:170px;" value="{$info.conpername}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">常用联系人电话:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editconperteleno" name="editconperteleno"  style="width:170px;" value="{$info.conperteleno}"></input></td>
+        </tr>
+      </table>
+    </div>
+    <div title="商户风险控制"  style="overflow:auto;padding:4px;">
+      <table  class="table-bordered" style="border-bottom:none;" width='100%'>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">每日消费限制:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editd_sum_account" name="editd_sum_account" style="width:170px;" value="{$info.d_sum_account}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">每日消费次数:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editd_sum_number" name="editd_sum_number"  style="width:170px;" value="{$info.d_sum_number}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">每笔刷卡限额:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="editd_one_account" name="editd_one_account"  style="width:170px;" value="{$info.d_one_account}"></input></td>
+        </tr>
+      </table>
+    </div>
+    <div title="通宝相关"  style="overflow:auto;padding:4px;">
+      <table  class="table-bordered" style="border-bottom:none;" width='100%'>
+        <tr>
+            <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">参与通宝项目:</td>
+            <td><select id="edittongbaoitem" name="edittongbaoitem">
+                  <option value="">请选择</option>
+                  <option value="Y" <if condition="$info['tongbaoitem'] eq Y">selected</if> >参与项目</option>
+                  <option value="N" <if condition="$info['tongbaoitem'] eq N">selected</if> >不参与</option>
+               </select>
+             </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">通宝比例:</td>
+          <td>&nbsp;<input class="easyui-textbox" type="text" id="edittongbao_rate" name="edittongbao_rate"  style="width:170px;" value="{$info.tongbao_rate}"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:70px;height:70px;">房掌柜数据同步:</td>
+          <td>
+            <input type="checkbox" id="editsyncsy" name="editsyncsy" style="width:20px;height:14px;" name="syncfz"  value="{$info.syncsy}"/>
+            收银一体化
+            <br/>
+            <input type="checkbox" id="editsyncfz" name="editsyncfz"  style="width:20px;height:14px;" name="syncfz"  value="{$info.syncfz}"/>
+            房掌柜
+          </td>
+        </tr>
+      </table>
+    </div>
+</div>
+<div align="center" style="padding:4px;">
+    <!-- <button type="submit">保存</button> -->
+    <a class="easyui-linkbutton" iconCls="icon-save" onClick="editPanters()">保存</a>
+</div>
+<!-- </form> -->
+<input type="hidden" id='editcustomid' name="editcustomid" value="{$_GET['customid']}">
+<script type="text/javascript">
+    $(function(){
+        $('#editpname').combobox({
+            url:'../Common/getAllPnames',
+            valueField:'panterid',
+            textField:'namechinese'
+        });
+        $("#ui-datepicker-div").hide();
+        //显示所有省份
+        $("#editprovinceid").combobox({
+            url:'../Common/getAllProvince',
+            valueField:'provinceid',
+            textField:'provincename',
+            editable:true,//不可编辑，只能选择
+            value:'{$citys.provinceid}',
+            onChange:function(){
+              $('#editcityid').combobox({
+                valueField:'cityid', //值字段
+                textField:'cityname', //显示的字段
+                url:'../Common/getAllCity?provinceid='+$('#editprovinceid').combobox('getValue'),
+                editable:true,//不可编辑，只能选择
+                value:'{$info.cityid}',
+                onChange:function(){
+                $('#editcountyid').combobox({
+                    //显示县市区
+                    valueField:'countyid', //值字段
+                    textField:'countyname', //显示的字段
+                    url:'../Common/getAllCounty?cityid='+$('#editcityid').combobox('getValue'),
+                    editable:true,//不可编辑，只能选择
+                    value:'{$info.countyid}',
+                  });
+                },
+              });
+            },
+        });
+        //显示城市
+        $('#editcityid').combobox({
+            valueField:'cityid', //值字段
+            textField:'cityname', //显示的字段
+            url:'../Common/getAllCity?provinceid='+$('#editprovinceid').combobox('getValue'),
+            editable:true,//不可编辑，只能选择
+        });
+        //显示县、区
+        $('#editcountyid').combobox({
+          //显示县市区
+          valueField:'countyid', //值字段
+          textField:'countyname', //显示的字段
+          url:'../Common/getAllCounty?cityid='+$('#editcityid').combobox('getValue'),
+          editable:true,//不可编辑，只能选择
+        });
+        //身份证修改验证是否唯一性
+        $("#editpersonid").blur(function(){
+          var personid=$.trim($('#personid').val());
+          var customid = $.trim($("#customid").val());
+          $.ajax({
+            type:"post",
+            url:"__URL__/editif",
+            data:{'personid':personid,'customid':customid},
+            dataType:"json",
+            success:function(data){
+              if(data.status==1)
+              {
+                alert(data.name);
+              }
+            }
+          })
+        });
+        //联系电话编辑时唯一性检验
+        $("#editlinktel").change(function(){
+          var linktel= $.trim($('#linktel').val());
+          var customid = $.trim($("#customid").val());
+          $.ajax({
+            type:"post",
+            url:"__URL__/linktelif",
+            data:{'linktel':linktel,'customid':customid},
+            dataType:"json",
+            success:function(data){
+              if(data.status==1)
+              {
+                alert(data.name);
+              }
+            }
+          })
+        })
+
+        $('#editpersonid').blur(function(){
+            var personid= $.trim($(this).val());
+            if(personid.length<18){
+                $('#editbirthday').val('');
+                return;
+            }
+            var birth=personid.substr(6,8);
+            var birthYear=personid.substr(6,4);
+            var date=new Date();
+            var currentYear=date.getFullYear();
+            if(birthYear<1930&&birthYear>currentYear){
+                $('#editbirthday').val('');
+                alert('非法身份证');return;
+            }
+            $('#editbirthday').val(birth);
+        });
+    });
+    //编辑时保持信息
+    function editPanters(){
+      var o={};
+      var reg;
+      reg=/^[\u4e00-\u9fa5]+$/;
+      o.namechinese=$("#editnamechinese").textbox('getValue');
+      $("#editnamechinese").validatebox({
+        required : true,
+      });
+      o.address=$('#editaddress').textbox('getValue');
+      if(o.address==''||o.address=='undefined'){
+        alert('商户地址必须填写');
+        return false;
+      }
+      o.linktel=$('#editlinktel').textbox('getValue');
+      if(o.linktel==''||o.linktel=='undefined'){
+        alert('联系方式必须填写');
+        return false;
+      }
+      if(o.linktel && /^1[3|4|5|8]\d{9}$/.test(o.linktel)){
+        //对的
+      } else{
+        //不对
+        alert('手机号格式不正确');
+        return false;
+      }
+      o.sex=$('#editcustomssex input[name="editsex"]:checked').val();
+      if(o.sex==''||o.sex=='undefined'){
+        alert('性别必须选择');
+        return false;
+      }
+      o.customlevel=$('#editcustomlevel').combobox('getValue');
+      o.personidtype=$('#editpersonidtype').combobox('getValue');
+      o.personid=$('#editpersonid').textbox('getValue');
+      if(o.personid==''||o.personid=='undefined'){
+        alert('证件号码必须填写');
+        return false;
+      }
+      if(o.personid && /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(o.personid)){
+        //对的
+      } else{
+        //不对
+        alert('身份证号格式不正确');
+        return false;
+      }
+      o.pname=$('#editpname').combobox('getValue');
+      o.linkman=$('#editlinkman').combobox('getValue');
+      o.provinceid=$('#editprovinceid').combobox('getValue');
+      o.cityid=$('#editcityid').combobox('getValue');
+      o.countyid=$('#editcountyid').combobox('getValue');
+      o.residaddress=$('#editresidaddress').textbox('getValue');
+      o.unitzip=$('#editunitzip').textbox('getValue');
+      o.personidexdate=$('#editpersonidexdate').textbox('getValue');
+      o.nameenglish=$('#editnameenglish').textbox('getValue');
+      o.birthday=$('#editbirthday').textbox('getValue');
+      o.email=$('#editemail').textbox('getValue');
+      o.staffpaper=$('#editstaffpaper').combobox('getValue');
+      $.ajax({
+           type: "post",
+           url: "saveCustoms?customid=" + $("#editcustomid").val(),
+           data: o,
+           fileElementId:'frontImg',
+           dataType:'json',
+           success: function(data){
+              // alert(JSON.stringify(data));
+              if(data.status==1){
+                alert(data.info);
+                $('#dialog_details').window('close');
+                // $('#decorationTabs').tabs('getSelected').panel('refresh');
+                $('#customsList').datagrid('reload');
+              }else{
+                alert(data.info);
+              }
+           }
+      })
+    }
+
+    function addVal(a,id,pid){
+        var value=$(a).text();
+        $('#'+id).siblings('input').val(pid);
+        $('#'+id).val(value);
+        $(a).parent().parent().css('display','none')
+    }
+    function personReg(obj){
+        obj.value=obj.value.replace(/[^\dX]+/g,'');
+    }
+    //图片
+    function gx_idcard(x,y){
+      var objUrl = getObjectURL(y.files[0]) ;
+      console.log("objUrl = "+objUrl) ;
+      if (objUrl) {
+        $("#"+x).attr("src", objUrl) ;
+      }
+    }
+    function getObjectURL(file) {
+      var url = null ;
+      if (window.createObjectURL!=undefined) { // basic
+        url = window.createObjectURL(file) ;
+      } else if (window.URL!=undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file) ;
+      } else if (window.webkitURL!=undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file) ;
+      }
+      return url ;
+    }
+</script>

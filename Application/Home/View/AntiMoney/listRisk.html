@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jQuery Easy UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+
+
+</head>
+<body style="padding:6px;">
+<table id="box">
+</table>
+<div style="visibility:hidden" id="__box">
+	<div id="tb" style="padding:4px;height:auto;display: none;">
+        <div style="padding:4px">
+            开始时间：<input  name="date" class="easyui-datebox" style="width:140px;" value="<?php echo date('Y-m-01',time());?>">
+              结束时间：<input  name="enddate" class="easyui-datebox" style="width:140px;" value="<?php echo date('Y-m-01',time());?>">
+             <a href="#" class="easyui-linkbutton" iconCls="icon-search"  onclick="obj.search();">查询</a>
+        </div>
+ <div style="padding:4px">
+  	 		<span style="margin-left:0px;">
+  	           <a href="#" class="easyui-linkbutton" iconCls="icon-cancel"  onclick="obj.delet();">删除</a>
+  	        </span>
+  	    </div>
+	</div>
+</div>
+</body>
+</html>
+<script>
+$(function () {
+	//var rows = $('#box').datagrid('getSelections');
+
+
+	obj = {
+		search : function () {
+
+			$('#box').datagrid('load', {
+				startdate : $.trim($('input[name="date"]').val()),
+				enddate : $.trim($('input[name="enddate"]').val())
+
+			});
+		},
+		delet : function () {
+			var rows = $('#box').datagrid('getSelections');
+
+			$.ajax({
+				type: "POST",
+				url: "delet",
+				data:{'info':rows},
+				async:true,
+				dataType:'json',
+				success:function(msg){
+                  alert(msg.msg);
+                  window.location.reload();
+				},
+				error:function(msg){
+
+				}
+			});
+		}
+	};
+	$('#box').datagrid({
+		width : '100%',
+		url : 'getListData',
+		title : '反洗钱数据表',
+		striped : true,
+		nowrap : true,
+		rownumbers : true,
+		singleSelect : 0,
+		fitColumns : true,
+		showFooter : true,
+		method:'post',
+		columns : [[
+		    {
+		    	field:'选择',
+		    	checkbox:true
+		    },
+			{
+				field : 'namechinese',
+				title : '会员名字',
+				sortable : 0,
+			},
+			{
+				field : 'linktel',
+				title : '联系电话',
+				sortable : 0,
+			},
+			{
+				field : 'amount',
+				title : '账户余额(元)',
+				sortable : true,
+			},
+			{
+				field : 'tradeamount',
+				title : '单日消费(元)',
+				sortable : true,
+				formatter: function(value,row,index){
+					if (0 <= value && value < 5000){
+						return "低";
+					} else if(5000 <= value && value <50000) {
+						return "低";
+					} else if(50000 <= value && value <100000){
+						return "较低";
+					} else if(100000 <= value && value <200000){
+						return "一般";
+					} else{
+						return "最高";
+					}
+				}
+			},
+			{
+				field : 'times',
+				title : '单日交易次数',
+				sortable : true,
+				formatter: function(value,row,index){
+					if ( value <= 5){
+						return "低";
+					}
+					if(value<10 && value>5) {
+						return "低";
+					}
+					if(value>=10 && value<15){
+						return "较低";
+					}
+					if(value<20 && value>=15){
+						return "一般";
+					}
+					if(value>=20){
+						return "较高";
+					}else{
+						return "最高";
+					}
+				}
+			},
+			{
+				field : 'riskgrade',
+				title : '风险等级',
+				sortable : true,
+				formatter: function(value,row,index){
+					if (0 <= value && value < 20){
+						return "低";
+					} else if(20 <= value && value <35) {
+						return "低";
+					} else if(35 <= value && value <50){
+						return "较低";
+					} else if(50 <= value && value <70){
+						return "一般";
+					}else if(70 <= value && value <85){
+						return "较高";
+					}else{
+						return "最高";
+					}
+				}
+			},
+			{
+				field : 'date',
+				title : '统计日期',
+				sortable : false,
+			},
+		]],
+		toolbar : '#tb',
+		pagination : true,
+		pageSize : 20,
+		pageList : [20, 40, 60],
+		pageNumber : 1,
+		sortName : 'customid',
+		sortOrder : 'DESC'
+	});
+
+});
+
+</script>

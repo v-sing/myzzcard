@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>营销券交易统计报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  style="padding:6px;">
+    <div>
+        <table id="ticketConsumeList" class="easyui-datagrid" title="营销券交易统计报表"  width="100%" height="735"
+               data-options="
+                                url:'getTicketConsumeList',
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,50,100,200],
+                                singleSelect: false,                              
+                                method: 'get',
+                                striped:true,
+                                toolbar:'#tb',
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                showFooter:true,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+
+            <thead>
+                <tr>
+                    <th data-options="field:'cardno',width:160,align:'center'">卡号</th>
+                    <th data-options="field:'customid',width:80">会员编号</th>
+                    <th data-options="field:'cuname',width:60,align:'center'">会员名称</th>
+                    <th data-options="field:'unitname',width:120,align:'center'">所属区域</th>
+                    <th data-options="field:'pname1',width:100,align:'left'">会员所属机构</th>
+                    <th data-options="field:'flag',width:60,align:'center'">标记</th>
+                    <th data-options="field:'panterid',width:80,align:'center'">商户编号</th>
+                    <th data-options="field:'pname',width:60,align:'left'">商户名</th>
+                    <th data-options="field:'hysx',width:60,align:'center'">所属行业</th>
+                    <th data-options="field:'placeddate',width:60,align:'center'">交易日期</th>
+                    <th data-options="field:'placedtime',width:60,align:'center'">交易时间</th>
+                    <th data-options="field:'termposno',width:60,align:'center'">终端号</th>
+                    <th data-options="field:'tradeamount',width:60,align:'center'">交易数量</th>
+                    <th data-options="field:'tradepoint',width:60,align:'center'">交易通用积分</th>
+                    <th data-options="field:'tradetype',width:60,align:'center'">交易类型</th>
+                    <th data-options="field:'tradeid',width:60,align:'center'">交易流水号</th>
+                    <th data-options="field:'addpoint',width:60,align:'center'">交易产生通用积分</th>
+                    <th data-options="field:'quanid',width:60,align:'center'">券代码</th>
+                    <th data-options="field:'quanname',width:140,align:'center'">券名称</th>
+                    <th data-options="field:'amount',width:60,align:'center'">券单价</th>
+                    <th data-options="field:'totalamount',width:60,align:'center'">券总价</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="visibility:hidden" id="__box">
+        <div id="tb" style="padding:4px;height:auto;display: none;">
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日期:<input class="easyui-datebox" id="startdate" name="startdate" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至:<input class="easyui-datebox" id="enddate" name="enddate" style="width:140px;"></div>
+            <div style="padding:4px">营销券编号:<input class="easyui-textbox" id="quanid" name="quanid" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;营销券名称:<input class="easyui-textbox" id="quanname" name="quanname" style="width:140px;"></div>
+            <div style="padding:4px">
+                &nbsp;&nbsp;&nbsp;商户编号:<input class="easyui-textbox" id="panterid" name="panterid" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select class="easyui-combobox" name="pname" id="pname" panelHeight=160 panelWidth=140 style="width: 140px">
+                    <option value="" >请输入商户名称</option>
+                    <option value="郑州建业艾美酒店"  >郑州建业艾美酒店</option>
+                    <option value="南阳建业森林半岛假日酒店" >南阳建业森林半岛假日酒店</option>
+                    <option value="开封铂尔曼酒店" >开封建业铂尔曼大酒店</option>
+                    <option value="漯河建业福朋酒店" >漯河建业福朋酒店</option>
+                    <option value="上街雅乐轩酒店" >郑州建业酒店管理有限公司上街雅乐轩酒店</option>
+                </select>
+            </div> 
+             <div style="padding:4px">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卡号:<input class="easyui-textbox" id="cardno" name="cardno" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区域:<input class="easyui-textbox" id="unitname" name="unitname" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="margin-left:0px;"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="doSearch()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U("Junlh/ticketConsume_excel")}" class="easyui-linkbutton" data-options="iconCls:'icon-redo'">导出</a></span>
+            </div> 
+        </div>
+    </div>     
+    <script type="text/javascript">
+        $(function(){
+            var startdate="<?php echo date('Y-m-01',time());?>";
+            var enddate="<?php echo date('Y-m-d',time());?>";
+            $("#startdate").datebox("setValue",startdate);
+            $("#enddate").datebox("setValue",enddate);
+        })
+        //查询
+        function doSearch(){
+            var o={};
+            o.startdate=$("#startdate").datebox("getValue");
+            o.enddate=$("#enddate").datebox("getValue");
+            o.quanid=$("#quanid").textbox('getValue');
+            o.quanname=$("#quanname").textbox('getValue');
+            o.panterid=$("#panterid").textbox('getValue');
+            o.pname=$("#pname").combobox('getValue');
+            o.cardno=$("#cardno").textbox('getValue');
+            o.unitname=$("#unitname").textbox('getValue');
+            $('#ticketConsumeList').datagrid('load',o);
+            return false;
+        }
+        //清空查询条件
+        function resetting(){
+            var o={};
+            o.startdate=$("#startdate").datebox("setValue",'');
+            o.enddate=$("#enddate").datebox("setValue",'');
+            o.quanid=$("#quanid").textbox('setValue','');
+            o.quanname=$("#quanname").textbox('setValue','');
+            o.panterid=$("#panterid").textbox('setValue','');
+            o.pname=$("#pname").combobox('setValue','');
+            o.unitname=$("#unitname").textbox('setValue','');
+            $('#ticketConsumeList').datagrid('load',o);
+            return false;
+        }
+    </script>
+
+</body>
+</html>
+

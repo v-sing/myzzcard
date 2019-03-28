@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>白名单</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css"/>
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/require-backend/libs/fastadmin-layer/dist/layer.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+
+            }
+        }
+
+        .modal-body input {
+            width: 80%;
+        }
+
+        .modal-body .form-group .form-control {
+            height: 30px;
+            font-size: 14px;
+            line-height: 1.5em;
+            margin-bottom: 0px;
+        }
+
+        .my_label {
+            display: inline;
+            width: 112px;
+        }
+
+        .my_input {
+            display: inline;
+            width: 70%;
+        }
+
+        .my_label label {
+            display: inline;
+            font-size: 16px;
+            width: 112px;
+        }
+
+        .box_text { /*text搜索框盒子大小*/
+            width: 70%;
+            height: 36px;
+            display: inline;
+            position: relative;
+        }
+
+        #search {
+            position: absolute;
+            width: 100%;
+            /*background: yellow;*/
+            margin: 0;
+            padding: 0;
+            /*margin-left: 355px;*/
+            list-style: none;
+            display: none;
+            border: 1px solid #E3E5E4;
+            left: 0;
+            z-index: 2147483647;
+            height: 150px;
+            overflow: auto;
+        }
+
+        #search li {
+            line-height: 36px;
+            background: white;
+        }
+
+        #search li:hover {
+            background: #F0F0F0;
+        }
+
+        .li1 {
+            text-indent: 4px;
+        }
+
+        .modal.fade {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#cb").click(function () {
+            $(":checkbox[name='consumeid[]']").attr("checked", this.checked);
+        });
+    })
+</script>
+<div class="dv">
+    <form class="form-inline definewidth m20" method="get">
+        日期:<input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}"
+                  style="width:100px;"/>---
+        <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}"
+               style="width:100px; margin-right:5px;"/>
+        <input type="text" name="sourceorder" value='{$sourceorder}' style="width:165px; margin-right:7px;"
+               placeholder="合同编号"/>
+        <input type="text" name="linktel" value='{$linktel}' style="width:165px; margin-right:7px;"
+               placeholder="手机号"/>
+        <input type="text" name="namechinese" value='{$namechinese}' style="width:165px; margin-right:7px;"
+               placeholder="发行项目"/>
+        <button type="submit" class="btn btn-mini btn-primary">查询</button>
+        <input type="reset" value="重置" class="btn btn-mini btn-danger"/>
+        <a href="{:U('/Tongbao/whiteListExcel')}" target="_blank" class="btn btn-mini">
+            <!-- <img style="margin-top:3px;" src="__PUBLIC__/assets/img/excel.png" width="26" title="导出EXCEL" /> -->
+            <i class="Hui-iconfont">&#xe640;</i>导出EXCEL</a>
+
+    </form>
+    <div class="dv m20 definewidth">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-mini" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加白名单
+        </button>
+        <button type="button" class="btn  btn-mini" data-toggle="modal" data-target="#excel">
+            <i class="Hui-iconfont">&#xe642;</i>批量导入
+        </button>
+        <a href="__PUBLIC__/upfile/Excel/model.xlsx" target="_blank" class="btn btn-mini">
+            <!-- <img style="margin-top:3px;" src="__PUBLIC__/assets/img/excel.png" width="26" title="导出EXCEL" /> -->
+            <i class="Hui-iconfont">&#xe640;</i>下载模板</a>
+    </div>
+
+    <if condition="$list neq null">
+        <table class="table table-bordered table-hover definewidth m10">
+            <thead>
+            <tr>
+                <th>会员名称</th>
+                <th>手机号</th>
+                <th>合同编号</th>
+                <th>发行项目</th>
+                <th>状态</th>
+                <th>添加时间</th>
+            </tr>
+            </thead>
+            <volist name="list" id="vo">
+                <tr>
+                    <td text-align='center'>{$vo.cuname}</td>
+                    <td text-align='center'>{$vo.linktel}</td>
+                    <td text-align='center'>{$vo.sourceorder}</td>
+                    <td text-align='center'>{$vo.namechinese}</td>
+                    <td text-align='center'>
+                        <if condition="$vo.status eq 1">
+                            <button type="button" class="btn btn-danger btn-mini status" data-value="0" title="点击我禁用"
+                                    data-id="{$vo.sourceorder}">禁用
+                            </button>
+                            <else/>
+                            <button type="button" class="btn btn-info btn-mini status" data-value="1" title="点击我启用"
+                                    data-id="{$vo.sourceorder}">启用
+                            </button>
+                        </if>
+                    </td>
+                    <td text-align='center'><?php echo date('Y-m-d',strtotime($vo['createdate'])).' '.$vo['createtime'];?></td>
+                </tr>
+            </volist>
+        </table>
+        <div class="inline pull-right page">{$page}</div>
+        <else/>
+        <h5 style="margin-top:10px;" class="definewidth">暂无相关数据信息</h5>
+    </if>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">添加白名单</h4>
+            </div>
+            <div class="modal-body">
+                <form id="add">
+                    <div class="form-group">
+                        <div class="my_label">
+                            <label for="sourceorder">通宝合同编号：</label>
+                        </div>
+                        <div class="my_input">
+                            <div class="box_text">
+                                <input type="text" class="form-control" name="text" id="sourceorder" value=""
+                                       AUTOCOMPLETE="OFF"
+                                       placeholder="通宝合同编号"/>
+                                <ul id="search">
+                                    <li class="li1" id="0" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="1" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="2" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="3" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="4" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="5" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="6" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="7" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="8" onclick="iptShow(this.id)"></li>
+                                    <li class="li1" id="9" onclick="iptShow(this.id)"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="my_label">
+                            <label for="cuname">&nbsp; &nbsp; &nbsp; &nbsp;客户名称：</label>
+                        </div>
+                        <div class="my_input">
+                            <input type="text" readonly="readonly" class="form-control" id="cuname" placeholder="客户名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="my_label">
+                            <label for="project">&nbsp; &nbsp; &nbsp; &nbsp;发行项目：</label>
+                        </div>
+                        <div class="my_input">
+                            <input type="text" readonly="readonly" class="form-control" id="project" placeholder="发行项目">
+                        </div>
+                    </div>
+                    <input type="hidden" id="data">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade " id="excel" tabindex="-1" role="dialog" aria-labelledby="excelLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="excelLabel">批量导入白名单</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline definewidth m20" action="{:U('Tongbao/excel')}" method="post"
+                      enctype="multipart/form-data">
+                    <div class="control-group">
+                        Excel表格：<input type="file" name="file_stu" id="file_stu" class="abc input-default"/><br>
+                        <button type="submit" class="btn btn-small btn-primary">上传</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var otext = document.getElementById("sourceorder");  //获取input框
+    var cuname = document.getElementById('cuname');
+    var namechinese = document.getElementById('project');
+    var dataJson = document.getElementById('data');
+    ose = document.querySelector("#search");  //通过类名选择器 选择到search框
+    lis = document.getElementsByClassName("li1");  //获取所有的li
+    otext.onkeyup = function () {   //当在input框中键盘弹起发生事件
+        ose.style.display = otext.value ? "block" : "none";
+        dataJson.value = '';
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        /*三目运算符,如果otext.value的值部位空,则block。*/
+        var osc = document.createElement("script");
+        /*创建一个script标签*/
+        osc.src = '{:U(\'/tongbao/search\')}?sourceorder=' + otext.value + "&cb=houxiaowei";
+        /*srcipt的src值引入百度的url,然后将otext文本框中输入的内容连接到url,在后面在运行自己的方法*/
+        document.body.appendChild(osc);
+        /*将创建好的script标签元素放入body中*/
+        /*input框中按下回车根据input的值跳转页面*/
+        if (event.keyCode == 13) {
+            /*将百度作为连接,传入input的值,并跳入新的页面*/
+            getContent(otext.value);
+        }
+    }
+    var count = 0;
+    var search = 0;
+    var arr = ose.children;
+
+    /*获取ose下的所有li*/
+    function houxiaowei(json) {
+        ose.style.display = json.s ? "block" : "none";
+        layer.closeAll()
+        var jsonLength = 0;
+        /*json长度的初始值*/
+        for (var x in json.s) {
+            /*将循环的次数变成json的长度*/
+            jsonLength++;
+        }
+        for (var i = 0; i < lis.length; i++) {
+            if (jsonLength == 0) {  /*如果遍历出的长度等于0,li的值为空*/
+                arr[i].innerHTML = null;
+            } else {
+                if (json.s[i] != null) {/*如果json[i]的值不等于空,则将它的值放入li中*/
+                    arr[i].innerHTML = json.s[i];
+                }
+            }
+        }
+        if (count == lis.length - 1) {
+            count = 0;
+            search = 0;
+        }
+        count++;
+        search++;
+    }
+
+    /*单击li中的值显示在input框中*/
+    function iptShow(thisId) {
+        otext.value = arr[thisId].innerHTML;
+        getContent(otext.value);
+    }
+
+    /*单击body中的任意地方隐藏li*/
+    document.body.onclick = function () {
+        ose.style.display = "none";
+    }
+
+    function getContent(value) {
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        $.ajax({
+            url: '{:U(\'/tongbao/getContent\')}',
+            dataType: "JSON",
+            type: 'post',
+            data: {
+                sourceorder: value
+            },
+            success: function (res) {
+                layer.close(index);
+                if (res.code == 0) {
+                    dataJson.value = '';
+                    layer.msg(res.msg);
+                } else {
+                    cuname.value = res.data.cuname;
+                    namechinese.value = res.data.namechinese;
+                    dataJson.value = JSON.stringify(res.data);
+                }
+            }
+        })
+    }
+
+    $('.modal-footer .btn-primary').click(function () {
+        if (dataJson.value == '') {
+            layer.msg('请输入正确的合同编号');
+            return false;
+        }
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        $.ajax({
+            url: "{:U('/tongbao/whiteListAdd')}",
+            type: "post",
+            data: JSON.parse(dataJson.value),
+            dataType: "JSON",
+            success: function (res) {
+                layer.close(index);
+                cuname.value = '';
+                namechinese.value = '';
+                dataJson.value = '';
+                if (res.code == 0) {
+                    layer.msg(res.msg);
+                    return false;
+                } else {
+                    layer.msg(res.msg, function () {
+                        location.reload();
+                    });
+                    return false;
+                }
+            }
+        });
+    })
+    $('.status').click(function () {
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        var status = $(this).attr('data-value');
+        var sourceorder = $(this).attr('data-id');
+        var that = this;
+        $.ajax({
+            url: "{:U('/tongbao/whiteListChange')}",
+            dataType: "JSON",
+            type: "POST",
+            data: {
+                sourceorder: sourceorder,
+                status: status
+            },
+            success: function (res) {
+                layer.close(index);
+                if (res.code == 0) {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                if (status == 0) {
+                    $(that).attr('data-value', '1');
+                    $(that).addClass('btn-info');
+                    $(that).removeClass('btn-danger');
+                    $(that).text('启用');
+                    $(that).attr('title', '点击我启用');
+
+                } else {
+                    $(that).attr('data-value', '0');
+                    $(that).removeClass('btn-info');
+                    $(that).addClass('btn-danger');
+                    $(that).text('禁用');
+                    $(that).attr('title', '点击我禁用');
+                }
+                $('#myModal').model('hide');
+                layer.msg(res.msg);
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>
+<script>
+</script>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商圈信息管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div class="dv">
+<form class="form-inline definewidth m20" action="{:U("Fang/order_list")}" method="post">
+订单日期:
+      <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;" />---<input
+         type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:5px;" />
+    <input type="text" name="o_sn" id='o_sn' value='{$o_sn}' style="width:120px; margin-right:7px;" placeholder="订单号"/>
+    <input type="text" name="o_name" id='o_name' value='{$o_name}' style="width:70px; margin-right:7px;" placeholder="姓名"/>
+    <input type="text" name="o_phone" id='o_phone' value='{$o_phone}' style="width:120px; margin-right:7px;" placeholder="手机号"/>
+    <input type="text" name="o_card" id='o_card' value='{$o_card}' style="width:160px; margin-right:7px;" placeholder="身份证号码"/>
+    <input type="text" name="nameenglish" id='nameenglish' value='{$nameenglish}' style="width:180px; margin-right:7px;" placeholder="项目简称"/>
+    <input type="text" name="store_name" id='store_name' value='{$store_name}' style="width:180px; margin-right:7px;" placeholder="项目分期"/>
+    订单状态:
+    <select name="o_status" style="width:100px">
+        <option value="5" <?php if($o_status=='5') echo 'selected';?> >全部</option>
+        <option value="0" <?php if($o_status=='0') echo 'selected';?> >待支付</option>
+        <option value="1" <?php if($o_status=='1') echo 'selected';?> >已支付</option>
+        <option value="2" <?php if($o_status=='2') echo 'selected';?> >已完成</option>
+        <option value="3" <?php if($o_status=='3') echo 'selected';?> >已取消</option>
+        <option value="4" <?php if($o_status=='4') echo 'selected';?> >付款中</option>
+		<option value="6" <?php if($o_status=='6') echo 'selected';?> >已退款</option>
+    </select>
+    冻结状态:
+    <select name="is_freeze" style="width:100px">
+        <option value="3" <?php if($is_freeze=='3') echo 'selected';?> >全部</option>
+        <option value="1" <?php if($is_freeze=='1') echo 'selected';?> >冻结</option>
+        <option value="2" <?php if($is_freeze=='2') echo 'selected';?> >未冻结</option>
+    </select>    
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+     <button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U("fang/order_load")}';">导出报表</button>
+
+</form>
+
+
+
+
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <form class="form-inline definewidth m20" method="post" action="{:U("Fang/order_verification")}" >
+    <tr>
+      <th class="hidden-xs center">
+        <label class="pos-rel"><input type="checkbox" class="ace"  id='chkAll' onclick='CheckAll(this.form)' value="全选"/><span class="lbl"></span></label></th>
+        <th>订单号</th><th>订单时间</th><th>姓名</th><th>手机号</th><th>身份证号</th><th>项目名称</th><th>项目分期</th><th>商品名称</th><th>金额(元)</th><th>订单状态</th><th>冻结状态</th><th>同步明源</th><th>交易参考号</th><th>已付金额</th><th>操作</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+	     <tr>
+             <td class="hidden-xs" align="center">
+                <label class="pos-rel">
+                    <input name='o_id[]' id="navid" class="ace"  type='checkbox' value='{$vo.o_id}'>
+                    <span class="lbl"></span>
+                </label>
+             </td>
+             <td>{$vo.o_sn}</td>
+             <td>{$vo.ctime}</td>
+             <td>{$vo.o_name}</td>
+             <td>{$vo.o_phone}</td>
+             <td>{$vo.o_card}</td>
+             <td>{$vo.nameenglish}</td>
+             <td>{$vo.name}</td>
+			 <td>{$vo.goods_name}</td>
+             <td>{$vo.o_price}</td>
+             <td>{$vo.status}</td>
+             <td>{$vo.freeze}</td>
+             <td>{$vo.my}</td>
+             <td>{$vo.snno}</td>
+             <td>{$vo.o_paymoney}</td>
+
+        <td>
+<!--             <button type="button" class="btn btn-mini btn-primary"  onclick="changes({$vo['o_id']})">详情</button>&nbsp&nbsp
+ -->        	
+            <button type="button" class="btn btn-mini btn-primary" onclick="window.location='{:U('order_detail',array('o_id'=>$vo['o_id']))}'">详情</button>&nbsp&nbsp
+        	
+            <?php if($vo['o_status'] == 1) echo $vo['edit'];?>&nbsp&nbsp
+            <?php if($vo['is_freeze']=='1' && $vo['o_status'] == 1 && $vo['price_type'] == 2) echo $vo['freeze_link'];?>
+        </td>
+        </tr>
+
+    </volist>
+</table>
+ <!-- &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp <button type="button">核销</button> -->
+
+ <div class="input-group-btn margintop5" >
+ &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button class="btn btn-sm btn-danger" id="clearform">
+
+            <i class="ace-icon fa fa-bolt bigger-110"></i>
+            核销订单
+            </button>
+        </div>
+ </form>
+<div class="inline pull-right page sabrosus">{$page}</div>
+    </div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+
+function CheckAll(form) {
+    for (var i = 0; i < form.elements.length; i++) {
+        var e = form.elements[i];
+        if (e.Name != 'chkAll' && e.disabled == false) {
+            e.checked = form.chkAll.checked;
+        }
+    }
+}
+
+
+$('#clearform').click(function(){
+if (confirm("确定核销订单吗")) { 
+} else {
+    return false;
+}
+});
+
+function changes(o_id) {
+var url = "/zzkp.php/Fang/is_freeze/o_id/"+o_id;
+if (confirm("确定要解冻吗")) { 
+   window.location= url;
+} else {
+    return false;
+}
+}
+
+
+</script>

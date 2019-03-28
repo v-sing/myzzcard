@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div class="dv">
+<form class="form-inline definewidth m20" action="" method="get">
+	<div class="control-group">
+        交易类型：
+        <select name="type">
+          <option value="">请选择</option>
+            <foreach name="type" item="v" key="k">
+                <option value="{$k}" <if condition="$flag eq $k">selected</if>>{$v}</option>
+            </foreach>
+        </select>
+        &nbsp;&nbsp;
+        交易单号
+        <input type="text" name="tradeid" class="abc input-default" value="{$tradeid}" style="width:180px;"/>
+
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp;
+    <!--<a href="{:U("Panters/index_excel")}" class="btn btn-mini" target="_blank">导出excel</a>-->
+</div>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th style="width: 10px; text-align: center;"></th>
+        <th style="text-align: center;">日期</th>
+        <th style="text-align: center;">时间</th>
+        <th style="text-align: center;">商户名</th>
+        <th style="text-align:center;">菜品名</th>
+        <th style="text-align:center;">类型</th>
+        <th style="text-align:center;">卡号</th>
+        <th style="text-align:center;">卡次</th>
+        <th style="text-align:center;">价格</th>
+        <th style="text-align:center;">数量</th>
+        <th style="text-align:center;">实付金额</th>
+    </tr>
+    </thead>
+      <foreach name="info" item="vo">
+        <tr>
+            <td style="text-align: center;">{$key+1}</td>
+            <td style="width:100px;text-align:center;">{$vo.placeddate}</td>
+            <td  style="text-align:center;">{$vo.placedtime}</td>
+            <td  style="text-align:center;">{$vo.pname}</td>
+            <td style="text-align:center;">{$vo.goodsname}</td>
+            <td style="text-align:center;">
+                <switch name="vo.flag">
+                    <case value="01">充值</case>
+                    <case value="02">消费</case>
+                    <case value="03">退卡</case>
+                    <case value="04">退菜</case>
+                    <default />default
+                </switch>
+            </td>
+            <td style="text-align:center;">{$vo.cardno}</td>
+            <td style="text-align:center;">{$vo.cardnum}</td>
+            <td style="text-align:center;">{$vo.price}</td>
+            <td style="text-align:center;">{$vo.num}</td>
+            <td style="text-align:center;">{$vo.payamount}</td>
+            <td style="text-align:center;">
+
+            </td>
+
+        </tr>
+        </foreach>
+        </table>
+        <div class="inline pull-right page sabrosus" style="margin-right:2%;font-size: 16px;color:red">
+            充值金额：{$sum.charge}  &nbsp;&nbsp;
+            <br/>
+            消费金额：{$sum.consume}&nbsp;&nbsp;
+            退菜金额：{$sum.refund}
+            <br/>
+            合卡消费入账: {$combine.in}&nbsp;&nbsp;
+            合卡消费出账: {$combine.out}
+            <br/>
+            退卡金额:
+            {$sum.return}
+
+        </div>
+    </div>
+<script type="text/javascript">
+function del(panterid){
+    var confirm=window.confirm('删除后将不可恢复，确定删除？');
+    if(confirm==true){
+        window.location='__URL__/delpanters/panterid/'+panterid;
+    }
+}
+</script>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>
+</body>
+</html>

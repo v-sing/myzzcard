@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {  padding-bottom: 40px;  }
+        .sidebar-nav {  padding: 9px 0;  }
+        @media (max-width: 980px) {  .navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  }  }
+    </style>
+</head>
+<body>
+<div  class="dv">
+<form class="form-inline definewidth m20"  method="get">
+	<div class="control-group">
+        <input type="text" name="customid" class="abc input-default" placeholder="会员编号" value="{$customid}">&nbsp;&nbsp;
+        <input type="text" name="cusname" class="abc input-default" placeholder="会员名称" value="{$cusname}">&nbsp;&nbsp;
+        <input type="text" name="pname" class="abc input-default" placeholder="所属机构" value="{$pname}">&nbsp;&nbsp
+
+        <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp;
+         <a class="btn btn-mini btn-danger" type="button" href="{:U("Config/add")}"  >新增配置</a>
+    </div>
+    <!-- <div class="control-group">
+   	年龄：
+    	<input type="text" name="rolename" id="rolename"class="abc input-mini" placeholder="" value="">&nbsp;&nbsp;
+    	收入：
+    <input type="text" name="rolename" id="rolename"class="abc input-medium" placeholder="" value="">&nbsp;&nbsp;<br />
+	</div> -->
+</form>
+
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th style="width: 10px; text-align: center;"></th>
+        <th>配置编号</th>
+        <th>配置名称</th>
+        <th>配置描述</th>
+        <th>配置操作</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo">
+             <tr>
+				<td style="text-align: center;">{$key+1}</td>
+                <td>{$vo.conid}</td>
+                <td>{$vo.name}</td>
+                <td>{$vo.description}</td>
+                 <td id="a{$vo.conid}">
+                     <if condition="$vo['value'] eq on">
+                         <button type="button" class="btn btn-danger" onclick="switchfun('{$vo['conid']}',1)">关闭</button>
+                     <else/>
+                         <button type="button" class="btn btn-success" onclick="switchfun('{$vo['conid']}',2)">开启</button>
+                    </if>
+                </td>
+            </tr>
+        </volist>
+        </table>
+        <div class="inline pull-right page">{$page}</div>
+    </div>
+		</body>
+		</html>
+<script type="text/javascript">
+      function switchfun(conid,val){
+          console.log(conid);console.log(val);
+          $.ajax({
+              url:"{:U('Config/switchs')}",
+              type:'post',
+              dataType:'json',
+              data:{'conid':conid,'switch':val},
+              async:false,
+              success:function(data){
+                  if(data.status==1){
+                      if(val==1){
+                          var html = '<button class="btn btn-success" onclick="switchfun(\''+conid+'\',2)">'+'开启'+'</button>';
+                      }else{
+                          var html = '<button class="btn btn-danger" onclick="switchfun(\''+conid+'\',1)">'+'关闭'+'</button>';
+                      }
+                      $("#a"+conid).html(html);
+                  }else{
+                      alert(data.msg);
+                  }
+              }
+          })
+      }
+</script>

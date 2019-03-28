@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>赎回申请</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(function () {
+            $('#startdate').datepicker();
+            $('#enddate').datepicker();
+            $("#ui-datepicker-div").hide();
+        })
+    </script>
+    <div class="dv">
+        <form class="form-inline definewidth m20" action="{:U('EquityFund/withdraw_confirm')}" method="get">
+            赎回日期：
+            <input type="text" name="startdate" id="startdate" class="abc input-default" value="<php>echo $_GET['startdate'];</php>"
+                style="width:100px;" />
+            ---
+            <input type="text" name="enddate" id="enddate" class="abc input-default" value="<php>echo $_GET['enddate'];</php>"
+                style="width:100px; margin-right:10px;" />
+
+            <input type="text" name="bankname" style="width: 100px;" placeholder="银行名称" id="" value="<php>echo $_GET['bankname'];</php>">
+            <input type="text" name="num" placeholder="流水号" id="" value="<php>echo $_GET['num'];</php>">
+            <input type="text" name="batchno" placeholder="批次号" id="" value="<php>echo $_GET['batchno'];</php>">
+            <input type="text" name="customid" style="width: 100px;" placeholder="会员ID" id="" value="<php>echo $_GET['customid'];</php>">
+
+            <select name="type" style="width: 100px;">
+                <option value="">赎回状态</option>
+                <php>
+                    foreach(C('t_ransomType') as $k=>$v) {
+                    if($_GET['type'] == $k && !empty($_GET['type'])) {
+                    echo "<option value='$k' selected>$v</option>";
+                    } else {
+                    echo "<option value='$k'>$v</option>";
+                    }
+                    }
+                </php>
+                <!-- <option value="10" selected>未同步</option>
+                <option value="11" selected>已同步</option> -->
+            </select>
+
+            <select name="status" style="width: 100px;">
+                <option value="">订单状态</option>
+                <option value="1" <if condition="($_GET['status'] eq 1)"> selected</if>>已审核</option>
+                <option value="2" <if condition="($_GET['status'] eq 2)"> selected</if>>已驳回</option>
+                <option value="3" <if condition="($_GET['status'] eq 3)"> selected</if>>已退回</option>
+            </select>
+
+            <button type="submit" class="btn btn-mini btn-primary">查询</button>
+            <a href="{:U("EquityFund/withdraw_confirm_excel")}" class="btn btn-mini" target="_blank"><i class="Hui-iconfont">&#xe640;</i>导出EXCEL</a>
+
+        </form>
+        <br />
+        <form action="{:U('EquityFund/withdraw_confirm')}" method="post" name="form1" onsubmit="return checkPost();">
+            <table class="table table-bordered table-hover definewidth m10">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;"><input type='checkbox' value="" id="cb" /></th>
+                        <th>赎回流水号</th>
+                        <th>姓名</th>
+                        <th>手机号</th>
+                        <th>赎回金额</th>
+                        <th>银行名称</th>
+                        <th>银行卡号</th>
+                        <th>批次号</th>
+                        <th>项目名称</th>
+                        <th>银行卡类型</th>
+                        <th>赎回时间</th>
+                        <th>赎回状态</th>
+                        <th>订单状态</th>
+                        <!-- <th>操作</th> -->
+                    </tr>
+                </thead>
+                <volist name="list" id="vo" key="key">
+                    <tr>
+                        <php>
+                            $data = "o_sn=" . $vo['num'] . "&user_name=" . $vo['name'] .
+                            "&user_phone=" . $vo['phone'] . "&a_name=房掌柜个人赎回" .
+                            "&bank_name=" . $vo['bankname'] . "&bank_no=" . $vo['bankno'] .
+                            "&amount=" . $vo['amount'] .
+                            "&payeetype=" . $vo['banktype'] . "&account_type=" . $vo['account_type'] .
+                            "&cause=" . $vo['cause'];
+                        </php>
+                        <td style="text-align: center;">
+                            <if condition="$vo.type eq 10">
+                                <input type='checkbox' name="tradeid[]" value="<php> echo $data;</php>" id="<php> echo $vo['id'];</php>" />
+                            </if>
+                        </td>
+                        <td>{$vo.num}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.phone}</td>
+                        <td>{$vo.amount}</td>
+                        <td>{$vo.bankname}</td>
+                        <td>{$vo.bankno}</td>
+                        <td>{$vo.batchno}</td>
+                        <td>{$vo.a_name}</td>
+                        <td>
+                            <if condition="$vo['banktype'] === 0">对公
+                                <elseif condition="$vo['banktype'] eq 1" />对私一卡通
+                                <elseif condition="$vo['banktype'] eq 3" />对私信用卡
+                            </if>
+                        </td>
+                        <td>{$vo.datetime|date="Y-m-d H:i:s",###}</td>
+                        <td>
+                            <php>echo empty(C("t_ransomType.".$vo['type'])) ? $vo['type'] :
+                                C("t_ransomType.".$vo['type']);</php>
+                        </td>
+                        <td>
+                            <if condition="$vo['status'] == 1">已审核
+                                <elseif condition="$vo['status'] eq 2" />已驳回
+                                <elseif condition="$vo['status'] eq 3" />已退回
+                            </if>
+                        </td>
+                        <!-- <td>
+                            <if condition="$vo['type'] == 10">
+                                <a href="javascript:void(0)" value="<php> echo $data;</php>"
+                                    id="<php> echo $vo['id'];</php>">同步银企直联</a>
+                            </if>
+                        </td> -->
+                    </tr>
+                </volist>
+            </table>
+        </form>
+        <div class="inline pull-right page">{$page}</div>
+        <div class="inline pull-left" style="margin-left:35px;">
+            <input type="text" name="syncbatchno" style="background:#EE9A49;" placeholder="同步批次号" id="syncbatchno" value=""> 说明：批次号会自动拼接操作员账号。例：批次号_admin<br>
+            <button type="button" id="saveform" onclick="send()" class="btn btn-XL btn-info">同步银企直联</button>
+            <button type="button" id="" onclick="bfj()" style="background: green;" class="btn btn-XL btn-info">结转备付金</button>
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        $("#cb").click(function () {
+            var bool = $(this).attr('checked');
+            if (bool == 'checked') {
+                bool = true;
+            } else {
+                bool = false;
+            }
+            $(":checkbox[name='tradeid[]']").each(function () {
+                if ($(this).attr('disabled') != 'disabled') {
+                    $(this).attr('checked', bool);
+                }
+            })
+        });
+    })
+
+    $("a").click(function () {
+        // console.log($(this)[0]['attributes']['value']['nodeValue'])
+        console.log($(this).attr('id'))
+        var id = $(this).attr('id');
+        var time = Math.round(new Date / 1000);
+        var batchno = changeDate(time) + "<php>echo '_'.$_SESSION['username'];</php>";
+        $.ajax({
+            type: 'GET',
+            // url:"http://192.168.2.1/index.php/Important/tbRefund",
+            // url: "http://192.168.2.1/admin/Important/tbRefund",
+            // url: "http://192.168.3.128:8089/index.php/Important/tbRefund",
+            data: $(this).attr('value') + '&batchno=' + batchno + '&post_time=' + time,
+            dataType: 'jsonp',
+            jsonp: 'callback',
+            success: function (jsonp) {
+                console.log(jsonp);
+                if (jsonp.status == 2) {
+                    $.post("{:U('EquityFund/withdrawCode')}", {
+                        'id': id,
+                        'batchno': batchno,
+                        'code': jsonp.code
+                    }, function (codes) {
+                        console.log(codes);
+                        alert(codes);
+                        window.location.href = "{:U('EquityFund/withdraw_confirm')}";
+                        // alert(codes.status);
+                    });
+                } else {
+                    alert(jsonp.msg);
+                }
+            }
+        });
+    })
+
+    function changeDate(datetimes) {
+        var date = new Date(datetimes * 1000);
+        Y = date.getFullYear();
+        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+        D = date.getDate();
+        h = date.getHours();
+        m = date.getMinutes();
+        s = date.getSeconds();
+        //年 月 日 时 分 秒
+        return Y + '' + M + '' + D + '' + h + '' + m + '' + s;
+    }
+
+    function send() {
+        $("input:checked").each(function (i) {
+            // if (i == 0) {
+            //     return true;
+            // }
+            var data = $("input:checked").eq(i).attr('value');
+            var id = $("input:checked").eq(i).attr('id');
+            var batchno = $("#syncbatchno").attr('value');
+
+            // var time = Date.parse(new Date());
+            var time = Math.round(new Date / 1000);
+            if (batchno == '') {
+                batchno = changeDate(time);
+            }
+            batchno = batchno + "<php>echo '_'.$_SESSION['username'];</php>";
+            elecchequeno = "fsh" + time + Math.ceil(Math.random() * 1000);
+
+            if (data != '') {
+                data = data + '&batchno=' + batchno + '&elecchequeno=' + elecchequeno + '&post_time=' + time;
+                console.log(data);
+                // console.log(id);
+                // console.log(changeDate(time));
+                // console.log(time);
+                $.ajax({
+                    type: 'GET',
+                    // url:"http://192.168.2.1/index.php/Important/tbRefund",
+                    url: "http://192.168.2.1/admin/Important/tbRefund",
+                    // url: "http://192.168.3.128:8089/index.php/Important/tbRefund",
+                    data: data,
+                    dataType: 'jsonp',
+                    jsonp: 'callback',
+                    success: function (jsonp) {
+                        console.log(jsonp);
+                        if (jsonp.status == 2) {
+                            $.post("{:U('EquityFund/withdrawCode')}", {
+                                'id': id,
+                                'batchno': batchno,
+                                'code': jsonp.code
+                            }, function (codes) {
+                                console.log(codes);
+                                alert(codes);
+                                window.location.href = "{:U('EquityFund/withdraw_confirm')}";
+                                // alert(codes.status);
+                            });
+                        } else {
+                            alert(jsonp.msg);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    function bfj() {
+        var res = '';
+        $("input:checked").each(function (i) {
+            var id = $("input:checked").eq(i).attr('id');
+            if (id != 'cb') {
+                batchno = $("#syncbatchno").val();
+                $.ajax({
+                    type: 'POST',
+                    async: false,
+                    url: "__URL__/withdraw_bfj",
+                    data: {
+                        id: id,
+                        batchno: batchno,
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        // if (data.code == 1) {
+                        res += id + ' ' + data.msg;
+                        //     console.log(data);
+                        // } else {
+                        //     alert(data.msg)
+                        // }
+                        console.log(data);
+                        console.log(id);
+                    }
+                });
+            }
+        });
+        if (res) {
+            alert(res);
+        }
+        window.location.href = "{:U('EquityFund/withdraw_confirm')}";
+    }
+</script>
+
+</html>

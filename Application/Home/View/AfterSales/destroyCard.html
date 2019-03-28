@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>销卡管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .rt{border:1px solid #eee;}
+        .btn-primary1{
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #006dcc;
+            *background-color: #0044cc;
+            background-repeat: repeat-x;
+            border-color: #0044cc #0044cc #002a80;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+        }
+    </style>
+</head>
+<body>
+<div  class="dv">
+<form name="form1" method="post" id="form1" action="{:U('AfterSales/cardDes')}">
+    <div class="rt">
+    <input type="hidden" name="is_read" value="0" id="is_read"/>
+        <input type="hidden" name="cardbalance" value="" id="cardbalance">
+        <input type="hidden" name="customid" value="" id="customid">
+        <input type="hidden" name="cardid" value="" id="cardid">
+    <table class="table table-bordered table-hover m10" >
+    	<tr>
+             <td>卡号</td>
+             <td><input type="text" class="abc input-default" name="cardno" id="cardno"/></td>		
+    	</tr>
+    	
+         <tr>
+             <td>备注</td>
+             <td><input type="text" class="abc input-default" name="description" id="description"/></td>
+             <td>
+                 <input type="button"  class="btn btn-mini btn-primary" value="读卡"  id="btn"/>
+                 <input type="button"  class="btn btn-mini btn-primary" value="销卡" style="margin-left:15px;" id="btn1"/>
+                 <a href="{:U('AfterSales/cardDesList')}">查看销卡记录</a>
+             </td>
+         </tr>
+    </table>
+        </div>
+    </form>
+<table class="table table-bordered table-hover definewidth m10" id="tb">
+    <tr>
+        <th>卡号</th><th>会员编号</th><th>会员名称</th><th>卡余额</th><th>积分余额</th>
+    </tr>
+</table>
+<div class="inline pull-right page">{$page}</div>
+    </div>
+<script type="text/javascript">
+    $(function(){
+        $('#btn').click(function(){
+            var cardno= $.trim($('#cardno').val());
+            if(cardno==''){
+                alert('请填写卡号');
+                return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("AfterSales/destroyCard")}',
+                data:{cardno:cardno},
+                dataType:'json',
+                success:function(res){
+                    $('#is_read').val(0);
+                    if(res.success==0){
+                        alert(res.msg);
+                    }else{
+                        var html='<tr> <th>卡号</th><th>会员编号</th><th>会员名称</th><th>卡余额</th><th>积分余额</th>';
+                        html+='</tr><tr><td>'+res.info.cardno+'</td><td>'+res.info.cuid+'</td>';
+                        html+='<td>'+res.info.cuname+'</td><td>'+res.info.cardbalance+'</td>';
+                        html+='<td>'+res.info.cardpoint+'</td>';
+                        $('#tb').html(html);
+                        $('#is_read').val(1);
+                        $('#cardbalance').val(res.info.cardbalance);
+                        $('#customid').val(res.info.cuid);
+                        $('#cardid').val(res.info.cardid);
+                    }
+                }
+            })
+        });
+        $('#btn1').click(function(){
+            var is_read= $.trim($('#is_read').val());
+            var description= $.trim($('#description').val());
+            if(is_read==0){
+                alert('请先读卡');
+                return false;
+            }
+            if(description==''){
+                alert('请添加备注');
+                return false;
+            }
+            document.form1.submit();
+        })
+    })
+</script>
+</body>
+</html>

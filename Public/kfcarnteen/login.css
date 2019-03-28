@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+*{ padding:0; margin:0;}
+li,ul{ list-style:none;}
+body{ font-family:'微软雅黑';font-size:16px;color:#333; margin:0 auto; padding:0;background:#169e90; }
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{zoom:1;}
+a:hover{ text-decoration:none;}
+a:link,a:visited{ text-decoration:none;}
+
+.bg{ width:100%;}
+.login{overflow:hidden; width:210px; margin:15% auto;}
+.login img{ width:80px; height:80px; text-align:center; margin:auto; display:block}
+.login input{ border: none; background:#fff; border-radius:5px; width:200px; height:32px; line-height:32px; margin-top:20px; padding:0px 5px; text-align:center; }
+
+/*计算器*/
+#container{width:210px;margin:0px auto;background:white;/*border:2px solid #99ccff;*/border-radius:5px; padding-top:2px;}
+#container h3{text-align:center;margin-top:5px;}
+.text{width:210px;border:1px solid #c2c2c2;height:50px;border-radius:5px;margin:10px; padding:0 5px;font-size:24px;text-align:right;background:#ffffff;}
+.buttons{margin:5px 5px 0 5px;position:relative;}
+.button{width:63px;height:40px;border:1px solid #ddd;border-radius:1px;font-weight:bold;color:#1e395b;background:#eaf1f9; margin-bottom:5px;}
+.button:hover{background:#ffe77c;}
+/*.ling{width:145px;}*/
+
+

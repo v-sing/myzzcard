@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .tabBar {}
+    		.tabBar span {background-color: #f5f5f5;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px; padding-bottom: 4px;padding-top: 8px;margin-bottom: 10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;}
+    		.tabBar span.current{background-color: #222;color: #fff;margin-bottom: 10px;}
+    		.tabCon {display: none;}
+    		.nume{margin: 0 0 5px;}
+    </style>
+</head>
+<script>
+  jQuery.choice =function(tabBar,tabCon,class_name,tabEvent,i){
+    var $tab_menu=$(tabBar);
+      // 初始化操作
+      $tab_menu.removeClass(class_name);
+      $(tabBar).eq(i).addClass(class_name);
+      $(tabCon).hide();
+      $(tabCon).eq(i).show();
+
+      $tab_menu.bind(tabEvent,function(){
+      $tab_menu.removeClass(class_name);
+        $(this).addClass(class_name);
+        var index=$tab_menu.index(this);
+        $(tabCon).hide();
+        $(tabCon).eq(index).show();
+      });
+  }
+  $(function(){
+    $.choice("#tab_xuan .tabBar span","#tab_xuan .tabCon","current","click","0");
+  });
+</script>
+<body>
+<div class="dv">
+  <div class="nume">
+		<div id="tab_xuan" class="choice m10  table definewidth" >
+				<div class="tabBar cl">
+					<span style="border-left:1px solid #ccc;border-right:1px solid #ccc;border-top-left-radius:4px;border-bottom-left-radius:4px;">基本信息</span>
+          <span>机构结算相关</span>
+				</div>
+<form action="{:U("Orz/edit")}" method="post" name="form1">
+<table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+    <tr>
+        <td rowspan="17" style="width:100px;text-align:center;vertical-align:middle;">基本信息</td>
+        <td class="tableleft">机构编号</td>
+        <td><input type="text" name="panterid" id="panterid" value="{$list.panterid}" maxlength="60" readonly=""/><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">机构名称</td>
+        <td><input type="text" name="namechinese" id="namechinese" value="{$list.namechinese}" maxlength="100" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">机构地址</td>
+        <td><input type="text" name="address" id="address" value="{$list.address}" maxlength="100" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">机构简称</td>
+        <td><input type="text" name="nameenglish" id="nameenglish" value="{$list.nameenglish}" maxlength="60" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">行业属性</td>
+        <td><select name="hysx" id="hysx"><option value="">请选择</option><volist name="hysxs" id="vo">
+                <option value="{$vo}" <if condition="$list['hysx'] eq $vo">selected</if>>{$vo}</option>
+                </volist></select><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">撤销状态</td>
+        <td>
+            <input type="radio" name="revorkflg" value="Y"  <php>if('Y'==$list['revorkflg'])echo 'checked';</php>/> 启用
+            <input type="radio" name="revorkflg" value="N"  <php>if('N'==$list['revorkflg'])echo 'checked';</php>/> 禁用
+        </td>
+    </tr>
+</table>
+<table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+    <tr>
+        <td rowspan="2" style="width:100px;text-align:center;vertical-align:middle;">结算</td>
+        <td width="10%" class="tableleft">结算周期</td>
+        <td><input type="text" name="settlementperiod " id="settlementperiod " value="{$list.settlementperiod}" maxlength="20" />天
+        </td>
+    </tr>
+    <tr>
+        <td class="tableleft">结算率</td>
+        <td><input type="text" name="rakerate" id="rakerate" value="{$list.rakerate}" maxlength="20" />%</td>
+    </tr>
+</table>
+<table class=" table-bordered  table-hover " style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;border-top-left-radius: 0;border-top-right-radius: 0;width:100%;border-width: 0 1px 1px 0;">
+        <tr>
+        <!-- <td class="tableleft"></td> -->
+        <td>
+            <button type="submit" class="btn btn btn-primary" type="button" id="saveform" style="margin-left:200px;">保存</button>&nbsp;&nbsp;<button type="button" class="btn btn btn-success" name="backid" id="backid">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script>
+    $(function () {
+		$('#backid').click(function(){
+				window.location.href="{:U("Orz/index")}";
+		 });
+        $('#saveform').click(function(){
+            var namechinese = $.trim($('#namechinese').val());
+            var address = $.trim($('#address').val());
+            var hysx = $.trim($('#hysx').val());
+            if(namechinese==''){
+                alert('机构名称不能为空!');
+                return false;
+            }
+            if(address=="")
+            {
+              alert("机构地址不能为空!");
+              return false;
+            }
+            if(hysx=="")
+            {
+              alert("行业不能为空!");
+              return false;
+            }
+            document.form1.submit();
+        })
+    });
+</script>

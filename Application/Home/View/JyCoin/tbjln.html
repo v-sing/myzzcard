@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/JyCoin/css/tbn.css">
+<style>
+ #status_shixiao li,#status_shixiao li  span {
+  color: #aaaaaa !important;
+ }
+</style>
+<script type="text/javascript" src="__PUBLIC__/Home/JyCoin/js/jquery-1.12.1.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/JyCoin/js/tools.js"></script>
+<script>
+
+$(function(){
+
+	$('.mx').on("click", function() {
+			$(this).css({"color":"#8f543e","border-bottom":"2px solid #8f543e"}).siblings().css({"color":"","border-bottom":""})
+		})	
+		
+		
+	$("#fx").click(function(){
+		$(".center").show();
+		$(".center_2").hide();
+	});
+	
+	$("#jy").click(function(){
+		$(".center_2").show();
+		$(".center").hide();
+	});
+
+  $("#shiming_renzheng").click(function(){
+  
+    var cid=$("#cid").val();
+    var url='https://pre.9617777.com:8235/zzkp.php/JyCoin/periodvalidity?cid='+cid;
+   __tools.sendMsgToApp('nativeapi://certification?url='+encodeURI(url));
+  });
+ })
+
+function certsuccess(){
+  alert("实名认证成功！");
+  window.location.reload(true);
+}
+</script>
+<title>通宝明细</title>
+</head>
+
+<body style=" background:#fafafa;">
+    <i style="display: none;" id="cid">{$cid}</i>
+    <div>
+            <div><img src="__PUBLIC__/Home/JyCoin/img/bg_2.jpg" style=" width:100%; position:fixed; z-index:10; top:0;"/></div>
+            <div style=" z-index:12; position:fixed; top:44px; left:50px;"><span style="display:inline-block; vertical-align:middle; margin-right:4px;">当前通宝</span><a href="{:U('JyCoin/sm')}"><img src="__PUBLIC__/Home/JyCoin/img/why.png" style=" width:18%;height: 18px; display:inline-block; vertical-align:middle;"/></a></div>
+            <div style=" z-index:12; position:fixed; top:72px; left:50px; font-size:2rem; color:#8f543e; font-weight:600;">{$amount}</div>
+              <div style="/* display: block; */z-index:12;position:fixed;top: 150px;left:1px;color:#8f543e;">
+                  <div style="padding: 4px 0px;text-align: center;font-size: 14px;width:100%;position:fixed;z-index:10;height:4%;/* top:187px; */background: #fff;/* left: 15px; */">
+                      <img src="/Public/Home/JyCoin/img/oh.png" style="width: 4%;/*height: 16px; */display:inline-block;vertical-align:middle;/* margin-top: 4px; */margin-left: 3px;padding: 4px 4px;"> {$amounts}通宝可用于物业缴费,详情请咨询客服<br>
+                  </div>
+                  <div style="padding: 4px 0px;text-align: center;font-size: 14px;width:100%;position:fixed;z-index: 12;height:4%;bottom: 0px;background: #8f543e;color: #fff;/* left: 15px; */" onClick="location.href='http://t.cn/EVT6VXB'">
+                      查看通宝全省消费场景
+                  </div>
+              </div>
+             <if condition="empty($list) eq true">
+              <div style="text-align:center; color:#999; margin-top:70%;">暂无通宝获赠记录</div>
+             <else />
+            <div style=" overflow:hidden;">
+            <div class="top" style=" margin-top:48%;">
+                <span class="mx" id="fx" style=" border-bottom:2px solid #8f543e; color:#8f543e;">通宝获赠明细</span>
+                <span class="mx" id="jy">通宝交易明细</span>
+            </div>
+    </div>   
+    <div class="center" style=" margin-top:58%; background:#fff; margin-bottom: 5rem;">
+
+        <if condition="empty($list) eq true">
+            <div>暂无通宝发行记录</div>
+
+            <else />
+            <foreach  name="list" item="val">
+                <if condition="$val.period eq 1">
+                    <ul style=" padding:5% 0;" id="status_shixiao">
+                        <else/>
+                        <ul style=" padding:5% 0;">
+                </if>
+                <li><span style="float:left;">赠送方</span><span style=" float:right; text-align:right;color:#333;">{$val.namechinese}</span></li>
+                <li><span style="float:left;">获赠行为</span><span style=" float:right; text-align:right;color:#333;">
+                         <if condition="$val.trigger_rules eq ''">
+                          建业购房大礼包
+                           <else/>
+                          {$val.trigger_rules}
+                         </if>
+                      </span></li>
+                <li><span style="float:left;">获赠积分</span><span style=" float:right; text-align:right;color:#333;">{$val.rechargeamount}</span></li>
+                <li><span style="float:left;">剩余积分</span><span style=" float:right; text-align:right;color:#333;">{$val.remindamount}</span></li>
+                <li><span style="float:left;">获赠时间</span><span style=" float:right; text-align:right;color:#333;">{:date("Y 年 m 月 d 日",strtotime($val['placeddate']))}</span></li>
+                <li><span style="float:left;">到期时间</span><span style=" float:right; text-align:right;color:#333;"> {:date("Y 年 m 月 d 日",strtotime($val['enddate']))}</span></li>
+                <if condition="$val.period eq 2">
+                    <li><span style="float:left;">通宝状态</span><span style=" float:right; text-align:right;color:red;">{$val.jihuo_time}</span></li>
+                    <elseif condition="$val.period eq 1"/>
+                    <li><span style="float:left;">通宝状态</span><span style=" float:right; text-align:right;color:#333;">已失效</li>
+                    <elseif condition="$val.period eq 0"/>
+                    <li><span style="float:left;">通宝状态</span><span style=" float:right; text-align:right;color:#333;">正常</span></li>
+                    </else>
+                    <!--   <li><span style="float:left;">获赠时间</span><span style=" float:right; text-align:right;color:#333;">{$val.placeddate}</span></li>
+                     <li><span style="float:left;">到期时间</span><span style=" float:right; text-align:right;color:#333;"> {$val.enddate}</span></li> -->
+                </if>
+
+                </ul>
+            </foreach>
+        </if>
+    </div>
+    <div class="center_2" style=" display:none; margin-top:58%; background:#fff;margin-bottom: 5rem;">
+         <if condition="empty($consume) eq true">
+             <div>暂无通宝消费记录</div>
+             <else />
+             <foreach  name="consume" item="cv">
+                 <ul style=" padding:5% 0;">
+                     <li><span style="float:left;">订单号</span><span style=" float:right; text-align:right;color:#333;">{$cv.tradeid}</span></li>
+                     <li><span style="float:left;">受理商户</span><span style=" float:right; text-align:right;color:#333;">{$cv.cname}</span></li>
+                     <li><span style="float:left;">发行方</span><span style=" float:right; text-align:right;color:#333;">{$cv.pname}</span></li>
+                     <li><span style="float:left;">交易时间</span><span style=" float:right; text-align:right;color:#333;">{$cv.placeddate} {$cv.placedtime}</span></li>
+                     <li><span style="float:left;">扣款金额</span><span style=" float:right; text-align:right;color:#333;">{$cv.amount}</span></li>
+                     <li><span style="float:left;">备注</span><span style=" float:right; text-align:right;color:#333;">{$cv.description}</span></li>
+                 </ul>
+             </foreach>
+         </if>
+    </div>
+
+ 
+</div>
+ </if>
+
+
+</body>
+</html>

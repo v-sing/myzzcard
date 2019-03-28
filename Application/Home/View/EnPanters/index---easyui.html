@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商户管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body  style="padding:6px;">
+    <div>
+        <table id="customsList" class="easyui-datagrid" title="商户管理"  width="100%" height="760"
+               data-options="
+                                url:'index',
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,40,60],
+                                singleSelect: false,
+                                method: 'post',
+                                striped:true,
+                                toolbar:'#tb',
+                                onDblClickRow:showDetails,
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+
+
+            <thead>
+                <tr>
+                    <th data-options="field:'panterid',width:80,align:'center'">商户编号</th>
+                    <th data-options="field:'namechinese',width:200,align:'center'">商户名称</th>
+                    <th data-options="field:'nameenglish',width:120,align:'center'">商户简称</th>
+                    <th data-options="field:'hysx',width:80,align:'center'">属性</th>
+                    <th data-options="field:'revorkflg',width:80,align:'center'">禁用</th>
+                    <th data-options="field:'conpername',width:60,align:'center'">联系人</th>
+                    <th data-options="field:'conperteleno',width:60,align:'center'">联系人电话</th>
+                    <th data-options="field:'conperbpno',width:140,align:'center'">法人证件号</th>
+                    <th data-options="field:'conpermobno',width:120,align:'center'">法人电话</th>
+                    <th data-options="field:'placeddate',width:60,align:'center'">添加时间</th>
+                    <th data-options="field:'staffpaper',width:60,align:'center'">操作</th>
+            </thead>
+          </table>
+    </div>
+
+    <div style="visibility:hidden" id="__box">
+        <div id="dialog_details" class="easyui-window" closed="true" title="详情" style="width:800px;padding:2px; height:600px" data-options="shadow: true,modal: true,onClose:clearWindow,collapsible:false">
+            <div id="customsTabs" class="easyui-tabs" style="padding:4px 0px;" border="0" data-options="selected:1,onSelect:changeTab" plain="true">
+                <div title=" 编辑商户信息"></div>
+            </div>
+        </div>
+        <div id="dialog_details1" class="easyui-window" closed="true" title="新增会员" style="width:800px;padding:2px; height:600px" data-options="shadow: true,modal: true,onClose:clearWindow,collapsible:false">
+            <div id="customsTabs1" class="easyui-tabs" style="padding:4px 0px;" border="0" data-options="selected:1,onSelect:changeTab" plain="true">
+                <div title="新增商户信息"></div>
+            </div>
+        </div>
+        <div id="tb" style="padding:4px;height:auto;display: none;">
+            <div style="padding:4px">
+              <input class="easyui-datebox" id="startdate" name="startdate" style="width:140px;" data-options="prompt:'开始日期'">&nbsp;&nbsp;
+              <input class="easyui-datebox" id="enddate" name="enddate" style="width:140px;" data-options="prompt:'结束日期'">&nbsp;&nbsp;
+              <input class="easyui-textbox" id="customid" name="customid" style="width:140px;" data-options="prompt:'会员编号'">&nbsp;&nbsp;
+              <input class="easyui-textbox" id="cusname" name="cusname" style="width:140px;" data-options="prompt:'会员名称'">&nbsp;&nbsp;
+              <input class="easyui-textbox" id="linktel" name="linktel" style="width:140px;" data-options="prompt:'联系方式'">&nbsp;&nbsp;
+              <input class="easyui-textbox" id="personid" name="personid" style="width:140px;" data-options="prompt:'身份证号'">&nbsp;&nbsp;
+              <input class="easyui-textbox" id="pname" name="pname" style="width:140px;" data-options="prompt:'所属机构'">
+            </div>
+            <div style="padding:4px">
+              &nbsp;&nbsp;排序:<select class="easyui-combobox" name="revorkflg" id="orderby" panelHeight=160 panelWidth=140 style="width: 140px">
+                  <option value="" >商户状态</option>
+                  <option value="sex" >正常商户</option>
+                  <option value="birthday" >禁用商户</option>
+              </select>
+              <span style="margin-left:50px;"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="doSearch()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>&nbsp;&nbsp;<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onClick="addMember()">新增会员</a>&nbsp;&nbsp;<a href="{:U("Customs/customs_excel")}" class="easyui-linkbutton" data-options="iconCls:'icon-redo'">导出</a></span>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+      var cur_open = Array();
+      $(function(){
+          var startdate="<?php echo date('Y-m-01',time());?>";
+          var enddate="<?php echo date('Y-m-d',time());?>";
+          $("#startdate").datebox("setValue",startdate);
+          $("#enddate").datebox("setValue",enddate);
+          $('#pname').combobox({
+            url:'../Common/getAllPnames',
+            valueField:'panterid',
+            textField:'namechinese'
+        });
+      })
+      //查询
+      function doSearch(){
+          var o={};
+          o.startdate=$("#startdate").datebox("getValue");
+          o.enddate=$("#enddate").datebox("getValue");
+          o.customid=$("#customid").textbox('getValue');
+          o.cusname=$("#cusname").textbox('getValue');
+          o.linktel=$("#linktel").textbox('getValue');
+          o.pname=$("#pname").combobox('getValue');
+          o.sex=$("#sex").combobox('getValue');
+          o.countrycode=$("#countrycode").combobox('getValue');
+          o.validate=$("#validate").combobox('getValue');
+          o.risklevel=$("#risklevel").combobox('getValue');
+          o.orderby=$("#orderby").combobox('getValue');
+          $('#customsList').datagrid('load',o);
+          return false;
+      }
+      //清空查询条件
+      function resetting(){
+          var o={};
+          o.startdate=$("#startdate").datebox("setValue",'');
+          o.enddate=$("#enddate").datebox("setValue",'');
+          o.customid=$("#customid").textbox('setValue','');
+          o.cusname=$("#cusname").textbox('setValue','');
+          o.linktel=$("#linktel").textbox('setValue','');
+          o.pname=$("#pname").combobox('setValue','');
+          o.sex=$("#sex").combobox('setValue','');
+          o.countrycode=$("#countrycode").combobox('setValue','');
+          o.validate=$("#validate").combobox('setValue','');
+          o.risklevel=$("#risklevel").combobox('setValue','');
+          o.orderby=$("#orderby").combobox('setValue','');
+          $('#customsList').datagrid('load',o);
+          return false;
+      }
+
+      function dg_open(id,auto_resize,smart_pos){
+        auto_resize = auto_resize == 1 ? 1 : 0;
+        smart_pos = smart_pos == 1 ? 1 : 0;
+
+        var patrn,o,etype;
+        o = $('#'+id);
+
+        if(!o.window('options').closed) return;
+        etype = o.attr('class');
+        patrn = etype.match(/^easyui-(\w+)/);
+
+        if(patrn!=null){
+            eval('o.'+patrn[1]+'("open")');
+            if(auto_resize){
+                try{
+                    var h = o.children(':first').layout('panel','center')[0].scrollHeight+o.children(':first').layout('panel','south').outerHeight(true)+53;
+                    o.window('resize',{height:h});
+                }catch(e){
+
+                }
+            }
+            if(smart_pos){
+                if(cur_open.length>0){
+                    var offset = cur_open[cur_open.length-1].offset();
+                    o.window('move',{ top:offset.top+20, left: offset.left+20});
+                }else{
+                    o.window('center');
+                }
+            }
+        }
+        cur_open.push(o);
+    }
+    //新增会员
+    function addMember(){
+      dg_open('dialog_details1',1,1);
+      $('#customsTabs1').tabs('select',0);
+      changeTab1();
+    }
+    //双击弹出详情
+    function showDetails(index,row){
+        $("#customsList").datagrid("unselectAll");
+        $('#customsList').datagrid('selectRow',index);
+        dg_open('dialog_details',1,1);
+        $('#customsTabs').tabs('select',0);
+        changeTab();
+    }
+    //新增选项卡
+    function changeTab1(){
+        var index = 0;
+        var tab = $('#customsTabs1').tabs('getSelected');
+        index = $('#customsTabs1').tabs('getTabIndex',tab);
+        switch(index){
+            case 0:
+                tab.panel('refresh','addpanters');
+                break;
+        }
+    }
+    //编辑选项卡
+    function changeTab(){
+        var index = 0;
+        var row = $('#customsList').datagrid('getSelected');
+        var tab = $('#customsTabs').tabs('getSelected');
+        index = $('#customsTabs').tabs('getTabIndex',tab);
+        if(!row) return false;
+        var opt = tab.panel('options');
+        if(!opt.href){
+            switch(index){
+                case 0:
+                    tab.panel('refresh','editpanters?panterid='+row.panterid);
+                    break;
+            }
+        }
+    }
+    function clearWindow(){
+        var tabs = $('#customsTabs').tabs('tabs');
+        for(i in tabs){
+            tabs[i].panel('clear');
+            tabs[i].panel({'href':''});
+        }
+    }
+    </script>
+</body>
+</html>

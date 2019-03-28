@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>POS配置参数</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dv">
+  <hr width="90%">
+   <span style="margin-left:40px;margin-top:30px;" >配置参数</span> &nbsp;&nbsp;
+    <button type="button" class="btn btn-mini btn-info" style="font-size:14px" onclick="window.location.href='{:U('configpos',array('aid'=>$aid))}'">  &nbsp;银 行 卡  &nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+   <button type="button" class="btn btn-mini btn-info" style="font-size:14px" onclick="window.location.href='{:U('cardpos',array('aid'=>$aid))}'">  &nbsp;至 尊 卡 &nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+   <button type="button" class="btn btn-mini btn-success" style="font-size:14px" onclick="window.location.href='{:U('alipos',array('aid'=>$aid))}'">支付宝/微信</button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+<form action="{:U("Panters/editali1")}" method="post" name="form1" enctype="multipart/form-data">
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+      <td rowspan="12" style="width:100px;text-align:center;vertical-align:middle;">支付宝/微信配置</td>
+         <td class="tableleft">序号:</td>
+         <td><input type="text" name="aid" id="aid" value="{$aid}" readonly=""/></td>
+    </tr>
+    <tr><input type="hidden" name="payid" value="03"></tr>
+    <tr>
+        <td width="10%" class="tableleft">商户号:</td>
+        <td><input type="text" name="panterid" id="panterid" value="{$res.panterid}" maxlength="20" /><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">商户名:</td>
+        <td><input type="text" name="namechinese" id="namechinese" value="{$res.namechinese}" maxlength="20" /><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">机构号:</td>
+        <td><input type="text" name="organizationcode" id="organizationcode" value="{$res.organizationcode}" maxlength="50" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">签名:</td>
+        <td><input type="text" name="sign" id="sign" value="{$res.sign}" maxlength="50" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">终端号:</td>
+        <td><input type="text" name="pos_id" id="pos_id" value="{$res.pos_id}" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">通道:</td>
+        <td>
+          <select name="channel" id="channel">
+          <option value="">请选择</option>
+              <foreach name="channel" item="vo" key="key">
+                  <option value="{$vo.channel}"  <?php if($vo['channel']==$res['channel']) echo 'selected';?> >{$vo.channel}</option>
+              </foreach>
+          </select>
+          <span class="emphasis"> *</span>
+      </td>
+    <tr>
+    <tr>
+        <td class="tableleft">IP地址:</td>
+        <td><input type="text" name="ip_address" id="ip_address" value="{$res.ip_address}" maxlength="100" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">端口号:</td>
+        <td><input type="text" name="num_id" id="num_id" value="{$res.num_id}" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">开启禁用:</td>
+        <td>
+           <select name='forbid'>
+             <option value="0" <?php if($res['forbid']=='0') echo selected ?> >关闭</option>
+             <option value="1" <?php if($res['forbid']=='1') echo selected ?> >开启</option>
+           </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <button class="btn btn-small btn-primary" type="submit" id="saveform">保存</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-small btn-success" name="backid" id="backid" onclick="{:U("Panters/poscontrol")}">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+		$('#backid').click(function(){
+				window.location.href="{:U("Panters/poscontrol")}";
+		 });
+     $('#add_time').datepicker({dateFormat: 'yymmdd',yearRange:"2016:2050"});
+     $("#ui-datepicker-div").hide();
+     $('#saveform').click(function(){
+       var aid=$.trim($('#aid').val());
+      //  var type=$.trim($("input[type='radio']").val());
+       var panterid=$.trim($("#panterid").val());
+       var namechinese=$.trim($("#namechinese").val());
+       var organizationcode=$.trim($('#organizationcode').val());
+       var sign=$.trim($('#sign').val());
+       var pos_id=$.trim($('#pos_id').val());
+       var channel=$.trim($('#channel').val());
+       var ip_address=$.trim($('#ip_address').val());
+       var num_id=$.trim($('#num_id').val());
+       if(aid=='')
+       {
+         alert("pos序号不能为空!");
+         return false;
+       }
+       if(panterid=='')
+       {
+         alert("商户序号不能为空!");
+         return false;
+       }
+       if(namechinese=='')
+       {
+         alert("商户名不能为空!");
+         return false;
+       }
+       if(organizationcode=='')
+       {
+         alert('机构号不能为空!');
+         return false;
+       }
+       if(sign=='')
+       {
+         alert("签名不能为空!");
+         return false;
+       }
+       if(pos_id=='')
+       {
+         alert('终端号不能为空!');
+         return false;
+       }
+       if(channel=='')
+       {
+         alert('通道不能为空!');
+         return false;
+       }
+       if(ip_address=='')
+       {
+         alert('IP地址不能为空!');
+         return false;
+       }if(num_id=='')
+       {
+         alert('端口号不能为空!');
+         return false;
+       }
+       document.form1.submit();
+
+     });
+    //  $('#pos_id').blur(function(){
+    //    var pos_id=$.trim($(this).val());
+    //    var aid=$.trim($('#aid').val());
+    //    $.ajax({
+    //      url:"__URL__/poseditid",
+    //      type:'post',
+    //      data:{pos_id:pos_id,aid:aid},
+    //      dataType:'json',
+    //      success:function(data){
+    //        if(data.status==1)
+    //        {
+    //          alert(data.name);
+    //        }
+    //      }
+     //
+    //    })
+    //  });
+
+    })
+</script>

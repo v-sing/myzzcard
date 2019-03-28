@@ -1,0 +1,452 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜品主页面</title>
+    <link href="__PUBLIC__/kfcarnteen/css.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/kfcarnteen/layer.css" rel="stylesheet" type="text/css">
+    <script src="http://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+    <script src="__PUBLIC__/kfcarnteen/layer.js"></script>
+    <script src="__PUBLIC__/kfcarnteen/json2.js"></script>
+    <script type="text/javascript">
+        var MWRFATL = new ActiveXObject("MWREADERRF.mwReaderRfCtrl.1"); //启用控件
+        var int;
+        $(function(){
+            var count = {$count};
+            var i=0;
+            for(i;i<count;i++){
+                $("#a"+i).Spinner({value:0, min:0, len:3, max:100});
+            }
+
+            $('.bg').click(function(){
+                var t=$(this).next('.center').children('.Spinner').children('.Amount').val();
+                t++;
+                $(this).next('.center').children('.Spinner').children('.Amount').val(t);
+            });
+
+            //已点订单页面
+            $('.bot_03').click(function(){
+                $("#cardno").html('');
+                $("#mask").show();
+                $(".tk").show();
+                getdata(2);
+                o = [];
+                var j=0;
+                $('.main').find('li').each(function(i){
+                    var amount = $('.main').find("li").eq(i).find('.Amount').val();
+                    if(amount>0){
+                        var goodsname = $('.main').find("li").eq(i).find('span').eq(0).html();
+                        var price  = $('.main').find("li").eq(i).find('span').eq(1).html().substr(1);
+                        var goodsid= $('.main').find("li").eq(i).find('input').val();
+                        var sum = (Number(amount)*Number(price)).toFixed(2);
+                        o[j] = [goodsid,goodsname,price,amount,sum];
+                        j++;
+                    }
+                })
+                confirmOrder(o);
+            });
+
+            //关闭已点订单页面
+            $(".tk .off").click(function(){
+                $("#mask").hide();
+                $(".tk").hide();
+                $(".meun_a").empty();
+                $("#heji").html('');
+                $("#cardno").html('');
+                $("#balance").html('');
+                $("#cardnoinfo").hide();
+                $("#promptinfo").hide();
+                readerClose();
+                clearInterval(int);
+                var type=1;
+                $.ajax({
+                    type: 'post',
+                    url:'{:U("KfCarnteen/clearSession")}',
+                    data:{type:type},
+                    success: function(result) {
+
+                    }
+                });
+            });
+
+            //分类结账/散装菜品结账
+            $('.bot_01').click(function(){
+                window.location.href = "{:U('KfCarnteen/elseFunction')}";
+            });
+
+            //分类结账/散装菜品结账
+            $('.bot_02').click(function(){
+                window.location.href = "{:U('KfCarnteen/noprice')}";
+            });
+
+            //确认消费
+            $('.bon_02').click(function(){
+                var cardno = $('#cardno').html();
+                if(cardno==''){
+                    alert('请刷卡');
+                    return false;
+                }
+                o=o.toString();
+                $.ajax({
+                    type: 'post',
+                    url:'{:U("KfCarnteen/VerifBalance")}',
+                    data:{order:o,cardno:cardno,total:total},
+                    success: function(result) {
+                        if (result.status==1) {
+                            formSubmit(o,cardno,total);
+                        } else {
+                            $("#promptinfo").show();
+                            $("#prompt").html(result.msg);
+                        }
+                    }
+                });
+            });
+
+            //余额查询
+            $('.text_l').click(function(){
+                $("#mask").show();
+                $(".tk_yue").show();
+                getdata(1);
+            });
+
+            //关闭余额查询页面
+            $(".tk_yue .off").click(function(){
+                $("#mask").hide();
+                $(".tk_yue").hide();
+                $("#btn").hide();
+                readerClose();
+                clearInterval(int);
+            });
+
+            //关闭余额查询页面
+            $(".ok").click(function(){
+                $("#mask").hide();
+                $(".tk_yue").hide();
+                $("#btn").hide();
+                readerClose();
+                clearInterval(int);
+            });
+
+            //滑动
+            $(".xia").click(function () {
+                var Scroll = $(".main").scrollTop();
+                $(".main").scrollTop(Scroll + 200);
+                //console.log($(".main").scrollHeight);
+            });
+
+            $(".shang").click(function () {
+                var Scroll = $(".main").scrollTop();
+                $(".main").scrollTop(Scroll - 200);
+                //console.log($(".main").scrollHeight);
+            });
+
+            //调用刷卡设备
+            function getdata(type){
+                //余额查询
+                $("#search").hide();
+                $("#searchprompt").html("请刷卡或者挥卡");
+                $("#searchCardno").html('');
+                $("#searchBalance").html('');
+                //已点刷卡正常刷卡
+                $("#promptinfo").hide();
+                $("#cardno").html('');
+                $("#balance").html('');
+                //已点刷卡温馨提示
+                $("#cardnoinfo").hide();
+                $("#prompt").html('');
+                readerOpen();
+                int=self.setInterval(function(){
+                    var cardno=mifareOneCard();
+                    if(typeof(cardno)!="undefined"&&cardno!=""){
+                        $.ajax({
+                            type: 'post',
+                            url:'{:U("KfCarnteen/decryptCardno")}',
+                            data:{cardno:cardno},
+                            success: function(result) {
+                                if(result){
+                                    var data=JSON.parse(result);
+                                    if(data.status!='01'){
+                                        if(type==1){
+                                            //余额查询
+                                            $("#btn").show();
+                                            $("#searchprompt").html(data.msg);
+                                        }else{
+                                            //已点刷卡温馨提示
+                                            $("#promptinfo").show();
+                                            $("#prompt").html(data.msg);
+                                        }
+                                    }else{
+                                        if(type==1){
+                                            //余额查询
+                                            $("#search").show();
+                                            $("#btn").show();
+                                            $("#searchprompt").html("刷卡成功");
+                                            $("#searchCardno").html(data.msg.cardno);
+                                            $("#searchBalance").html(data.msg.amount);
+                                        }else{
+                                            //已点刷卡正常刷卡
+                                            $("#cardnoinfo").show();
+                                            $("#cardno").html(data.msg.cardno);
+                                            $("#balance").html(data.msg.amount);
+                                        }
+                                    }
+                                    readerClose();
+                                }
+                            }
+                        });
+                    }
+                },500);
+            }
+        });
+
+        function onClickDiv(info){
+            var a=$(info).find('.center').find('.Amount').val();
+            var c=parseInt(a)+1;
+            $(info).find('.center').find('.Amount').val(c);
+//            var num=0;
+//            $('.main').find('li').each(function(i){
+//                $('.main').find('li').find('div').on('click', function(e) {
+//                    $(this).next('div').find('.Amount').val(num+1);
+//                    num++;
+//                });
+//            });
+        }
+
+        function confirmOrder(info){
+            total = 0;
+            var html="";
+            for(var i=0;i<info.length;i++){
+                html=html+"<ul>" +
+                        "<li class='with_01'>"+info[i][3]+"</li> "+
+                        "<li class='with_02'>"+info[i][1]+"</li> "+
+                        "<li class='with_03'>"+info[i][2]+"</li> "+
+                        "<li class='with_04'>¥"+info[i][4]+"</li>"+
+                        "</ul>";
+                total = (Number(total)+Number(info[i][4])).toFixed(2);
+            }
+            $(".meun_a").html(html);
+            $("#heji").html(total);
+
+        }
+
+        //M1卡操作
+        function mifareOneCard() {
+            try {
+                //readerOpen();
+                var result = MWRFATL.openCard(1, 10);  //打开卡片,以10进制字符串显示卡号
+                if (MWRFATL.LastRet != 0) {
+                    //readerClose();
+                    //alert("打开卡片失败！")
+                    return;
+                }
+                else {
+                    //msg.value = msg.value + "打开卡片成功,卡片序列号: " + result + "\n";
+                }
+
+                result = MWRFATL.cardVerifyPassword(0, 2); //加载密码认证,此函数传入的是扇区号
+                if (MWRFATL.LastRet != 0) {
+                    //readerClose();
+                    //alert('验证密码失败！')
+                    return;
+                }
+                else {
+                    //msg.value = msg.value + "验证密码成功"+ result + "\n";
+                }
+
+                result = MWRFATL.cardReadHex(10);
+                if (MWRFATL.LastRet != 0) {
+                    //readerClose();
+                    //alert('读数据失败！')
+                    return;
+                }
+                else {
+                    //msg.value = msg.value + "读出的数据" + result + "\n";
+                    //readerClose();
+                    return result;
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //打开读写器
+        function readerOpen() {
+            try {
+                var version = MWRFATL.openReader(1, 9600);
+                if (MWRFATL.LastRet != 0) {
+                    //msg.value = "打开读写器失败" + "\n";
+                    //alert("打开读写器失败！");
+                    return;
+                }
+                else {
+                    //msg.value = version + "\n";
+                }
+
+                MWRFATL.readerLoadKey(0, 2, "f0f0f0f0f0f0"); //加载1扇区密码,对M1卡操作时使用加载密码认证
+                if (MWRFATL.LastRet != 0) {
+                    //msg.value = msg.value + "2扇区加载密码失败" + "\n";
+                    //alert("2扇区加载密码失败！");
+                    return;
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //读写器鸣响
+        function readerBeep() {
+            try {
+                MWRFATL.readerBeep(1);
+                if (MWRFATL.LastRet != 0) {
+                    //msg.value = msg.value + "读写器鸣响失败" + "\n";
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //关闭读写器
+        function readerClose() {
+            try {
+                var result = MWRFATL.closeReader();
+                if (MWRFATL.LastRet != 0) {
+                    //msg.value = msg.value + "关闭读写器失败" + "\n";
+                    //alert("关闭读写器失败！");
+                    return;
+                }
+                else {
+                    //msg.value = msg.value + "读写器已关闭" + "\n";
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        function formSubmit(elementValue,ca,totalsum) {
+            elementValue=elementValue.toString();
+            var turnForm = document.createElement("form");
+            //一定要加入到body中！！
+            document.body.appendChild(turnForm);
+            turnForm.method = 'post';
+            turnForm.action = "{:U('KfCarnteen/order')}";
+            //创建隐藏表单
+            var newElement = document.createElement("input");
+            newElement.setAttribute("name","order");
+            newElement.setAttribute("type","hidden");
+            newElement.setAttribute("value",elementValue);
+            var cardno     = document.createElement("input");
+            cardno.setAttribute("name","cardno");
+            cardno.setAttribute("type","hidden");
+            cardno.setAttribute("value",ca);
+            var sumorder     = document.createElement("input");
+            sumorder.setAttribute("name","total");
+            sumorder.setAttribute("type","hidden");
+            sumorder.setAttribute("value",totalsum);
+            turnForm.appendChild(newElement);
+            turnForm.appendChild(cardno);
+            turnForm.appendChild(sumorder);
+            turnForm.submit();
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;">
+
+    </div>
+    <div class="tk" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:10%;display:none; ">
+        <span class="tk_off"><img src="__PUBLIC__/kfcarnteen/img/tk_off.png" class="off"/></span>
+        <div class="meun" style="padding-bottom: 20px;">
+            <ul style=" border-bottom:1px dashed #ddd;">
+                <li class="with_01">数量</li>
+                <li class="with_02">名称</li>
+                <li class="with_03">单价</li>
+                <li class="with_04">总计</li>
+            </ul>
+            <div class="meun_a" style="overflow-y: scroll; max-height:220px;">
+            </div>
+
+            <ul  style=" margin-top:-3%;">
+                <li class="with_01">应付总额：</li>
+                <li style=" text-align:right; float:right; color:#f88b0f;" id='heji'>¥0.00</li>
+            </ul>
+
+            <div id="cardnoinfo" style="display:none;">
+                <ul style="margin-top:-3%;">
+                    <li class="with_01">卡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</li>
+                    <li style=" text-align:right; float:right;" id="cardno"></li>
+                </ul>
+
+                <ul style="margin-top:-3%;border-bottom:1px dashed #ddd;">
+                    <li class="with_01">余&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额：</li>
+                    <li style=" text-align:right; float:right;" id="balance"></li>
+                </ul>
+            </div>
+
+            <div id="promptinfo" style="display:none;">
+                <ul style="margin-top:-3%;">
+                    <li class="with_01">温馨提示：</li>
+                    <li style=" text-align:right; float:right;" id="prompt"></li>
+                </ul>
+            </div>
+            <div class="btn">
+                <button class="bon_02" style="width: 40%; float: right;">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!--余额弹窗开始-->
+    <div class="tk_yue" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:14%; background:#fff;  display:none; ">
+        <span class="tk_off"><img src="__PUBLIC__/kfcarnteen/img/tk_off.png" class="off"/></span>
+        <div class="meun">
+            <ul style=" width:60%; margin-left:24%; padding:6% 0 4% 0;">
+                <li><img src="__PUBLIC__/kfcarnteen/img/card_icon.png" style="vertical-align:middle; display:inline-block; width:48px;"/></li>
+                <li style=" font-size:30px; margin-left:4%; vertical-align:middle; display:inline-block; padding-top: 8px;" id="searchprompt">请刷卡或者挥卡</li>
+            </ul>
+            <div id="search" style="display:none;">
+                <ul style=" width:50%; margin-left:25%;">
+                    <li style="float:left;">卡号</li>
+                    <li style=" float:right;" id="searchCardno"></li>
+                </ul>
+                <ul style=" width:50%; margin-left:25%;">
+                    <li style="float:left;">余额</li>
+                    <li style=" float:right; color:#f88b0f; text-align:right;" id="searchBalance"></li>
+                </ul>
+            </div>
+        </div>
+        <div id="btn" style="display: none">
+            <button class="ok" >好的</button>
+        </div>
+    </div>
+    <!--余额弹窗结束-->
+    <div class="top " style=" margin-bottom: 3%;">
+        <ul>
+            <li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/balance.png"/><span>余额查询</span></li>
+            <li class="text_center">{$pantername}</li>
+        </ul>
+    </div>
+    <div class="main" style="margin-bottom: 100px; overflow-y: hidden; max-height: 500px;">
+        <!--滑动开始-->
+        <div class="gundong" style="position:absolute; right:6px; top:300px;">
+            <a href="javascript:" style="display:block;"><img src="__PUBLIC__/kfcarnteen/img/shang.png" class="shang" style="border: none;"/></a>
+            <a href="javascript:" style="display:block;"><img src="__PUBLIC__/kfcarnteen/img/xia.png" class="xia" style="border: none; margin-top: 20px;"/></a>
+        </div>
+        <!--滑动结束-->
+        {$str}
+    </div>
+
+    <div class="bottom">
+        <ul>
+            <li class="bot_01"><img src="__PUBLIC__/kfcarnteen/img/else.png"/><span>其他</span></li>
+            <li class="bot_02"><img src="__PUBLIC__/kfcarnteen/img/classify.png"/><span>分类结账</span></li>
+            <li class="bot_03"><img src="__PUBLIC__/kfcarnteen/img/menu.png"/><span>已点</span></li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<div class="menu_dropdown bk_2 hide" id="cards">
+		<dl id="menu-article" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+			<dt><i class="Hui-iconfont">&#xe616;</i> 卡销售管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/index")}" href="javascript:void(0)"><?php if($_SESSION["panterid"]=="00000139"){?>发卡登记<?php }else{?>售卡登记<?php }?></a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['CARDCHECK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/cardcheck")}" href="javascript:void(0)"><?php if($_SESSION["panterid"]=="00000139"){?>发卡审核<?php }else{?>售卡审核<?php }?></a></li>
+					<!--li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['CARDEXECUTE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/cardexecute")}" href="javascript:void(0)">售卡充值执行</a></li-->
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['CARDPAY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/cardpay")}" href="javascript:void(0)">卡充值登记</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['PAYCHECK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/paycheck")}" href="javascript:void(0)">卡充值审核</a></li>
+					<!--li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['PAYEXECUTE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/payexecute")}" href="javascript:void(0)">卡充值执行</a></li-->
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['POINTPAY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/pointpay")}" href="javascript:void(0)">积分充值</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['CARDBATCHBUY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/cardbatchbuy")}" href="javascript:void(0)">批量购卡</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['BATCHCHECK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/batchcheck")}" href="javascript:void(0)">批量购卡审核</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['BATCHRECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/batchRecharge")}" href="javascript:void(0)">批量充值</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['BATCHRECHARGECHECK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/batchRechargeCheck")}" href="javascript:void(0)">批量充值审核</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['BATCHACTIVATE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/batchactivate")}" href="javascript:void(0)">卡批量激活</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['TBCARDACTIVATE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/tbcardactivate")}" href="javascript:void(0)">通宝卡激活</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['GIFTCARDS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/giftCards")}" href="javascript:void(0)">至尊礼品卡绑卡充值</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['CARDINEXCEL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/cardinexcel")}" href="javascript:void(0)">至尊礼品卡批量导入</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CARD']['CARDUPPWDEXCEL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Card/carduppwdexcel")}" href="javascript:void(0)">至尊卡批量更改卡密码</a></li>
+				</ul>
+			</dd>
+		</dl>
+
+    <dl id="menu-hotel" <?php if($_SESSION['userid']=='0000000000000059'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe616;</i> 酒店卡销售管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li style="display: block;"><a _href='{:U("pos/Cards/batchRecharge")}' href="javascript:void(0)">酒店卡批量开卡/充值</a></li>
+            <li style="display: block;"><a _href='{:U("pos/Cards/hotelRecharge")}' href="javascript:void(0)">酒店卡单张开卡/充值</a></li>
+        </ul>
+    </dd>
+    </dl>
+
+        <dl id="menu-fangzg" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANGZG'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+        <dt><i class="Hui-iconfont">&#xe616;</i> 房掌柜数据<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+        <dd>
+            <ul>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANGZG']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fangzg/index")}" href="javascript:void(0)">同步数据</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANGZG']['CHECK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fangzg/check")}" href="javascript:void(0)">清结算审核</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANGZG']['ACCOUNTCHECK'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fangzg/accountCheck")}" href="javascript:void(0)">财务审核</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANGZG']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fangzg/recharge")}" href="javascript:void(0)">购卡/充值</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANGZG']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fangzg/consume")}" href="javascript:void(0)">批量扣款</a></li>
+            </ul>
+        </dd>
+        </dl>
+		<dl id="menu-product" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+			<dt><i class="Hui-iconfont">&#xe620;</i> 卡售后管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['CARDINFO_QUERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/cardinfo_query")}" href="javascript:void(0)">卡信息查询</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['CARDINFO_QA'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/cardinfo_qa")}" href="javascript:void(0)">卡限额处理</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['RESETCODE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/resetcode")}" href="javascript:void(0)">卡密码重置</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['EDITCODE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/editCode")}" href="javascript:void(0)">修改卡密码</a></li>
+						<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['RECHARGECANCLE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/rechargeCancle")}" href="javascript:void(0)">充值撤销</a></li>
+          <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['PASSHTML'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/passHtml")}" href="javascript:void(0)">充值撤销审核</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['RETURNCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/returnCard")}" href="javascript:void(0)">退卡管理</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['REISSUECARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/reissueCard")}" href="javascript:void(0)">补卡管理</a></li>
+					<!-- <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['BALANCE_QUERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/balance_query")}" href="javascript:void(0)">余额查询</a></li> -->
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['LOSSCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/lossCard")}" href="javascript:void(0)">挂失/解挂</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['BATCHCONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/batchConsume")}" href="javascript:void(0)">批量扣款</a></li>
+					<!--li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['BATCHDELETE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/batchDelete")}" href="javascript:void(0)">批量删除</a></li-->
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['DESTROYCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/destroyCard")}" href="javascript:void(0)">销卡管理</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['INITIONCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/initioncard")}" href="javascript:void(0)">卡回收</a></li>
+                    <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['CARDEXDATE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/cardExdate")}" href="javascript:void(0)">卡有效期管理</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['REFUNDVERIFY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/refundVerify")}" href="javascript:void(0)">退货审核</a></li>
+						<!-- <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['AFTERSALES']['INITIONCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("AfterSales/initioncard")}" href="javascript:void(0)">酒店初始化卡</a></li> -->
+				</ul>
+			</dd>
+		</dl>
+</div>

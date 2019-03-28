@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>各业态一家APP兑换详情</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#cb").click(function(){
+            $(":checkbox[name='accountid[]']").attr("checked",this.checked);
+        });
+    })
+</script>
+<div  class="dv">
+<!-- <form class="form-inline definewidth m20" action="{:U("CoinAccount/countPeploe")}" method="post">
+日期:<input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/>---
+<input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:5px;"/>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    <input type="reset" value="重置"  class="btn btn-mini btn-danger" />
+   </form> -->
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th style="text-align:center">会员姓名</th>
+       <th style="text-align:center">会员卡号</th>
+        <th style="text-align:center">兑换金额</th>
+        <th style="text-align:center">兑换时间</th>
+    </tr>
+    </thead>
+    	<volist name="list" id="info">
+	     <tr id='style'>
+         <td style="text-align:center">{$info.name}</td>
+         <td style="text-align:center">{$info.cardno}</td>
+          <td style="text-align:center">{$info.tradepoint|floatval}</td>
+          <td style="text-align:center">{$info.placeddate} {$info.placedtime}</td>
+       </tr>
+       </volist>
+</table>
+<div class="inline pull-right page">{$page}</div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>
+<script>
+
+</script>

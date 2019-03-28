@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>营销产品充值</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#ui-datepicker-div").hide();
+        $('#btn').click(function(){
+            var cname= $.trim($('#cname').val());
+            var customsid= $.trim($('#customsid').val());
+            var sex= $.trim($('#sex').val());
+            var cardnos = $.trim($('#cardnos').val());
+            if(cname==''&&customsid==''&&sex==''&&cardnos==''){
+                alert('请输入查询条件');return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("Seller/getcards")}',
+                data:{cname:cname,customsid:customsid,sex:sex,cardno:cardnos},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        var data=eval(res.data);
+                        var rese='';
+                        for(var i=0;i<data.length;i++){
+                            var xstr=data[i]['cardno'];
+                            rese+='<tr id='+xstr+' onclick=ckstr("'+xstr+'")><td style="width:160px">'+data[i]['cardno']+'</td>' +
+                            '<td style="width:160px">'+data[i]['customid']+'</td><td style="width:160px">'+data[i]['cuname']+'</td>' +
+                            '<td style="display:none;">'+data[i]['status']+'</td><td style="display:none;">'+data[i]['exdate']+'</td>' +
+                            '<td style="display:none;">'+data[i]['customlevel']+'</td><td style="display:none;">'+data[i]['linktel']+'' +
+                            '</td><td style="display:none;">'+data[i]['amount']+'</td></tr>';
+                        }
+                        $('#list').html(rese).show();
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#btns').click(function(){
+            var xcardno= $.trim($('#xcardno').val());
+            $.ajax({
+                type:'POST',
+                url:'{:U("NewProduct/getquank")}',
+                data:{cardno:xcardno},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        $('#cardno').val(res.data.cardno);
+                        $('#customid').val(res.data.customid);
+                        $('#cnames').val(res.data.namechinese);
+                        $('#linktel').val(res.data.linktel);
+                        $('#personidtype').val(res.data.personidtype);
+                        $('#personid').val(res.data.personid);
+                        $('#status').val(res.data.status);
+                    }
+                }
+            })
+        });
+        $('#chong').click(function(){
+            var quanid= $.trim($('#quanid').val());
+            var paynumber= $.trim($('#paynumber').val());
+            if(quanid==''){
+                alert('券类必选');
+                return false;
+            }
+            if(paynumber==''){
+                alert('充值数量必选');
+                return false;
+            }
+        })
+    })
+    function ckstr(strs){
+        var table = document.getElementById(strs);
+        document.getElementById('xcname').value=table.cells[2].innerHTML;
+        document.getElementById('xcustomsid').value=table.cells[1].innerHTML;
+        document.getElementById('xlinktel').value=table.cells[6].innerHTML;
+        document.getElementById('xcardno').value=table.cells[0].innerHTML;
+        document.getElementById('xstatus').value=table.cells[3].innerHTML;
+        document.getElementById('xexdate').value=table.cells[4].innerHTML;
+        document.getElementById('xcustomlevel').value=table.cells[5].innerHTML;
+        document.getElementById('xamount').value=table.cells[7].innerHTML;
+        //table.style.backgroundColor='blue';
+    }
+    </script>
+<div class="dv">
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">卡片选择</h4>
+        </div>
+        <form class="form-inline definewidth m20" action="{:U('Seller/getcards')}" id="form1" method="post">
+        <input type="text" name="cardnos" id='cardnos' style="width:120px; margin-right:2px;" placeholder="卡号"/>
+        <input type="text" name="cname" id='cname' style="width:90px; margin-right:5px;" placeholder="会员名称"/>
+        <input type="text" name="customsid" id='customsid' style="width:110px; margin-right:5px;" placeholder="会员编号"/>
+            性别:
+            <select name="flag" style="width:80px; margin-right:7px;" id="sex">
+                    <option value="" selected>请选择</option><option value="男">男</option><option value="女">女</option>
+            </select>
+            <input type="button" value="查询" class="btn btn-primary" id="btn"/>
+        </form>
+            <table class="table table-bordered table-hover definewidth m10">
+                <thead>
+                    <tr>
+                        <th style="width:170px">卡号</th>
+                        <th style="width:160px">会员编号</th>
+                        <th style="width:160px">姓名</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td colspan="5">
+                        <div style="overflow-y:auto; width:100%;height:300px"><table id="list"></table></div>
+                    </td>
+                </tr>
+            </table>
+            <form class="form-inline definewidth m20" action="{:U("Seller/productpay")}" id="form2" method="post">
+            选中值:<input type="text" name="xcardno" id='xcardno' style="width:130px; margin-right:5px;" placeholder="卡号"/>
+            <input type="text" name="xstatus" id="xstatus" placeholder="状态" style="width:30px;margin-right:5px;" />
+            <input type="text" name="xcustomsid" id='xcustomsid' value='' style="width:110px; margin-right:5px;" placeholder="会员编号"/>
+            <input type="text" name="xcname" id='xcname' value='' style="width:90px; margin-right:5px;" placeholder="会员名称"/>
+            <input type="text" name="xexdate" id='xexdate' value='' style="width:110px; margin-right:7px;" placeholder="有效日期"/>
+            <input type="hidden" name="xcustomlevel" id="xcustomlevel">
+            <input type="hidden" value="" name="xlinktel" id="xlinktel">
+            <input type="hidden" value="" name="xamount" id="xamount">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" id="btns" data-dismiss="modal">确定</button>
+            </div>
+            </form>
+    </div>
+</div>
+<form name="form3" method="post" action="{:U("NewProduct/productpay")}" class="form-inline definewidth m10" style="border: 1px solid #D6D6D6;padding: 5px;">
+<input type="hidden" name="is_read" value="0" id="is_read"/>
+<input type="hidden" name="status" value="" id="status"/>
+卡号:<input type="text" class="abc input-default" name="cardno" readonly="true" id="cardno"/>
+<button class="btn btn-mini btn-primary" data-toggle="modal" data-target="#myModal">选择</button>
+    卡编号:<input type="text" name="customid" id='customid' value='{$customid}' class="input-small" readonly="true" style="margin-right:7px;" placeholder="卡编号"/>
+    会员名称:<input type="text" name="cnames" id='cnames' value='{$cnames}' class="input-mini" readonly="true" style="margin-right:7px;" placeholder="会员名称"/>
+    证件类型:<input type="text" name="personidtype" class="input-small" readonly="true" id="personidtype" style="margin-right:5px;"/>
+    证件号:<input type="text" name="personid" class="abc input-default" readonly="true" id="personid" style="margin-right:5px;"/>
+    联系电话:<input type="text" class="input-small" name="linktel" readonly="true" id="linktel"/>
+    <br/><br/>
+    券类选择:<select name="quanid" id="quanid" style="width:163px; margin-right:7px;">
+            <option value="">请选择</option>
+            <foreach name="quankinds" item="vo"><option value="{$vo.quanid}">{$vo.quanid}&nbsp;&nbsp;{$vo.quanname}</option></foreach></select>
+    充值数量:<input type="text" value="" name="paynumber" id="paynumber" class="input-small" style="margin-right:5px;" onkeyup="intOnly(this);"/>
+    <button type="submit"  class="btn btn-mini btn-primary" id="chong">充值</button>
+</form>
+    <h4 class="definewidth" style="margin-top:10px;">充值记录</h4>
+    <form class="form-inline definewidth m20" action="{:U("NewProduct/productpay")}" method="get">
+    充值日期：
+    <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/> ---
+    <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:7px;"/>
+    <input type="text" name="customidc"  value="{$customidc}" style="width:110px; margin-right:5px;" placeholder="会员编号"/>
+    <input type="text" name="cnamec"  value="{$cnamec}" style="width:90px; margin-right:5px;" placeholder="会员名称"/>
+    <input type="text" name="cardnoc"  value='{$cardnoc}' style="width:180px; margin-right:10px;" placeholder="卡号"/>
+    <input type="text" name="linktel"  value='{$linktel}' style="width:180px; margin-right:10px;" placeholder="手机号"/>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    <!-- <input type="button" value="重置" onclick="window.location='{:U("Seller/payquery_excel")}'" class="btn btn-mini btn-danger" /> -->
+    <a href="{:U("NewProduct/payquery_excel")}" target="_blank" class="btn btn-mini">
+    <!--i class="Hui-iconfont">&#xe640;</i>导出EXCEL-->
+    </a>
+    </form>
+    <table class="table table-bordered table-hover definewidth m10" >
+        <thead>
+        <tr>
+            <th style="width: 8px; text-align: center;"></th>
+            <th>会员编号</th><th>会员名称</th><th>手机号</th><th>卡号</th><th>充值日期</th>
+            <th>充值时间</th><th>充值券编号</th><th>充值券名称</th><th>充值数量</th><th>劵单价</th>
+            <th>劵总价</th><th>券起始日期</th><th>券终止日期</th><th>充值机构</th><th>操作员</th>
+        </tr>
+        </thead>
+        <volist name="list" id="vo">
+            <tr>
+                <td style="text-align: center;">{$key+1}</td>
+                <td>{$vo.customid}</td><td>{$vo.namechinese}</td><td>{$vo.linktel}</td><td>{$vo.cardno}</td><td><?php echo date('Y-m-d',strtotime($vo['placeddate']));?></td><td><?php echo date('H:i:s',strtotime($vo['placedtime']));?></td>
+                <td>{$vo.quanid}</td><td>{$vo.quanname}</td><td>{$vo.amount}</td><td>{$vo.quanidprice}</td><td>{$vo.totalamount}</td><td><?php echo date('Y-m-d',strtotime($vo['startdate']));?></td><td><?php echo date('Y-m-d',strtotime($vo['enddate']));?></td><td>{$vo.pantername}</td><td>{$vo.userid}</td>
+            </tr>
+        </volist>
+    </table>
+    <div class="inline pull-right page sabrosus"style="font-size:16px;">{$page}</div>
+    </div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>

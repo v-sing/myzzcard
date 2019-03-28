@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>通宝详情</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="__PUBLIC__/Css/periodvalidity.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <if condition="empty($list) eq true">
+        <div class="tb">暂无通宝发行记录</div>
+    <else />
+        <foreach  name="list" item="val">
+        <div class="tb">
+            <p><b>发行方</b><span style=" float:right;"><b>{$val.namechinese}</b></span></p>
+            <ul style=" border-bottom:1px solid #ddd; padding-bottom:2%;">
+                <li>
+                    <span style=" text-align:left;">发行金额</span>
+                    <span style=" color:#333;text-align:left;">{$val.rechargeamount}</span>
+                </li>
+                <li style="float:right; text-align:right;">
+                    <span>通宝余额</span><span style=" color:#333;text-align:right;">{$val.remindamount}</span>
+                </li>
+            </ul>
+            <ul>
+                <li style="">
+                    <span style=" text-align:left;">发行日期</span>
+                    <span style=" color:#333;text-align:left;">{$val.placeddate}</span>
+                </li>
+                <li style=" float:right;">
+                    <span style="text-align:right;">到期日期</span>
+                    <span style=" color:#333;text-align:right;">{$val.enddate}</span>
+                </li>
+            </ul>
+        </div>
+        </foreach>
+    </if>
+</body>
+</html>

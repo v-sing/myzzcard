@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>卡信息查询</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<div  class="dv">
+    <form class="form-inline definewidth m20" action="{:U("AfterSales/cardinfo_query")}" method="get">
+    <input type="text" name="cardno" id='cardno' value='{$cardno}' style="width:165px; margin-right:7px;" placeholder="卡号"/>
+    <input type="text" name="cuname" id='cuname' value='{$cuname}' style="width:70px; margin-right:7px;" placeholder="会员名称"/>
+    <input type="text" name="customid" id='customid' value='{$customid}' style="width:90px; margin-right:10px;" placeholder="会员编号"/>
+    <select name="status" style="width:83px; margin-right:7px;">
+        <option value="" selected>卡状态</option>
+        <foreach name="ctypes" item="vo">
+            <option value="{$key}"<eq name="key" value="$status"> selected</eq>>{$vo}</option>
+        </foreach>
+    </select>
+    <if condition="$is_admin eq 1"><input type="text" name="pname" id='pname' value='{$pname}' style="width:110px; margin-right:7px;" placeholder="商户名称"/></if>
+
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    <input type="button" value="重置" onclick="window.location='{:U("AfterSales/cardinfo_query")}'" class="btn btn-mini btn-danger" />
+    </form>
+    <form name='form1' id='form1' method="post">
+        <table class="table table-bordered table-hover definewidth m10" >
+            <thead>
+            <tr>
+                <th><input type="checkbox" onclick="selectall()"></th>
+                <th style="text-align:center">卡号</th><th style="text-align:center">会员编号</th><th style="text-align:center">会员名称</th>
+                <th style="text-align:center">身份证</th><th style="text-align:center">电话</th><th style="text-align:center">卡状态</th><th style="text-align:center">卡有效期</th>
+                <th style="text-align:center">卡余额</th><th style="text-align:center">制卡时间</th><th style="text-align:center">所属部门</th><th style="text-align:center">建业通宝</th>
+                <th style="text-align:center">卡类型</th>
+            </tr>
+            </thead>
+            <volist name="list" id="vo" key="k">
+                <tr>
+                    <th><input type="checkbox" class='sonselect' name='select[]' value="{$vo.cardno}"></th>
+                    <td style="width:150px;text-align:center">{$vo.cardno}</td>
+                    <td style="width:100px;text-align:center">{$vo.cuid}</td>
+                    <td style="text-align:center">{$vo.cuname}</td>
+                    <td style="width:150px;text-align:center">{$vo.personid}</td>
+                    <td style="text-align:center">{$vo.linktel}</td>
+                    <td style="text-align:center"><?php echo $ctypes[$vo['status']];?></td>
+                    <td style="text-align:center"><?php echo date('Y-m-d',strtotime($vo['exdate']));?></td>
+                    <td style="text-align:center">{$vo.cardbalance}</td>
+                    <td style="text-align:center"><?php echo date('Y-m-d',strtotime($vo['makedate'].$vo['maketime']));?></td>
+                    <td style="text-align:center">{$vo.pname}</td>
+                    <td style="text-align:center">{$vo.cardpoint}</td>
+                    <td style="text-align:center">{$vo.cardfee}</td>
+                </tr>
+            </volist>
+        </table>
+    </form>
+    <div class="inline pull-left page" style="margin-left:35px;">
+        <button type="button" id="saveform" class="btn btn-XL btn-danger">冻结</button>
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" id="saveout" class="btn btn-XL btn-success">解冻</button>
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" id="deblockingstatus" class="btn btn-XL btn-primary">解锁</button>
+    </div>
+    <div class="inline pull-right page">{$page}</div>
+</div>
+</body>
+</html>
+<script>
+    $(function(){
+// if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+//     $('[placeholder]').focus(function() {
+//         var input = $(this);
+//         if (input.val() == input.attr('placeholder')) {
+//             input.val('');
+//             input.removeClass('placeholder');
+//         }
+//     }).blur(function() {
+//         var input = $(this);
+//         if (input.val() == '' || input.val() == input.attr('placeholder')) {
+//             input.addClass('placeholder');
+//             input.val(input.attr('placeholder'));
+//         }
+//     }).blur();
+// };
+        $('#saveform').click(function(){
+            document.form1.action="__URL__/freeze";
+            document.form1.submit();
+        });
+        $('#saveout').click(function(){
+            document.form1.action="__URL__/thaw";
+            document.form1.submit();
+        });
+        $('#deblockingstatus').click(function(){
+            document.form1.action="__URL__/deblockingstatus";
+            document.form1.submit();
+        });
+    });
+    function selectall(){
+        if($('.sonselect').prop('checked')){
+            $('.sonselect').removeAttr('checked',true);
+        }else {
+            $('.sonselect').attr('checked',true);
+        }
+        function placeholderSupport() {
+            return 'placeholder' in document.createElement('input');
+        }
+    }
+</script>

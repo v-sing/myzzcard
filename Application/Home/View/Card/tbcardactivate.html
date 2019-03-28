@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>通宝卡激活</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("Card/tbcardactivate")}" method="get">  
+	<div class="control-group">
+	卡号:
+    <input type="text" name="cardno" id="cardno" class="abc input-default" placeholder="" value="{$cardno}">&nbsp;&nbsp; 
+	姓名:
+    <input type="text" name="cname" id="cname" class="abc input-medium" placeholder="" value="{$cname}">&nbsp;&nbsp; 
+    身份证:
+    <input type="text" name="idcard" id="idcard" class="abc input-medium" placeholder="" value="{$idcard}">&nbsp;&nbsp; 
+    手机号:
+    <input type="text" name="telphone" id="telphone" class="abc input-medium" placeholder="" value="{$telphone}">&nbsp;&nbsp;
+    <!-- <input type="text" name="brandname" id="brandname" class="abc input-default" placeholder="" value="{$brandname}">&nbsp;&nbsp;  -->
+	
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp;
+    <!--<button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U('tbcardactivate',array('acetype'=>'active'))}';">批量激活</button>-->
+</div>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th></th>
+        <th>卡号</th>
+        <th>会员编号</th>
+        <th>会员名称</th>
+		<th>手机号</th>
+		<th>身份证</th>
+		<th>区域公司</th>
+        <th>卡状态</th>
+		<th>操作</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo">
+        <tr>
+            <td>{$key+1}</td>
+            <td>{$vo.cardno}</td>
+            <td>{$vo.customid}</td>
+            <td>{$vo.namechinese}</td>
+			<td>{$vo.linktel}</td>
+			<td>{$vo.personid}</td>
+			<td>{$vo.pname}</td>
+            <td>{$statype[$vo['status']]}</td>
+			<td><button type="button" class="btn btn btn-danger" onclick="window.location.href='{:U('tbcardact')}/cardno/{$vo.cardno}';">激活</button></td>
+        </tr>
+        </volist>
+        </table>
+        <div class="inline pull-right page">{$page}</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="title">兑换方收票</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-datetimepicker.min.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+</head>
+<body>
+
+<div style="padding-left: 40px;padding-top: 20px">
+    <form class="form-inline definewidth m20"  method="get" action="{:U('receives')}">
+        <input type="text" name="panterName"  class=" input-default" value="{:I('get.panterName','')}" style="width:100px;" autocomplete="off" placeholder="法人单位"/>
+        <input type="text" name="start" id="start" class="datetime input-default" value="{:I('get.start','')}" style="width:100px;" autocomplete="off" placeholder="月份"/>
+        <button type="submit" class="btn  btn-primary">查询</button>
+        <input type="reset" value="重置"  class="btn  btn-danger" />
+        <button type="button"  class="btn" id="excel">
+            导出EXCEL</button>
+    </form>
+    <button class="btn btn-info all" >全部兑换方</button>
+    <button class="btn btn-success over">已收到票据单位</button>
+    <button class="btn btn-warning noover">未收到票据单位</button>
+</div>
+
+<table class="table table-striped " >
+    <thead id="thead">
+    <th>法人单位</th>
+    <th>项目单位</th>
+    <th>当月应开票金额</th>
+    <th>状态</th>
+    </thead>
+    <tbody id="tbody">
+        <volist name="data" id="val">
+                       <tr >
+                           <td>{$val.namechinese}</td>
+                           <td>{$val.nameenglish}</td>
+                           <td>{$val.tmoney}</td>
+                           <td>
+                               <if condition="$val.imgpanterName eq 1">
+                                   <i class="fa  fa-check-circle fa-3x text-info"> </i>
+                                   <else/>
+                                   <i class="fa  fa-close fa-3x " style="color: red"> </i>
+                               </if>
+                           </td>
+                           <td>
+                                 <if condition="$val.imgdate eq 1">
+                                     <i class="fa  fa-check-circle fa-3x text-info"> </i>
+                                      <else/>
+                                     <i class="fa  fa-close fa-3x " style="color: red"> </i>
+                                 </if>
+                           </td>
+                           <td>
+                               <if condition="$val.imgmoney eq 1">
+                                   <i class="fa  fa-check-circle fa-3x text-info"> </i>
+                                   <else/>
+                                   <i class="fa  fa-close fa-3x " style="color: red"> </i>
+                               </if>
+                           </td>
+                           <if condition="($val.imgmoney neq 1) or ($val.imgdate eq 1) or ($val.imgpanterName neq 1)">
+                               <td class="error">
+                                   <button class="btn btn-danger">核对错误</button>
+                               </td>
+                               <else/>
+                               <td class="success">
+                                   <button class="btn btn-info">核对正确</button>
+                               </td>
+
+                           </if>
+
+
+                       </tr>
+        </volist>
+    </tbody>
+
+</table>
+<div class="pagination pull-right">
+    <ul>
+        {$page}
+    </ul>
+</div>
+
+
+
+</body>
+</html>
+<script>
+    var urlExcel = "{:U('Excel')}";
+    $(function () {
+            //初始化日期
+
+        //时间控件初始化
+        $('.datetime').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm',
+            showButtonPanel: true,
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month option:selected").val();//得到选中的月份值
+                var year = $("#ui-datepicker-div .ui-datepicker-year option:selected").val();//得到选中的年份值
+                $('#Datepicker').val(year+'-'+(parseInt(month)+1));//给input赋值，其中要对月值加1才是实际的月份
+            }
+        });
+        $('.all').on('click',function () {
+            $('tbody tr').show();
+        });
+        $('.over').on('click',function () {
+            $('tbody .error').parent().hide();
+            $('tbody .success').parent().show();
+        });
+
+        $('.noover').on('click',function () {
+            $('tbody .success').parent().hide();
+            $('tbody .error').parent().show();
+        });
+    });
+</script>

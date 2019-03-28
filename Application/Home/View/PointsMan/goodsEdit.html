@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>活动商品修改</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+#remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+    #key{margin:0;}
+    #remind #key li:hover{background-color:#ccc;cursor: pointer;}
+    </style>
+</head>
+<body>
+<div class="dv">
+<form  method="post" id="form1">
+    <input type="hidden" name="goodsid" value="{$goods.goodsid}">
+<table class="table table-bordered table-hover definewidth m10">
+     <tr>
+         <td class="tableleft">积分商品名称</td>
+         <td>
+             <input type="text" name="goodsname" class="abc input-default" id="goodsname" value="{$goods.goodsname}"/>
+         </td>
+     </tr>
+    <tr>
+         <td class="tableleft">积分价格</td>
+         <td>
+             <input type="text" name="price" class="abc input-default"  id="price" onkeyup="clearNoNum(this)"value="{$goods.price}"/>
+         </td>
+    </tr>
+    <tr>
+        <td class="tableleft">所属商户</td>
+        <td>
+        <div><input id="pname" type="text" onkeyup="autoComplete(this.value)"  autocomplete="off" placeholder="请输入你想要查询的机构名称" name="pname" value="{$goods.namechinese}" />
+                <input type="hidden" name="panterid" value="{$goods.panterid}" id="panterid"/>
+            </div>
+            <div id="remind">
+                 <ul id="key">
+                 </ul>
+            </div>
+    </tr>
+    <tr>
+        <td class="tableleft">是否启用</td>
+        <td><select name="flag">
+                <option>启用</option><option>不启用</option>
+        </select></td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td colspan="5">
+            <button type="submit" class="btn btn-primary" type="button">修改</button>&nbsp;&nbsp;
+            <a type="button" class="btn btn-success" name="backid" id="backid" href="__URL__/pointsGoods">返回列表</a>
+        </td>
+    </tr>
+</table>
+</form>
+    </div>
+<script type="text/javascript">
+    $(function(){
+        $('#form1').submit(function(){
+            var goodsname= $.trim($('#goodsname').val());
+            var price= $.trim($('#price').val());
+            var panterid= $.trim($('#panterid').val());
+            if(goodsname==''){
+                alert('商品名字必填');
+                return false;
+            }
+            if(roles1==''){
+                alert('价格必填');
+                return false;
+            }
+            if(panterid==''){
+                alert('所属商户必选');
+                return false;
+            }
+        })
+    })
+    function clearNoNum(obj){
+        obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+
+        obj.value = obj.value.replace(/^\./g,"");  //验证第一个字符是数字而不是.
+
+        obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的.
+
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+
+    }
+    function autoComplete(value){
+        $.ajax({
+            type:'GET',
+            url:'{:U("Common/getComplete")}',
+            data:{keys:value},
+            dataType:'json',
+            success:function(data){
+                $('#remind').find('ul').html('');
+                 if(typeof(data)=='object'){
+                     var childObj='';
+                     for(var i=0;i<data.length;i++){
+                         childObj+='<li style="list-style:none;" onclick="addVal(this,'+"'pname'"+',\''+data[i].panterid+'\')">'+data[i].panterid+'-'+data[i].pname+'</li>';
+                     }
+                     $('#remind').css('display','block');
+                     $('#remind').find('ul').append(childObj);
+                     if($('#remind').find('ul').height()<180){
+                         var height=$('#remind').find('ul').height();
+                         $('#remind').height(height);
+                     }else{
+                         $('#remind').height(180);
+                     }
+                }else{
+                    $('#remind').css('display','none');
+                    
+                }
+            }
+        })
+    }
+    function addVal(a,id,pid){
+        var value=$(a).text();
+        $('#'+id).siblings('input').val(pid);
+        $('#'+id).val(value);
+        $(a).parent().parent().css('display','none')
+    }
+</script>
+</body>
+</html>

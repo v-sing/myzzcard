@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>建业币发行报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#cb").click(function(){
+            $(":checkbox[name='accountid[]']").attr("checked",this.checked);
+        });
+    })
+</script>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("CoinAccount/tbcount")}" method="get">
+日期:<input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/>---
+<input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:5px;"/>
+    <if condition="$is_admin eq 1">
+        <select name='parent' id='parent'>
+            <option value="">请选择区域</option>
+            <foreach name='parentlists' item='vo' key='k'>
+              <option value="{$k}" <if condition="$parent eq $k">selected</if>>{$vo}</option>
+            </foreach>
+         </select>
+    </if>
+     <select name='panterid' id='panterid'>
+        <option value="">请选择法人公司</option>
+        <foreach name='panters_mo' item='vo' key='k'>
+          <option value="{$vo.panterid}" <if condition="$panterid eq $vo['panterid']">selected</if>>{$vo.namechinese}</option>
+        </foreach>
+
+     </select>
+     <select name='panteradress' id='panteradress'>
+        <option value="">请选择项目</option>
+        <foreach name='panteradress' item='vo' key='k'>
+          <option value="{$vo.panterid}" <if condition="$panterid eq $vo['panterid']">selected</if>>{$vo.nameenglish}</option>
+        </foreach>
+     </select>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    <input type="reset" value="重置"  class="btn btn-mini btn-danger" />
+    <a href="{:U("CoinAccount/tbcount_excel")}" target="_blank" class="btn btn-mini">
+    <!-- <img style="margin-top:3px;" src="__PUBLIC__/assets/img/excel.png" width="26" title="导出EXCEL" /> -->
+    <i class="Hui-iconfont">&#xe640;</i>导出EXCEL</a>
+</form>
+        <form class="form-inline definewidth m20" <if condition="$is_admin neq 1">action="{:U("CoinAccount/issuecheck")}"</if> method="post">
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th style="text-align:center">区域公司</th>
+        <th style="text-align:center">法人公司</th>
+        <th style="text-align:center">项目名称</th>
+        <th style="text-align:center">符合赠送房源</th>
+        <th style="text-align:center">回款金额</th>
+        <th style="text-align:center">符合送通宝</th>
+        <th style="text-align:center">已赠送房源</th>
+        <th style="text-align:center">已赠送通宝</th>
+        <th style="text-align:center">已兑换通宝</th>
+       <!-- <th style="text-align:center">已结算通宝</th>-->
+        <th style="text-align:center">7天赠送率</th>
+        <th style="text-align:center">赠送率</th>
+        <th style="text-align:center">兑换率</th>
+    </tr>
+    </thead>
+    <volist name="fangzg_data" id="vo">
+	     <tr id='style'>
+         <td style="text-align:center">{$vo.parentname}</td>
+         <td style="text-align:center">{$vo.pname}</td>
+         <td style="text-align:center">{$vo.nameenglish}</td>
+         <td style="text-align:center">{$vo.totalhousenum}</td>
+         <td style="text-align:center">{$vo.totalprice}</td>
+        <td style="text-align:center"><?php echo(bcmul($vo['totalprice'],0.01,2))?></td>
+         <td style="text-align:center">{$vo.totalsendhousenum}</td>
+         <td style="text-align:center">{$vo.totaltb}</td>
+         <td style="text-align:center">{$vo.cash}</td>
+       <!--  <td style="text-align:center">{$vo.clear_tb}</td>-->
+         <!-- <td style="text-align:center"><if condition="$vo['threedaycardcale'] eq NULL">0<else/>{$vo.threedaycardcale}</if></td> -->
+        <td style="text-align:center"><if condition="$vo['threedaycardcale'] eq NULL">0<else/>{$vo.threedaycardcale}</if></td>
+         <td style="text-align:center">{$vo.cardscale}</td>
+
+         <td style="text-align:center">{$vo.cash_rate}</td>
+       </tr>
+    </volist>
+    <tr>
+        <td colspan="3" style="text-align:center">2016数据统计：</td>
+        <volist name="data16" id="vo">
+            <td style="text-align:center">{$vo}</td>
+            </volist>
+    </tr>
+</table>
+    </form>
+    <div class="inline pull-right page">{$page}</div>
+    </div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>
+<script>
+$(function(){
+$('#parent').change(function(){
+  var parent = $("#parent option:selected").val();
+  // parent ='00000115';
+  $.ajax({
+    url:'__URL__/panterid_query',
+    type:'post',
+    data:{parent:parent},
+    dataType:'json',
+    success:function(res){
+      if(res.status=='1'){
+        var data =eval(res.panterid);
+        var html ='<option value="'+'">'+'请选择法人公司'+'</option>';
+        for(var i=0;i<data.length;i++){
+          html+='<option value="'+data[i].panterid+'">'+data[i].namechinese+'</option>';
+        }
+        var html2 = '<option value="'+'">'+'请选择项目'+'</option>';
+      }
+      $('#panterid').html(html);
+      $('#panteradress').html(html2);
+    }
+  })
+});
+$('#panterid').change(function(){
+   var panterid = $("#panterid option:selected").val();
+   $.ajax({
+     url:'__URL__/nameenglish_query',
+     type:'post',
+     data:{panterid:panterid},
+     dataType:'json',
+     success:function(res){
+       if(res.status=='1'){
+         var data =eval(res.panterid);
+         var html1 ='<option value="'+'">'+'请选择项目'+'</option>';
+         for(var i=0;i<data.length;i++){
+           html1+='<option value="'+data[i].panterid+'">'+data[i].nameenglish+'</option>';
+         }
+       }
+       $('#panteradress').html(html1);
+     }
+   })
+})
+$('tr:last').attr({class:'success'});
+})
+</script>

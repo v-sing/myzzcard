@@ -1,0 +1,69 @@
+<div class="menu_dropdown bk_2" id="seller">
+	<dl id="menu-article" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['INDEX'])||$_SESSION['username']=='admin'||!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['BALANCE'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['PANTERTRADEDAILY'])){ echo 'style="display:block;"'; } ?> >
+		<dt><i class="Hui-iconfont">&#xe616;</i> 商户管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Panters/index")}" href="javascript:void(0)">商户信息管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['ADDPANTERS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Panters/addpanters")}" href="javascript:void(0)">商户添加</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['STORE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Panters/store")}" href="javascript:void(0)">商户门店管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['VERIFY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Panters/verify")}" href="javascript:void(0)">商户审核管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['BALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Panters/balance")}" href="javascript:void(0)">商户结算管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['PANTERTRADEDAILY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Panters/panterTradeDaily")}" href="javascript:void(0)">商户日结算处理</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['POINTCONFIG'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Panters/PointConfig")}" href="javascript:void(0)">商户积分规则设置</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['JYACCEPTANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Panters/jyAcceptance")}" href="javascript:void(0)">商户通宝受理配置</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+<!--商户账户管理页面  -->
+		<dl id="menu-log" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COMMERCIALACCOUNT']['INDEX'])||$_SESSION['username']=='admin'||!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['BALANCE'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['PANTERTRADEDAILY'])){ echo 'style="display:block;"'; } ?> >
+			<dt><i class="Hui-iconfont">&#xe63a;</i> 商户账户管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COMMERCIALACCOUNT']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("CommercialAccount/index")}" href="javascript:void(0)">商户账户信息</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COMMERCIALACCOUNT']['RECHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("CommercialAccount/batchRecharge")}" href="javascript:void(0)">商户账户批量充值</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COMMERCIALACCOUNT']['OPERATEDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("CommercialAccount/operatedetail")}" href="javascript:void(0)">商户账户操作明细</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['COMMERCIALACCOUNT']['PROVISIONS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("CommercialAccount/provisions")}" href="javascript:void(0)">商户账户备付金</a></li>
+				</ul>
+			</dd>
+		</dl>
+<!-- end -->
+	<dl id="menu-picture" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['GROUP'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> >
+		<dt><i class="Hui-iconfont">&#xe613;</i> 商圈管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['GROUP'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Panters/group")}" href="javascript:void(0)">商圈信息管理</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<dl id="menu-log" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['ORZ']['INDEX'])||$_SESSION['username']=='admin'||!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['BALANCE'])||!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['PANTERTRADEDAILY'])){ echo 'style="display:block;"'; } ?> >
+		<dt><i class="Hui-iconfont">&#xe63a;</i> 机构管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['ORZ']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> ><a _href="{:U("Orz/index")}" href="javascript:void(0)">商户机构管理</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+	<dl id="menu-product" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['TERMINAL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> >
+		<dt><i class="Hui-iconfont">&#xe620;</i> 终端管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['TERMINAL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Panters/terminal")}" href="javascript:void(0)">终端信息管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['POSCONTROL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Panters/poscontrol")}" href="javascript:void(0)">POS管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['CHANNEL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Panters/channel")}" href="javascript:void(0)">POS通道管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['PANTERS']['POSITEM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Panters/positem")}" href="javascript:void(0)">POS项目管理</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<dl id="menu-product" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MACHINES']['TERMINAL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?> >
+	<dt><i class="Hui-iconfont">&#xe620;</i> 新版店铺终端管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+	<dd>
+		<ul>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MACHINES']['TERMINAL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Machines/terminal")}" href="javascript:void(0)">门店终端信息管理</a></li>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MACHINES']['POSCONTROL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Machines/poscontrol")}" href="javascript:void(0)">门店POS管理</a></li>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['MACHINES']['STORE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Machines/store")}" href="javascript:void(0)">门店配置管理</a></li>
+		</ul>
+	</dd>
+	</dl>
+</div>

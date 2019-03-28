@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>余额查询</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:40%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .abc{width:160px;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .rt{border:1px solid #eee;}
+        .btn-primary1{
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #006dcc;
+            *background-color: #0044cc;
+            background-repeat: repeat-x;
+            border-color: #0044cc #0044cc #002a80;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div class="dv">
+    <form name="form1" method="post" id="form1">
+        <input type="hidden" name="is_read" value="0" id="is_read"/>
+        <table class="table table-bordered table-hover m10" >
+            <tr>
+                <td style="width:200px;text-align:right;">卡号</td>
+                <td><input type="text" class="abc input-default  un-write" name="cardno" readonly="true" id="cardno"/></td>
+            </tr>
+            <tr>
+                <td style="text-align:right;">会员手机</td>
+                <td><input type="text" name="linktel" class="abc input-default un-write" readonly="true" id="linktel"/></td>
+            </tr>
+            <tr>
+                <td style="text-align:right;">卡余额</td><td><input type="text" class="abc input-default un-write" name="amount" readonly="true" id="amount"/></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:left;padding-left:185px;">
+                    <input type="button"  class="btn btn-mini btn-primary" value="挂失"  id="btn" onclick="loss()"/>&nbsp;
+                </td>
+            </tr>
+        </table>
+    </form>
+    <form class="form-inline definewidth m20" action="" method="get">
+    <div class="control-group">
+        卡号：
+        <input type="text" name="cardno"  class="abc input-default" value="{$cardno}" style="width:100px;"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        手机号:
+        <input type="text" name="phone" class="abc input-default" value="{$phone}" style="width:100px;"/>
+        &nbsp;&nbsp;
+
+        &nbsp;&nbsp;
+        <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp;
+        <input type="button" value="清空" onclick="window.location='{:U("FootballTown/balance")}'" class="btn btn-danger btn-primary" />
+    </div>
+    </form>
+    <table class="table table-bordered table-hover definewidth m10" >
+        <thead>
+        <tr>
+            <th style="width: 10px; text-align: center;">选择</th>
+            <th style="text-align: center;">卡号</th>
+            <th style="text-align: center;">余额</th>
+        </tr>
+        </thead>
+
+            <tr>
+                <td><input type="radio" name="sel_card" value="{$info.cardno}"/></td>
+                <td style="width:100px;text-align:center;">{$info.cardno}</td>
+                <td style="width:100px;text-align:center;">{$info.balance}</td>
+            </tr>
+    </table>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    function sleep(timeout) {
+        window.showModalDialog("javascript:document.writeln('<script>window.setTimeout(function () { window.close(); }, " + timeout + ");<\/script>');");
+    }
+    function loss() {
+        var cardno= $.trim($('#cardno').val());
+        if(cardno==''){
+            alert('挂失卡号');
+            return false;
+        }
+        $.ajax({
+            type:'POST',
+            url:'{:U("FootballTown/loss")}',
+            data:{cardno:cardno},
+            dataType:'json',
+            success:function(res){
+                if(res.success==1){
+                    $('#btn').removeClass('btn-primary').addClass('btn-primary1');
+                    $('#btn').val('挂失成功');
+                    setTimeout(function () {  window.location.href='{:U("FootballTown/balance")}'; },2000);
+
+                }else{
+                    alert(res.msg);
+                }
+            }
+        })
+    }
+    $(function(){
+        // $('#btn').click(function(){
+        //     var cardno= $.trim($('#cardno').val());
+        //     if(cardno==''){
+        //         alert('挂失卡号');
+        //         return false;
+        //     }
+        //
+        //     $.ajax({
+        //         type:'POST',
+        //         url:'{:U("FootballTown/loss")}',
+        //         data:{cardno:cardno,amount:amount},
+        //         dataType:'json',
+        //         success:function(res){
+        //             if(res.success==1){
+        //                 $('#btn').removeClass('btn-primary').addClass('btn-primary1');
+        //                 $('#btn').val('挂失成功');
+        //                 setTimeout(function () {  window.location.href='{:U("FootballTown/balance")}'; },2000);
+        //
+        //             }else{
+        //                 alert(res.msg);
+        //             }
+        //         }
+        //     })
+        // });
+
+
+        //
+
+        $('input:radio[name="sel_card"]').change(function(){
+            var cardno= $.trim($(this).val());
+            $.ajax({
+                type:'POST',
+                url:'{:U("FootballTown/card_query")}',
+                data:{cardno:cardno,style:3},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        $('#cardno').val(res.msg.cardno);
+                        $('#linktel').val(res.msg.phone);
+                        $('#amount').val(res.msg.amount);
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+    })
+
+</script>

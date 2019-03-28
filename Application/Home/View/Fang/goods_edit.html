@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加营销产品</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+     	#remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+    	#key{margin:0;}
+    	#remind #key li:hover{background-color:#ccc;cursor: pointer;}
+        select{display:inline-block;}
+
+		.tabBar {}
+		.tabBar span {background-color: #f5f5f5;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px; padding-bottom: 4px;padding-top: 8px;margin-bottom: 10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;}
+		.tabBar span.current{background-color: #222;color: #fff;margin-bottom: 10px;}
+		.tabCon {display: none;}
+		.nume{margin: 0 0 5px;}
+
+    </style>
+ 
+	<script>
+		jQuery.choice =function(tabBar,tabCon,class_name,tabEvent,i){
+			var $tab_menu=$(tabBar);
+			  // 初始化操作
+			  $tab_menu.removeClass(class_name);
+			  $(tabBar).eq(i).addClass(class_name);
+			  $(tabCon).hide();
+			  $(tabCon).eq(i).show();
+
+			  $tab_menu.bind(tabEvent,function(){
+				$tab_menu.removeClass(class_name);
+				  $(this).addClass(class_name);
+				  var index=$tab_menu.index(this);
+				  $(tabCon).hide();
+				  $(tabCon).eq(index).show();
+			  });
+		}
+		$(function(){
+			$.choice("#tab_xuan .tabBar span","#tab_xuan .tabCon","current","click","0");
+		});
+	</script>
+	</head>
+<body>
+<div class="dv">
+	<div class="nume">
+	
+		<div id="tab_xuan" class="choice m10  table definewidth" >
+				<div class="tabBar cl">
+					<span style="border-left:1px solid #ccc;border-right:1px solid #ccc;border-top-left-radius:4px;border-bottom-left-radius:4px;">基本信息</span>
+				</div>
+				<form method="post" id="form1" action="{:U('Fang/goods_update')}" enctype="multipart/form-data">
+
+				<table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>所属项目</td>
+						<td>
+							<select name="panterids" id = "panterid" class="form-control" onChange="findClass()">
+							<option value="{$panter['panterid']}" selected="selected">{$panter.nameenglish}</option>
+							<volist name="panterid" id="vo" key="k">
+								<option value="{$vo.panterid}" >{$vo.nameenglish}</option>
+							</volist>
+							</select>
+							<select name="storeid" id="storeid" class="form-control">
+							<option value="{$store.storeid}" selected="selected">{$store.name}</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td style="width:150px;text-align:right;background-color:#f5f5f5;">
+							<span class="emphasis"> *</span>商品名称
+						</td>
+						<td>
+							<input type="text" name="goods_name" id="goods_name" value="{$goods.goods_name}" maxlength="20" required/>
+						</td>
+					</tr>
+					<tr>
+						 <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>资金类型</td>
+						 <td>
+							 <label style="display: inline;"><input type="radio" name="price_type" value="1" <php>if($goods['price_type']=='1')echo ' checked';</php>/>备付金</label>
+							 <label style="display: inline;"><input type="radio" name="price_type" value="2" <php>if($goods['price_type']=='2')echo ' checked';</php>/>自有资金</label>
+						 </td>
+					</tr>
+
+
+					<tr>
+						 <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>资金冻结</td>
+						 <td>
+							 <label style="display: inline;"><input type="radio" name="is_freeze" value="1" <php>if($goods['is_freeze']=='1')echo ' checked';</php> />冻结</label>
+							 <label style="display: inline;"><input type="radio" name="is_freeze" value="2" <php>if($goods['is_freeze']=='2')echo ' checked';</php> />不冻结</label>
+						 </td>
+					</tr>
+
+					<tr>
+						 <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>资金提现</td>
+						 <td>
+						 <input type="hidden" name="gid" value="{$goods.gid}">
+							 <label style="display: inline;"><input type="radio" name="goods_tx" value="1" <php>if($goods['goods_tx']=='1')echo ' checked';</php>/>不可提现</label>
+							 <label style="display: inline;"><input type="radio" name="goods_tx" value="2" <php>if($goods['goods_tx']=='2')echo ' checked';</php>/>可提现</label>
+						 </td>
+					</tr>
+				
+						<tr>
+						<td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis">*</span>商品价格</td>
+						<td><input type="text" name="goods_price" id="goods_price" value="{$goods.goods_price}" maxlength="50" required/> 元</td>
+					</tr>
+
+
+						<tr>
+						 <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>商品状态</td>
+						 <td>
+							 <label style="display: inline;"><input type="radio" name="goods_status" value="1" <php>if($goods['goods_status']=='1')echo ' checked';</php>/>上架</label>
+							 <label style="display: inline;"><input type="radio" name="goods_status" value="2" <php>if($goods['goods_status']=='2')echo ' checked';</php>/>下架</label>
+						 </td>
+					</tr>
+					
+				</table>
+				
+				<table class=" table-bordered  table-hover " style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;border-top-left-radius: 0;border-top-right-radius: 0;width:100%;border-width: 0 1px 1px 0;">
+					<tr>
+						<td colspan="2" style="padding-left:150px;background-color:#f5f5f5;">
+							<button type="submit" class="btn btn-primary" type="button">修改</button>&nbsp;&nbsp;
+							<a type="button" class="btn btn-success" name="backid" id="backid" href="__URL__">返回列表</a>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	
+</div>
+<script type="text/javascript">
+	function findClass(){  
+        var panterid = $("#panterid").val();
+        var arrs;
+        $.ajax({  
+           url:"__URL__/ajax",
+            type:"post",  
+            data:{panterid:panterid},  
+            dataType:'json',
+            success:function(data){ 
+           
+            	$("#storeid option").remove();  
+                for ( var i = 0; i < data.length; i++) {  
+                    var classId = data[i].storeid;  
+                    var className = data[i].name;  
+                    $("#storeid").append("<option value="+classId+">" + className + "</option>");  
+                }
+            },  
+            error : function(XMLResponse) {  
+                alert('false');  
+            }  
+        });  
+    }  
+</script>
+</body>
+</html>

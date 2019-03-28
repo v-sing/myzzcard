@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商户交易统计报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("Tianzhu/cateStat")}" method="get">
+    交易日期:
+    <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/>---<input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:5px;"/>
+    商户：<select name="cateid">
+    <option value="">请选择商户</option>
+    <volist name="catelist" id="vo">
+    <option value="{$vo.cateid}" <eq name="$vo.cateid" value="{$cateid}">selected='selected'</eq>>{$vo.catename}</option>
+        </volist>
+</select>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th>消费品类</th><th>消费金额</th><th>消费积分</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+	     <tr>
+             <td>{$vo.catename}</td><td>{$vo.amount}</td>
+             <td>{$vo.point}</td>
+        </tr>
+    </volist>
+</table>
+<div class="inline pull-right page sabrosus">{$page}</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>积分充值</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+        $("#ui-datepicker-div").hide();
+        $('#btn').click(function(){
+            var cname= $.trim($('#cname').val());
+            var customsid= $.trim($('#customsid').val());
+            var sex= $.trim($('#sex').val());
+            var cardnos = $.trim($('#cardnos').val());
+            if(cname==''&&customsid==''&&sex==''&&cardnos==''){
+                alert('请选择查询条件');
+                return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("Card/getcards")}',
+                data:{cname:cname,customsid:customsid,sex:sex,cardno:cardnos},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        var data=eval(res.data);
+                        var rese='';    
+                        for(var i=0;i<data.length;i++){
+                            var xstr=data[i]['cardno'];
+                            rese+='<tr id='+xstr+' onclick=ckstr("'+xstr+'")><td style="width:160px">'+data[i]['cardno']+'</td><td style="width:160px">'+data[i]['customid1']+'</td><td style="width:160px">'+data[i]['namechinese']+'</td><td style="display:none;">'+data[i]['status']+'</td><td style="display:none;">'+data[i]['exdate']+'</td><td style="display:none;">'+data[i]['customlevel']+'</td><td style="display:none;">'+data[i]['linktel']+'</td><td style="display:none;">'+data[i]['amount']+'</td></tr>';
+                        }
+                        $('#list').html(rese).show();
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#btns').click(function(){
+            var xcname= $.trim($('#xcname').val());
+            var xcustomsid= $.trim($('#xcustomsid').val());
+            var xlinktel= $.trim($('#xlinktel').val());
+            var xcustomlevel= $.trim($('#xcustomlevel').val());
+            var xcardno= $.trim($('#xcardno').val());
+            var xamount= $.trim($('#xamount').val());
+            var xstatus= $.trim($('#xstatus').val());
+            var xexdate= $.trim($('#xexdate').val());
+            $('#customid').val(xcustomsid);
+            $('#cuname').val(xcname);
+            $('#linktel').val(xlinktel);
+            $('#customlevel').val(xcustomlevel);
+            $('#cardno').val(xcardno);
+            $('#amount').val(xamount);
+            $('#cstatus').val(xstatus);
+            $('#cexdate').val(xexdate);
+        });
+        $('#subup').click(function(){
+            var cardno = $.trim($('#cardno').val());
+            var camount = $.trim($('#camount').val());
+            if(cardno==''){
+                alert('卡号不能为空,请选择!');
+                return false;
+            }
+            if(camount==''){
+                alert('充值积分不能为空');
+                return false;
+            }
+            $("#subup").attr("disabled", true); 
+            document.form3.submit();
+        })
+    })
+    function ckstr(strs){
+        var table = document.getElementById(strs);
+        document.getElementById('xcname').value=table.cells[2].innerHTML==null?'':table.cells[2].innerHTML;
+        document.getElementById('xcustomsid').value=table.cells[1].innerHTML;
+        document.getElementById('xlinktel').value=table.cells[6].innerHTML==null?'':table.cells[6].innerHTML;
+        document.getElementById('xcardno').value=table.cells[0].innerHTML;
+        document.getElementById('xstatus').value=table.cells[3].innerHTML==null?'':table.cells[3].innerHTML;
+        document.getElementById('xexdate').value=table.cells[4].innerHTML==null?'':table.cells[4].innerHTML;
+        document.getElementById('xcustomlevel').value=table.cells[5].innerHTML==null?'':table.cells[5].innerHTML;
+        document.getElementById('xamount').value=table.cells[7].innerHTML;
+        //table.style.backgroundColor='blue';
+    }
+    </script>
+<div  class="dv" style="margin-left:25px;">
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">卡片选择</h4>
+        </div>
+        <form class="form-inline definewidth m20" action="{:U("Card/getcards")}" id="form1" method="post"><input type="text" name="cardnos" id='cardnos' style="width:120px; margin-right:2px;" placeholder="卡号"/>
+            <input type="text" name="cname" id='cname' style="width:90px; margin-right:5px;" placeholder="会员名称"/>
+            <input type="text" name="customsid" id='customsid' style="width:110px; margin-right:5px;" placeholder="会员编号"/>
+            性别:<select name="sex" style="width:80px; margin-right:7px;" id="sex">
+                    <option value="" selected>请选择</option><option value="男">男</option><option value="女">女</option>
+            </select>
+            <input type="button" value="查询" class="btn btn-primary" id="btn"/>
+        </form>
+            <table class="table table-bordered table-hover definewidth m10">
+                <thead>
+                    <tr>
+                        <th style="width:170px">卡号</th>
+                        <th style="width:160px">会员编号</th>
+                        <th style="width:160px">姓名</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td colspan="5">
+                        <div style="overflow-y:auto; width:100%;height:300px"><table id="list"></table>
+                    </div></td>
+                </tr>
+            </table>
+            <form class="form-inline definewidth m20" action="{:U("Card/pointpay")}" id="form2" method="post">
+            选中值:<input type="text" name="xcardno" id='xcardno' style="width:130px; margin-right:5px;" placeholder="卡号"/>
+            <input type="text" name="xstatus" id="xstatus" placeholder="状态" style="width:30px;margin-right:5px;" />
+            <input type="text" name="xcustomsid" id='xcustomsid' value='' style="width:110px; margin-right:5px;" placeholder="会员编号"/>
+            <input type="text" name="xcname" id='xcname' value='' style="width:90px; margin-right:5px;" placeholder="会员名称"/>
+            <input type="text" name="xexdate" id='xexdate' value='' style="width:110px; margin-right:7px;" placeholder="有效日期"/>
+            <input type="hidden" name="xcustomlevel" id="xcustomlevel">
+            <input type="hidden" value="" name="xlinktel" id="xlinktel">
+            <input type="hidden" value="" name="xamount" id="xamount">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" id="btns" data-dismiss="modal">确定</button>
+            </div>
+            </form>
+    </div>
+</div>
+<form name="form3" method="post" action="{:U('card/pointpay')}">
+    <table class="table table-bordered table-hover m10 " >
+         <tr>
+             <td>卡号</td><td><input type="text" class="abc input-default un-write" name="cardno" readonly="true" id="cardno"/>
+             <input type="hidden" name="cstatus" value="" id="cstatus"/><input type="hidden" name="cexdate" value="0" id="cexdate"/></td>
+        </tr>
+        <tr><td>会员编号</td><td><input type="text" name="customid" class="abc input-default un-write" readonly="true" id="customid"/></td></tr>
+        <tr><td>会员名称</td><td><input type="text" name="cuname" class="abc input-default un-write" readonly="true" id="cuname"/></td></tr>
+        <tr><td>会员类型</td><td><input type="text" name="customlevel" class="abc input-default un-write" readonly="true" id="customlevel"/></td></tr>
+        <tr><td>联系电话</td><td><input type="text" class="abc input-default un-write" name="linktel" readonly="true" id="linktel"/></td></tr>
+        <tr><td>当前积分余额</td><td><input type="text" class="abc input-default un-write" name="amount" readonly="true" id="amount"/></td></tr>
+        <tr>
+            <td>充值积分</td><td><input type="text" class="abc input-default" name="camount" id="camount" onkeyup="clearNoNum(this)" maxlength="17" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+             <button class="btn btn-mini btn-primary" data-toggle="modal" data-target="#myModal">选择</button>
+             <button type="submit" class="btn btn-mini btn-primary" id="subup" style="width:80px;right:10px;">充值</button>
+            </td>
+        </tr>
+    </table>
+    </form>
+    </div>
+</body>
+</html>

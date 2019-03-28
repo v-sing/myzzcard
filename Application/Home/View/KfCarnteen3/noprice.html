@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>散装菜品</title>
+<link href="__PUBLIC__/kfcarnteen/css.css" rel="stylesheet" type="text/css">
+    <script src="__PUBLIC__/kfcarnteen/2.js"></script>
+    <script src="__PUBLIC__/kfcarnteen/dist/sweetalert-dev.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/kfcarnteen/dist/sweetalert.css">
+ <script type="text/javascript">
+     $(function(){
+         $('.bg').click(function(){
+             var goodsname= $(this).find('span').html();
+             swal({
+                         title: goodsname,
+                         text: "输入金额",
+                         type: "input",
+                         cancelButtonText:'取消下单',
+                         confirmButtonText: "确认下单",
+                         showCancelButton: true,
+                         closeOnConfirm: false,
+                         animation: "slide-from-top",
+                         inputPlaceholder: "输入金额"
+                     },
+                     function(inputValue){
+                         if (inputValue === false) return false;
+
+                         if (inputValue === "") {
+                             swal.showInputError("必须输入金额");
+                             return false
+                         }
+                         window.location.href = "{:U('KfCarnteen/bulk')}/goodsname/"+goodsname+"/price/"+inputValue;
+                     });
+         })
+         $('#back').click(function(){
+             history.back();
+         })
+     })
+</script>
+</head>
+
+<body>
+    
+    
+    	<div class="top ">
+        	<ul>
+                <li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/balance.png"/><span>余额查询</span></li>
+                <li class="text_center">开封烧烤铺</li>
+                <li class="text_r" id="back"><img src="__PUBLIC__/kfcarnteen/img/set.png"/><span>返回主页</span></li>
+            </ul>
+        </div>
+    
+    	
+        <div class="main">
+            {$str}
+        </div>
+
+</body>
+</html>

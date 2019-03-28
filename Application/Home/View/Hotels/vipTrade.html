@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>贵宾卡消费明细报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  style="padding:6px;">
+    <div>
+        <table id="vipTradeList" class="easyui-datagrid" title="贵宾卡消费明细报表"  width="100%" height="790"
+               data-options="
+                                url:'getVipTradeList',
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,50,100,200],
+                                singleSelect: false,                              
+                                method: 'get',
+                                striped:true,
+                                toolbar:'#tb',
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                showFooter:true,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+
+            <thead>
+                <tr>
+                    <th data-options="field:'termposno',width:80,align:'center'">终端号</th>
+                    <th data-options="field:'customid',width:80,align:'center'">会员编号</th>
+                    <th data-options="field:'namechinese',width:80,align:'center'">会员名称</th>
+                    <th data-options="field:'linktel',width:80,align:'center'">会员手机号</th>
+                    <th data-options="field:'cardno',width:200,align:'center'">卡号</th>
+                    <th data-options="field:'tradeid',width:200,align:'center'">交易流水号</th>
+                    <th data-options="field:'quanid',width:80,align:'center'">券ID</th>
+                    <th data-options="field:'quanname',width:120,align:'center'">券名称</th>
+                    <th data-options="field:'paydate',width:80,align:'center'">消费日期</th>
+                    <th data-options="field:'paytime',width:80,align:'center'">消费时间</th>
+                    <th data-options="field:'totalamount',width:80,align:'center'">总金额</th>
+                    <th data-options="field:'discount',width:80,align:'center'">折扣比例</th>
+                    <th data-options="field:'amount',width:80,align:'center'">折扣金额</th>
+                    <th data-options="field:'account',width:80,align:'center'">非折扣金额</th>
+                    <th data-options="field:'acccount',width:80,align:'center'">券数量</th>
+                    <th data-options="field:'finalaccount',width:80,align:'center'">实际支付金额</th>
+                    <th data-options="field:'point',width:80,align:'center'">产生积分</th>
+                    <th data-options="field:'paytype',width:80,align:'center'">支付方式</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="visibility:hidden" id="__box">
+        <div id="tb" style="padding:4px;height:auto;display: none;">
+            <div style="padding:4px">&nbsp;&nbsp;会员编号:<input class="easyui-textbox" id="customid" name="customid" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会员名称:<input class="easyui-textbox" id="username" name="username" style="width:140px;"></div>
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机号:<input class="easyui-textbox" id="linktel" name="linktel" style="width:140px;">
+                &nbsp;&nbsp;&nbsp;&nbsp;交易流水号:<input class="easyui-textbox" id="tradeid" name="tradeid" style="width:140px;">
+            </div>
+            <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卡号:<input class="easyui-textbox" id="cardno" name="cardno" style="width:140px;">
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onClick="cardnoSearch()" style="height:21px;"></a><font color="red">(注：加号为多卡号查询)</font>
+                <span style="margin-left:100px;"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="doSearch()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U("Hotels/vipTrade_excel")}" class="easyui-linkbutton" data-options="iconCls:'icon-redo'">导出</a></span>
+            </div>
+        </div>
+    </div>
+    <div id='dialogSellCard'   title="多卡号查询" style="display:none;"        data-options="
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        cardnoDialog();
+                    }
+                }]">
+        <table>
+            <tr>
+                <td></td>
+                <td><span style="color:red">注:多个卡号请以回车(Enter)或半角逗号分隔</span></td>
+            </tr>
+            <tr>
+                <td>卡号:</td>
+                <td><input class="easyui-textbox" data-options="multiline:true" style="width:300px;height:100px" id="cardnos" name="cardnos"></td>
+            </tr>
+        </table>
+    </div>     
+    <script type="text/javascript">
+        //查询
+        function doSearch(){
+            var o={};
+            o.customid=$("#customid").textbox('getValue');
+            o.username=$("#username").textbox('getValue');
+            o.linktel=$("#linktel").textbox('getValue');
+            o.tradeid=$("#tradeid").textbox('getValue');
+            o.cardno=$("#cardno").textbox('getValue');
+            $('#vipTradeList').datagrid('load',o);
+            return false;
+        }
+        //清空查询条件
+        function resetting(){
+            var o={};
+            o.customid=$("#customid").textbox('setValue','');
+            o.username=$("#username").textbox('setValue','');
+            o.linktel=$("#linktel").textbox('setValue','');
+            o.tradeid=$("#tradeid").textbox('setValue','');
+            o.cardno=$("#cardno").textbox('setValue','');
+            $('#vipTradeList').datagrid('load',o);
+            return false;
+        }
+        //多卡号查询
+        function cardnoSearch(){
+            $("#dialogSellCard").show();
+            $("#dialogSellCard").dialog({
+                title: "添加",
+                width: 400,
+                height: 220,
+                padding:10,
+            });
+        }        
+        //点击卡号文本框弹出多行卡号对话框
+        function cardnoDialog(){
+            var s,cardnos,newStr=""; 
+            cardnos=$("#cardnos").textbox('getValue');
+            cardnos=cardnos.replace(/\n/g,","); 
+            s=cardnos.charAt(cardnos.length-1);
+            if(s==","){
+                newStr=cardnos.substring(0,cardnos.length-1);
+                $('#cardno').textbox('setValue',newStr);
+            }else{
+                $('#cardno').textbox('setValue',cardnos);   
+            }
+            $("#dialogSellCard").dialog('close');
+            
+        }
+        //设置列格式
+        function cellStyler(value,row,index){
+            if (value > 0){
+                return 'background-color:#ffee00;color:red;';
+            }
+        }
+    </script>
+
+</body>
+</html>
+

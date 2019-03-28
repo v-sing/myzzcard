@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>卡片接收</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .tb-box{overflow-y:auto; width:100%;min-height:120px;max-height:300px;}
+        .tb-box td{width:160px;}
+        .tb-box td.td-f{border-left:none;width:159px}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("CardStock/cardReceive")}" method="get">
+    派送流水号:<input type="text" name="id" value='{$id}' style="width:120px; margin-right:7px;"/>
+    申请机构编号:<input type="text" name="panterid" value='{$panterid}' style="width:160px; margin-right:7px;"/>
+    申请机构名称:<input type="text" name="pname" value='{$pname}' style="width:160px; margin-right:7px;"/>
+    制卡日期:
+    <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:120px;"/> --- <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:120px; margin-right:5px;"/>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+</form>
+    <form class="form-inline m20" action="{:U("CardStock/restore")}" method="get">
+    <table class="table table-bordered table-hover definewidth m10" id="lists">
+    <thead>
+    <tr>
+        <th>流水号</th>
+        <th>卡类型</th>
+        <th>数量</th>
+        <th>申请机构编号</th>
+        <th>申请机构名称</th>
+        <th>申请日期</th>
+        <th>申请时间</th>
+        <th>原因</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="key">
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.brandid}</td>
+            <td>{$vo.count}</td>
+            <td>{$vo.applicant}</td>
+            <td>{$vo.pname}</td>
+            <td>{$vo.appdate}</td>
+            <td>{$vo.apptime}</td>
+            <td>{$vo.meno}</td>
+            <td>
+                <button type="button" class="btn btn btn-primary" onclick="window.location='__URL__/receive/id/{$vo.id}'">接收卡片</button>
+            </td>
+        </tr>
+        </volist>
+        </table>
+<!--div class="inline pull-right page sabrosus">{$page}</div-->
+    </div>
+    </div>
+</body>
+</html>

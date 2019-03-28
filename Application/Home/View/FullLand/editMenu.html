@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css"/>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+        #remind {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            background: #fff none repeat scroll 0 0;
+            border-color: -moz-use-text-color #a7a6aa #a7a6aa;
+            border-image: none;
+            border-style: none solid solid;
+            border-width: 0 1px 1px;
+            display: none;
+            float: right;
+            height: 180px;
+            overflow-y: scroll;
+            position: absolute;
+            width: 207px;
+            margin-top: -10px;
+            list-style: none;
+            z-index: 1000;
+        }
+
+        #key {
+            margin: 0;
+        }
+
+        #remind #key li:hover {
+            background-color: #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="dv">
+    <form  action="{:U("FullLand/editMenu")}" method="post" class="definewidth m20" enctype="multipart/form-data">
+        <table class="table table-bordered table-hover ">
+            <tr>
+                <td width="10%" class="tableleft">套餐名称&nbsp;<span style="color:#ff0700;">*</span></td>
+                <td><input type="text" id="name" name="name" value="{$menus.name}"/></td>
+            </tr>
+            <volist id="vo" name="quankind">
+                <tr>
+                    <td width="10%" class="tableleft">{$vo.quanname}&nbsp;</td>
+                    <td>
+                        <input class="navbar-text" type="text" data-url="{$vo.quanid}" value="<foreach name='menus.quan' item='vl'><?php if($vl['quanid']==$vo['quanid']) echo $vl['num'];?></foreach>"/>
+                    </td>
+                </tr>
+            </volist>
+            <tr>
+                <td class="tableleft">券关系&nbsp;<span style="color:#ff0700;">*</span></td>
+                <td>
+                    <input type="radio" name="relation" value="1" <php>if('1'==$menus['relation'])echo ' checked';</php>/> 或
+                    <input type="radio" name="relation" value="2" <php>if('2'==$menus['relation'])echo ' checked';</php>/> 并
+                </td>
+            </tr>
+            <tr>
+                <td class="tableleft">排序&nbsp;<span style="color:#ff0700;">*</span></td>
+                <td><input type="text" id="sort" name="sort" value="{$menus.sort}"/></td>
+            </tr>
+            <tr>
+                <td class="tableleft">充值金额&nbsp;<span style="color:#ff0700;">*</span></td>
+                <td><input type="text" id="amount" name="amount" value="{$menus.amount}"/></td>
+            </tr>
+            <tr>
+                <td class="tableleft"></td>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="saveform" >保存</button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-success" name="backid" id="backid"
+                            onclick="window.location.href='__URL__/menuList'">返回列表
+                    </button>
+                </td>
+            </tr>
+            <input type="hidden" id="id" name="id" value="{$id}">
+            <input type="hidden" id="quans" name="quans">
+            <input type="hidden" id="panterid" name="panterid" value="{$panterid}">
+        </table>
+    </form>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#saveform').click(function(){
+            var name= $.trim($('#name').val());
+            var quans=[];
+            $(".navbar-text").each(function(){
+                if($(this).val()!=''){
+                    quans.push($(this).attr("data-url")+':'+$(this).val());
+                }
+            });
+            $("#quans").val(quans);
+            var amount=$.trim($('#amount').val());
+            var relation= $.trim($('input:radio[name="relation"]:checked').val());
+            if(name==''){
+                alert('请填写套餐名称');
+                return false;
+            }
+            if(quans.length==0){
+                alert('请填写券数量');
+                return false;
+            }
+            if(relation==''){
+                alert('请选择券关系');
+                return false;
+            }
+            if(amount==''){
+                alert('请填写充值金额');
+                return false;
+            }
+        })
+    })
+</script>
+</body>
+</html>

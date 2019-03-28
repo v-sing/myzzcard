@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="title">收票数据</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-datetimepicker.min.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/index.js"></script>
+    <script src="__PUBLIC__/Js/jquery.ui.widget.js"></script>
+    <script src="__PUBLIC__/Js/jquery.iframe-transport.js"></script>
+    <script src="__PUBLIC__/Js/jquery.fileupload.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery.fileupload.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery.fileupload-ui.css" />
+</head>
+<body>
+
+<div style="padding-left: 40px;padding-top: 20px">
+    <form class="form-inline definewidth m20"  method="get"
+
+        action="{:U('receiptImgMessage')}"
+
+
+    >
+    <input type="text" name="start" id="start" class="datetime input-default" value="{:I('get.start','')}" style="width:100px;" autocomplete="off" placeholder="月份"/>
+
+    <button type="submit" class="btn  btn-primary">查询</button>
+    <input type="reset" value="重置"  class="btn  btn-danger" />
+    <button type="button"  class="btn" id="excel">
+        导出EXCEL</button>
+    </form>
+    <input type="text" name="panterName" id="panterName"  placeholder="法人单位"/>
+    <span class="btn btn-success fileinput-button" style="margin-left: 30px;margin-top: -6px;">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>选择发票</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+    </span>
+
+    <br>
+    <br>
+    <!-- The global progress bar -->
+    <div class="progress progress-striped active" id="progress">
+        <div class="bar" style="width: 0%;"></div>
+    </div>
+    <div id="files" class="files"></div>
+
+</div>
+
+<table class="table table-striped " >
+    <thead id="thead">
+    <th>时间</th>
+    <th>图片</th>
+    <th>备注</th>
+    <th>发票日期</th>
+    <th>发票金额</th>
+    <th>状态</th>
+    <th>操作</th>
+    </thead>
+    <tbody id="tbody">
+              <volist name="data" id="val">
+                         <tr>
+                               <td>{:date("Y-m-d",$val['uploaddate'])}</td>
+                               <td><img src="/Public/{$val.img}" style="width: 60px;height: 30px"></td>
+                               <td>{$val.operator}</td>
+                               <td>{$val.receiptdate}</td>
+                               <td>{$val.money}</td>
+
+                               <td>
+                                    <if condition="$val.status eq 1">
+                                           识别
+                                        <else/>
+                                           未识别
+                                    </if>
+                               </td>
+                               <td><button class="btn btn-danger del" data-index="{$val.uploadid}">删除</button></td>
+                         </tr>
+              </volist>
+    </tbody>
+
+</table>
+<div class="pagination pull-right">
+    <ul>
+        {$page}
+    </ul>
+</div>
+
+
+
+</body>
+</html>
+<script>
+    var urlExcel = "{:U('Excel')}";
+    $(function () {
+        //初始化日期
+        $('.datetime').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm',
+            showButtonPanel: true,
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month option:selected").val();//得到选中的月份值
+                var year = $("#ui-datepicker-div .ui-datepicker-year option:selected").val();//得到选中的年份值
+                $('#Datepicker').val(year+'-'+(parseInt(month)+1));//给input赋值，其中要对月值加1才是实际的月份
+            }
+        });
+        //时间控件初始化
+        $("#ui-datepicker-div").hide();
+        'use strict';
+        // Change this to the location of your server-side upload handler:
+        $('#fileupload').fileupload({
+            url: "{:U('upload')}",
+            dataType: 'json',
+            add:function (e,data) {
+                      if($('#panterName').val() == ''){
+                                 layer.msg("请填写法人单位");
+                      }else{
+                            data.formData = {operator:$('#panterName').val()};
+                            data.submit();
+                      }
+            },
+            done: function (e, data) {
+                   if(data.result.code == 0){
+                       if(data.result.data.status == 1){
+                           data.result.data.status = "识别";
+
+                       }else{
+                           data.result.data.status = "未识别";
+                       }
+
+                       var  html ="<tr>" +
+                           "<td>"+data.result.data.time+"</td>" +
+                           "<td><img src='/Public/"+data.result.data.img+"' style='width: 60px;height: 30px'/></td>" +
+                           "<td>"+data.result.data.operator+"</td>" +
+                           "<td>"+data.result.data.receiptdate+"</td>" +
+                           "<td>"+data.result.data.receiptmoney+"</td>" +
+                           "<td>"+data.result.data.status+"</td>" +
+                           "<td><button class='btn btn-danger del' data-index='"+data.result.data.uploadid+"'>删除</button></td>" +
+                           "</tr>";
+
+                       $('#tbody').append(html);
+                       layer.open({
+                           content:"上传成功"
+                       });
+                   }else{
+                        layer.open({
+                               content:data.result.msg
+                        });
+                   }
+
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .bar').css(
+                    'width',
+                    progress + '%'
+                );
+            }
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+
+
+    $("body").on('click','.del',function () {
+             var tr = $(this).parent().parent();
+             $.post("{:U('del')}",{
+                    uploadid:$(this).data('index')
+             },function (resp) {
+                     if(resp.code == 0){
+                           layer.open({
+                                 content:"删除成功"
+                           });
+                          tr.remove();
+                     }else{
+                         layer.open({
+                             content:resp.msg
+                         });
+                     }
+             });
+    });
+</script>

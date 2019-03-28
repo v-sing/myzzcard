@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>会员积分报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .rt{border:1px solid #eee;}
+    </style>
+</head>
+<body>
+<div class="dv">
+<form name="form1" method="post" id="form1">
+    <div class="rt">
+    <input type="hidden" name="is_read" value="0" id="is_read"/>
+        <input type="hidden" name="bool" value="1" id="bool"/>
+    <table class="table table-bordered table-hover m10" >
+         <tr>
+             <td>卡号</td><td><input type="text" class="abc input-default" name="cardno" id="cardno"readonly="true"/></td>
+             <td>会员姓名</td><td><input type="text" name="cuname" class="abc input-default un-write" readonly="true" id="cuname"/></td>
+             <td>会员编号</td><td><input type="text" name="customid" class="abc input-default un-write" readonly="true" id="customid"/></td>
+        </tr>
+        <tr>
+            <td>会员积分</td><td><input type="text" class="abc input-default un-write" name="cardpoint" readonly="true" id="cardpoint"/></td>
+            <td>商品</td>
+            <td>
+                <select name="goodsid" id="goodsid">
+                    <option value="">请选择</option>
+                    <volist name="goods" id="vo">
+                        <option value="{$vo.goodsid}_{$vo.price}">{$vo.goodsname}</option>
+                    </volist>
+                </select>
+            </td>
+            <td>单价</td><td><input type="text" class="abc input-default un-write" name="price" readonly="true" id="price" /></td>
+        </tr>
+        <tr>
+            <td>数量</td><td><input type="text" class="abc input-default" name="amount" value="1" id="amount" onkeyup="intOnly(this);"/></td>
+            <td>总价</td><td><input type="text" class="abc input-default" value="" name="total_price" readonly="true" id="total_price"/></td>
+            <td>
+                <input type="button" class="btn btn-mini btn-primary" style="width:50px;" value="兑换" id="btn"/>
+            </td>
+            <td><a href="__URL__/pointExchangeRep">积分兑换表</a></td>
+        </tr>
+    </table>
+        </div>
+    </form>
+<form class="form-inline definewidth m20" action="{:U("PointsMan/pointsRep")}" method="get">
+    <input type="text" name="cardno" value='{$cardno}' style="width:165px; margin-right:7px;" placeholder="卡号" />
+    <input type="text" name="cuname" value='{$cuname}' style="width:70px; margin-right:7px;" placeholder="会员名称" />
+    <input type="text" name="customid" value='{$customid}' style="width:90px; margin-right:10px;" placeholder="会员编号"/>
+    <button type="submit" class="btn btn-mini btn-primary" id="sub">查询</button>
+    <input type="button" value="重置" onclick="window.location='{:U("PointsMan/pointsRep")}'" class="btn btn-mini btn-danger" />
+</form>
+<table class="table table-bordered table-hover definewidth m10" id="tb">
+    <thead>
+    <tr>
+        <th>卡号</th><th>会员编号</th><th>会员名称</th><th>积分</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+        <tr id="no_{$vo.cardno}">
+            <td>{$vo.cardno}</td><td>{$vo.cuid}</td><td>{$vo.cuname}</td><td>{$vo.cardpoint}</td>
+        </tr>
+    </volist>
+</table>
+<div class="inline pull-right page">{$page}</div>
+    </div>
+<script type="text/javascript">
+    $(function(){
+        $('#tb tr:gt(0)').click(function(){
+            var cardno=$(this).attr('id').split('_')[1];
+            if(cardno==''){
+                return false;
+            }
+            $.ajax({
+                url:'{:U("PointsMan/pointQuery")}',
+                type:'POST',
+                data:{cardno:cardno},
+                beforeSend:function(){
+                    $('#is_read').val(0);
+                },
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        $('#cardno').val(res.data.cardno);
+                        $('#cuname').val(res.data.cuname);
+                        $('#customid').val(res.data.cuid);
+                        $('#cardpoint').val(res.data.cardpoint);
+                        $('#is_read').val(1);
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            });
+        });
+        $('#goodsid').change(function(){
+            var goods_info= $.trim($(this).val());
+            var price=goods_info.split('_')[1];
+            var amount=$.trim($('#amount').val());
+            if(amount==''){
+                amount=0;
+            }
+            var total_price=amount*price;
+            $('#price').val(price);
+            $('#total_price').val(total_price);
+        });
+        $('#amount').keyup(function(){
+            var amount= $.trim($(this).val());
+            var price= $.trim($('#price').val());
+            if(amount==''){
+                amount=0;
+            }
+            if(price==''){
+                price=0;
+            }
+            var total_price=amount*price;
+            $('#total_price').val(total_price);
+        });
+        $('#btn').click(function(){
+            var is_read=$('#is_read').val();
+            var bool=$('#bool').val();
+            if(bool==0){
+                alert('正在进行上一笔兑换，请稍后再试');
+                return false;
+            }
+            if(is_read==0){
+                alert('请选择兑换的卡号');
+                return false;
+            }
+            var card_point= $('#cardpoint').val();
+            var total_price= $('#total_price').val();
+            var goodsid=$('#goodsid').val();
+            var amount=$('#amount').val();
+            var cardno=$('#cardno').val();
+            if(goodsid==''){
+                alert('请选择兑换的礼品');
+                return false;
+            }
+            if(amount==''||amount==0){
+                alert('填写兑换数量');return false;
+            }
+            if(card_point<total_price){
+                alert('您的积分不足以兑换');
+                return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("PointsMan/pointExchange")}',
+                data:{cardno:cardno,goodsid:goodsid,amount:amount},
+                dataType:'json',
+                beforeSend:function(){
+                    $('#bool').val(0);
+                },
+                success:function(res){
+                    if(res.success==1){
+                       alert('兑换成功');
+                        var rempoint=card_point-total_price;
+                        $('#cardpoint').val(rempoint);
+                    }else{
+                        alert(res.msg);
+                    }
+                    $('#bool').val(1);
+                }
+            })
+        })
+    })
+    function intOnly(obj){
+        obj.value=obj.value.replace(/[^\d]/g,'');
+    }
+</script>
+</body>
+</html>

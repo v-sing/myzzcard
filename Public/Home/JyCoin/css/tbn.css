@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* CSS Document */
+*{ padding:0; margin:0;-webkit-text-size-adjust: none;}
+li,ul{ list-style:none;}
+body{ font-family:'微软雅黑';font-size:16px;color:#333; margin:0 auto; padding:0 0; background:#fff;}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{zoom:1;}
+a:hover{ text-decoration:none;}
+a:link,a:visited{ text-decoration:none;}
+
+.top{ width:100%; border-bottom:1px solid #ddd; overflow:hidden; position:fixed; top:0; background:#fff;}
+.top span{ width:32%; text-align:center; display:block; float:left; font-size:1rem; padding:4% 0; margin:0 9%;color:#666; font-weight:600;}
+
+.center{ width:90%; overflow:hidden;padding:0 5%; margin-top:12%; }
+.center ul{ padding:3% 0; overflow:hidden; border-bottom:1px solid #ddd;}
+.center ul li{ color:#8d8fa1; font-size:0.875rem; line-height:2rem;overflow:hidden;}
+.center ul li span{ display:block;}
+
+
+.center_2{ width:90%; overflow:hidden;padding:0 5%; margin-top:12%; }
+.center_2 ul{ padding:3% 0; overflow:hidden; border-bottom:1px solid #ddd;}
+.center_2 ul li{ color:#8d8fa1; font-size:0.875rem; line-height:2rem;overflow:hidden;}
+.center_2 ul li span{ display:block;}

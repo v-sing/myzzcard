@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>物业小区区域分配</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+    .sidebar-nav {padding: 9px 0;}
+    @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<div class="dv">
+        <form id="form1" class="form-inline definewidth m20" action="{:U('System/allocateDo')}" method="get" style="border: 1px solid #d6d6d6;padding: 5px;margin-top:10px;">
+            <input type="hidden" name="pname" value='{$pname}' id="pname"/>
+            <span style="font-weight: bold;font-size:16px;">小区分配</span><br/><br/>
+            <div style="color:#ff0700;margin-bottom:15px;">说明：先选择你所在的城市，之后在认真选择你所在物业下辖的小区，如有新增小区请与至尊联系</div>
+            物业所在城市:
+            <select name="cityname" id="cityname">
+                <option value="">请选择所在城市</option>
+                <volist name="citylist" id="vo">
+                    <option value="{$vo.cityname}">{$vo.cityname}</option>
+                </volist>
+            </select>
+            &nbsp;&nbsp;&nbsp;下辖小区
+            <select name="areaname" id="areaname">
+                <option value="" >请选择小区名称</option>
+            </select>
+            <button type="submit" class="btn btn-mini btn-primary" id="sub">分配</button>
+        </form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th>所在城市</th><th>小区名称</th><th>所属物业</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="key">
+	     <tr>
+            <td>{$vo.cityname}</td><td>{$vo.areaname}</td><td>{$vo.pname}</td>
+        </tr>
+    </volist>
+</table>
+<div class="inline pull-right page sabrosus">{$page}</div>
+    </div>
+<script>
+    $(function(){
+        $('#cityname').change(function(){
+            var cityname=$(this).val();
+            if(cityname=='') return;
+            $.ajax({
+                type:'POST',
+                url:'getArea',
+                data:{cityname:cityname},
+                success:function(res){
+                    res=$.parseJSON( res );
+                    if(res.status==1){
+                        $('#areaname').html(res.html);
+                        $('#sub').attr('disabled',false);
+                    }else{
+                        $('#sub').attr('disabled',true);
+                        alert(res.msg);
+                    }
+                }
+            });
+        })
+        $('#form1').submit(function(){
+            var pname=$('#pname').val();
+            var areaname=$('#areaname').val();
+            var confirm=window.confirm('将小区：'+areaname+'分配至物业公司：'+pname+'下？');
+            if(confirm==false) return false;
+        })
+    })
+</script>
+</body>
+</html>

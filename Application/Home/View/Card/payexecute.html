@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>卡充值执行</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .tb-box{overflow-y:auto; width:100%;min-height:120px;max-height:300px;}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $('#getbay').click(function(){
+            var cardno = $.trim($('#cardno').val());
+            var hidecardno=$.trim($('#hidecardno').val());
+            var customid = $.trim($('#customid').val());
+            if(customid==''){
+                alert('请选择要充值的会员');
+                return false;
+            }
+            if(hidecardno!=''){
+                alert('此卡已经读取');
+                return false;
+            }
+            var type='00';
+            var status='Y';
+            $.ajax({
+                type:'POST',
+                url:'{:U("Card/getcardpay")}',
+                data:{cardno:cardno,hidecardno:hidecardno,type:type,customid:customid,status:status},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        var data=eval(res.data);
+                        var rese='<thead><tr><th></th><th>卡号</th><th>卡余额</th><th>会员编号</th><th>会员名称</th><th>卡状态</th></tr></thead>'; 
+                            var xstr=data['cardno'];
+                            rese+='<tr id='+xstr+' onclick=ckcardno("'+xstr+'")><td>1</td><td>'+xstr+'</td><td>'+data['cardbalance']+'</td><td>'+data['customid']+'</td><td>'+data['namechinese']+'</td><td>'+data['status']+'</td></tr>';
+                        $('#lists').html(rese).show();
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#delcardbay').click(function(){
+            $('#hidecardno').val('');
+            var rese='<thead><tr><th></th><th>卡号</th><th>卡余额</th><th>会员编号</th><th>会员名称</th><th>卡状态</th></tr></thead>'; 
+            $('#lists').html(rese).show();
+        });
+        $('#addcarbay').click(function(){
+            var permit='{$permit}';
+            var cardno = $.trim($('#cardno').val());
+            var hidecardno=$.trim($('#hidecardno').val());
+            var realamount=$.trim($('#realamount').val());
+            var totalmoney=$.trim($('#totalmoney').val());
+            var customid = $.trim($('#customid').val());
+            if(customid==''){
+                alert('请选择要充值的会员');
+                return false;
+            }
+            if(cardno==''){
+                alert('磁条卡卡号不能为空');
+                return false;
+            }
+            if(hidecardno==''){
+                alert('没有选择的数据，无法充值执行');
+                return false;
+            }
+            if(realamount==''){
+                alert('卡片充值金额为空，无法充值执行！');
+                return false;
+            }
+            if(totalmoney < realamount){
+                alert('充值金额已超过充值单余额，请修改!');
+                return false;
+            }
+            if(permit==0){
+                if(totalmoney>5000){
+                    alert('充值金额不能大于5000元');
+                    return false;
+                }
+                if(realamount>5000){
+                    alert('实收金额不能大于5000元');
+                    return false;
+                }
+            }
+            document.form3.submit();
+        });
+        $('#btn').click(function(){
+            var cname= $.trim($('#cname').val());
+            var customsid= $.trim($('#customsid').val());
+            var startdate= $.trim($('#startdate').val());
+            var enddate = $.trim($('#enddate').val());
+            var purchaseid = $.trim($('#purchaseid').val());
+            var tradeflag   = 1;
+            var flag = 1;
+            if(cname==''&&customsid==''&&startdate==''&&enddate==''&&purchaseid==''){
+                alert('请输入选择条件');return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("Card/getcustompl")}',
+                data:{cname:cname,customsid:customsid,purchaseid:purchaseid,startdate:startdate,enddate:enddate,tradeflag:tradeflag,flag:flag},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        var data=eval(res.data);
+                        var rese='';    
+                        for(var i=0;i<data.length;i++){
+                            var xstr=data[i]['purchaseid'];
+                            rese+='<tr id='+xstr+' onclick=ckstr("'+xstr+'")><td style="width:160px">'+xstr+'</td><td style="width:160px">'+data[i]['customid']+'</td><td style="width:160px">'+data[i]['namechinese']+'</td><td style="width:160px">充值单</td><td style="width:160px">'+data[i]['totalmoney']+'</td></tr>';
+                        }
+                        $('#list').html(rese).show();
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#btns').click(function(){
+            var xcname= $.trim($('#xcname').val());
+            var xcustomsid= $.trim($('#xcustomsid').val());
+            var cpurchaseid= $.trim($('#xpurchaseid').val());
+            var totalmoney= $.trim($('#xtotalmoney').val());
+            $('#customid').val(xcustomsid);
+            $('#cuname').val(xcname);
+            $('#cpurchaseid').val(cpurchaseid);
+            $('#totalmoney').val(totalmoney);
+            $('#cardnumber').val(1);
+            if(xcname!='null'){
+                $('#xcname').val(xcname);
+            }else{
+                $('#xcname').val('');
+            }
+        });
+        $('#realamount').focus(function(){
+            var czje=$('#totalmoney').val();
+            var cznum=$('#cardnumber').val();
+            if(czje=='' || cznum==''){
+                $('#realamount').val();
+            }else{
+                var csje=czje/cznum;
+                $('#realamount').val(csje);
+            }
+        });
+    })
+    function ckstr(strs){
+        var table = document.getElementById(strs);
+        document.getElementById('xcname').value=table.cells[2].innerHTML;
+        document.getElementById('xcustomsid').value=table.cells[1].innerHTML;
+        document.getElementById('xpurchaseid').value=table.cells[0].innerHTML;
+        document.getElementById('xtotalmoney').value=table.cells[4].innerHTML;
+        //table.style.backgroundColor='blue';
+    }
+    function ckcardno(strck){
+        document.getElementById('hidecardno').value = strck;
+    }
+    </script>
+<div  class="dv">
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">充值金额选择</h4>
+        </div>
+        <form class="form-inline definewidth m20" action="{:U("Card/getcustompl")}" method="post">日期:
+            <input type="text" name="startdate" id="startdate" class="abc input-default" style="width:90px;"/>--<input type="text" name="enddate" id="enddate" class="abc input-default" style="width:90px; margin-right:5px;"/>
+            <input type="text" name="cname" id="cname" style="width:90px; margin-right:5px;" placeholder="会员名称"/>
+            <input type="text" name="customsid" id="customsid" style="width:110px; margin-right:5px;" placeholder="会员编号"/>
+            <input type="text" name="purchaseid" id="purchaseid" style="width:120px; margin-right:2px;" placeholder="充值单号"/>
+            <input type="button" value="查询" class="btn btn-primary" id="btn"/>
+        </form>
+            <table class="table table-bordered table-hover definewidth m10">
+                <thead>
+                    <tr>
+                        <th style="width:170px">充值单号</th>
+                        <th style="width:160px">会员编号</th>
+                        <th style="width:160px">会员名称</th>
+                        <th style="width:160px">类型</th>
+                        <th style="width:160px">充值单金额</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td colspan="5">
+                        <div class="tb-box"><table id="list"></table>
+                    </div></td>
+                </tr>
+            </table>
+            <form class="form-inline definewidth m20" action="{:U("Card/getcustompl")}" id="form2" method="post">
+           		 选中值:<input type="text" name="xpurchaseid" id='xpurchaseid' style="width:130px; margin-right:5px;" placeholder="充值单号"/>
+            	<input type="text" name="xcustomsid" id='xcustomsid' value='' style="width:110px; margin-right:5px;" placeholder="会员编号"/>
+            	<input type="text" name="xcname" id='xcname' value='' style="width:90px; margin-right:5px;" placeholder="会员名称"/>
+            	<input type="text" name="xtotalmoney" id='xtotalmoney' value='' style="width:110px; margin-right:7px;" placeholder="充值单金额"/>
+            	<div class="modal-footer">
+                	<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                	<button type="submit" class="btn btn-primary" id="btns" data-dismiss="modal">确定</button>
+            	</div>
+            </form>
+    </div>
+</div>
+
+<form name="form3" method="post" action="{:U("Card/payexecute")}" class="form-inline definewidth m10" style="border: 1px solid #D6D6D6;padding: 5px;">
+	<input type="hidden" name="is_read" value="0" id="is_read"/>
+	<input type="hidden" value="" name="type" id="type">
+	<input type="hidden" name="cardflag" id="cardflag" value="0"> 
+	购卡编号:<input type="text" name="cpurchaseid" value="{$purchaseid}" id="cpurchaseid" class="abc input-default un-write" readonly="true" style="width:140px; margin-right:5px;"/> 
+	<button class="btn btn-mini btn-primary" data-toggle="modal" data-target="#myModal">选择</button> 
+	会员编号:<input type="text" name="customid" value="{$customid}" id="customid" class="abc input-default un-write" readonly="true" style="width:120px; margin-right:5px;"/><br/><br/> 
+	会员名称:<input type="text" name="cuname" id='cuname' value='{$cuname}' class='un-write' readonly="true" style="width:90px; margin-right:7px;" placeholder="会员名称"/> 
+	充值单余额:<input type="text" value="{$totalmoney}" name="totalmoney" class='un-write' readonly="true" id="totalmoney" style="width:120px; margin-right:5px;"/>
+	充值金额:<input type="text" value="{$realamount}" name="realamount" id="realamount" style="width:120px; margin-right:5px;" onkeyup="clearNoNum(this)"/><br/><br/> 
+	充值卡片数量:<input type="text" value="{$cardnumber}" name="cardnumber" id="cardnumber" style="width:120px; margin-right:5px;" onkeyup="intOnly(this)"/>  
+	磁条卡卡号:<input type="text" value="{$cardno}" name="cardno" id="cardno" style="width:160px; margin-right:5px;"/>
+	赠送至尊币:<input type="text" value="{$zszzb}" name="zszzb" id="zszzb" style="width:140px; margin-right:5px;" onkeyup="intOnly(this)"/>
+	<input type="hidden" name="hidecardno" value="" id="hidecardno"/>
+<br/><hr/>
+	<input type="button" class="btn btn-mini btn-primary" value="读取充值卡号" style="margin-right:10px;" id='getbay'/>
+    <input type="button" class="btn btn-mini btn-danger" value="移除卡" style="margin-right:10px;" id='delcardbay'/>
+    <input type="button" class="btn btn-mini btn-primary" value="充值执行" id='addcarbay'/>
+</form>
+    <table class="table table-bordered table-hover definewidth m10" id="lists">
+    <thead>
+        <tr> 
+            <th></th>
+            <th>卡号</th>
+            <th>卡余额</th>
+            <th>会员编号</th>
+            <th>会员名称</th>
+            <th>卡状态</th>
+        </tr>
+        </thead>
+    </table>
+    </div>
+</body>
+</html>

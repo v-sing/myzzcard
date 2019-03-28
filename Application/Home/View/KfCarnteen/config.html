@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link href="__PUBLIC__/kfcarnteen/else.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+<script>
+	$(function(){
+		$('#refund').click(function(){
+			window.location.href="{:U('KfCarnteen/refund')}";
+		})
+		$('#set').click(function(){
+			window.location.href="{:U('KfCarnteen/setDishes')}";
+		})
+	})
+</script>
+
+</head>
+
+<body>
+
+
+		
+    	<div class="top ">
+        	<ul>
+            	<li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png" onclick="javascript:window.history.back()"/></li>
+                <li class="text_center_02">点菜</li>
+                
+            </ul>
+        </div>
+    
+    	
+        <div class="main" style="max-height:560px; overflow-y:scroll;">
+        	<ul>
+            	<li style=" margin-left:0px;" id="set">
+                	<div class="bg" style=" background:#8789c3;">
+                        <img src="__PUBLIC__/kfcarnteen/img/else_set.png" style=" display:block; margin:auto;"/>
+                        <span style="color:#fff; margin-top:20px;font-size:26px;">设置菜品</span>
+                    </div>
+            
+                </li>
+                
+                <li>
+                	<div class="bg" style=" background:#35acc5;" id="refund">
+                        <img src="__PUBLIC__/kfcarnteen/img/else_back.png" style=" display:block; margin:auto;"/>
+                        <span style="color:#fff; margin-top:20px;font-size:26px;">退菜处理</span>
+                    </div>
+                </li>
+                
+                <li>
+                	<div class="bg" style=" background:#d56f62;">
+                        <img src="__PUBLIC__/kfcarnteen/img/else_day.png" style=" display:block; margin:auto;"/>
+                        <span style="color:#fff; margin-top:20px;font-size:26px;">日结算</span>
+                    </div>
+                </li>
+                
+                <li>
+                	<div class="bg" style=" background:#6eb78d;">
+                        <img src="__PUBLIC__/kfcarnteen/img/else_yjya.png" style=" display:block; margin:auto;"/>
+                        <span style="color:#fff; margin-top:20px;font-size:26px;">应急预案</span>
+                    </div>
+                </li>
+                
+            </ul>
+            
+            
+           
+        </div>
+    
+    
+       
+    
+
+</body>
+</html>
+

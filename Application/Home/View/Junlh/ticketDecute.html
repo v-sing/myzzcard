@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>君邻会扣劵</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+    </style>
+</head>
+<body>
+<div  class="dv">
+    <form class="form-inline definewidth m20" action="{:U('Junlh/ticketDecute')}" method="post">
+        <input type="text" name="cname"  class="abc input-default" value="{$cname}" style="width:100px;margin-right:10px;" placeholder="姓名"/>
+        <input type="text" name="linktel" style="width:180px; margin-right:10px;" placeholder="联系电话" value="{$linktel}"/>
+        <input type="text" name="cardno" style="width:180px; margin-right:10px;" placeholder="至尊卡号" value="{$cardno}"/>
+        <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    </form>
+    <table class="table table-bordered table-hover definewidth m10" >
+        <thead>
+        <tr>
+            <th style="width:100px;text-align: center;">姓名</th>
+            <th style="width:100px;text-align: center;">电话</th>
+            <th style="width:200px;text-align: center;">至尊卡号</th>
+            <th style="width:200px;text-align: center;">劵名称</th>
+            <th style="width:50px;text-align: center;">劵剩余数量</th>
+            <th style="width:50px;text-align: center;">扣除数量</th>
+            <th style="width:100px;text-align: center;">消费酒店</th>
+            <th style="width:100px;text-align: center;">操作</th>
+        </tr>
+        </thead>
+        <volist name="list" id="vo" key="k">
+            <tr>
+                <td style="width:100px;text-align: center;">{$vo.cname}</td>
+                <td style="width:100px;text-align: center;">{$vo.linktel}</td>
+                <td style="width:200px;text-align: center;" id="c_{$k}">{$vo.cardno}</td>
+                <td style="width:200px;text-align: center;" id="q_{$k}">{$vo.quanname}</td>
+                <td style="width:50px;text-align: center;" id="a_{$k}">{$vo.amount}</td>
+                <td style="width:50px;text-align: center;">
+                    <input type="text" name="name" id="i_{$k}"  class="abc input-default" value="" style="text-align:center;width:30px;" onkeyup="intOnly1(this)"/>
+                <input type="hidden" id="qu_{$k}" value="{$vo.quanid}"/>
+                </td>
+                <td style="width:100px;text-align: center;">
+                    <select name="panterid" id="p_{$k}">
+                        <option value="-1">请选择消费商户</option>
+                        <volist name="panters" id="v">
+                            <option value="{$v.panterid}">{$v.pname}</option>
+                        </volist>
+                    </select>
+                </td>
+                <td style="width:100px;text-align: center;">
+                    <input type="button"  class="btn btn-mini btn-primary" value="扣劵"  onclick="decute('i_{$k}')"/>
+                </td>
+            </tr>
+        </volist>
+        </table>
+</div>
+<script type="text/javascript">
+    function intOnly1(obj){
+        obj.value=obj.value.replace(/^(0\d?)|[^\d]/g,'');
+    }
+    function decute(id){
+        if(id=='') return;
+        var idx=id.split('_')[1];
+        var decuteNum= $.trim($('#'+id).val());
+        var remindNum=$('#a_'+idx).text();
+        if(decuteNum==''||decuteNum==0){
+            alert('请输入扣劵数量');
+            return;
+        }
+        if(parseInt(decuteNum)>parseInt(remindNum)){
+            alert('扣劵数量大于劵余额');
+            return;
+        }
+        var panterid=$('#p_'+idx).val();
+        if(panterid=='-1'){
+            alert('请选择消费商户');
+            return;
+        }
+        var pname=$('#p_'+idx+' option:checked').text();
+        var quanname=$('#q_'+idx).text();
+        var cardno=$('#c_'+idx).text();
+        var quanid=$('#qu_'+idx).val();
+        var msg="扣除至尊卡号："+cardno+"\n扣劵名称："+quanname+"\n扣劵数量："+decuteNum+"\n消费商户："+pname;
+        if(window.confirm(msg)==true){
+            $.ajax({
+                type:'post',
+                dateType:'json',
+                data:{cardno:cardno,quanid:quanid,decutenum:decuteNum,panterid:panterid},
+                url:'ticketDecuteDo',
+                success:function(res){
+                    res=eval('(' + res + ')');
+                    if(res.status==1){
+                        remindNum=remindNum-decuteNum;
+                        if(remindNum==0){
+                            $('#'+id).parent('tr').remove();
+                        }else{
+                            $('#a_'+idx).text(remindNum);
+                        }
+                    }
+                    alert(res.codemsg);
+                }
+            });
+        }
+        //alert(idx);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jQuery Easy UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/hotel/extreme.js" ></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+
+</head>
+<body style="padding:6px;">
+<table id="box">
+</table>
+<div style="visibility:hidden" id="__box">
+	<div id="tb" style="padding:4px;height:auto;display: none;">
+        <div style="padding:4px">
+            交易时间：<input  name="start" class="easyui-datebox" style="width:140px;" value="<?php echo date('Y-m-01',time());?>">
+            &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;至：<input  name="end" class="easyui-datebox" style="width:140px;">
+        </div>
+  	    <div style="padding:4px">
+  	        商户编号：<input  name="panterid" class="easyui-textbox" style="width:140px;">
+  	        &nbsp;&nbsp;&nbsp;&nbsp;商户名称：<input  name="pname" class="easyui-textbox" style="width:140px;">
+  	    </div>
+  	    <div style="padding:4px">
+  	        会员名称：<input  name="cuname" class="easyui-textbox" style="width:140px;">
+  	         &nbsp;&nbsp;&nbsp;&nbsp;会员电话：<input  name="linktel" class="easyui-textbox" style="width:140px;">
+  	    </div>
+  	    <div style="padding:4px">
+  	        交易类型：<select  class="easyui-combobox" style="width:140px;" name='tradetype' id='tradetype'>
+                <option value="">交易类型</option>
+                <foreach name='tradetype' item="vo" key="k" >
+                  	<option value="{$k}">{$vo}</option>
+                </foreach>
+            </select>
+            &nbsp;&nbsp;&nbsp;
+            至尊卡号：<input  name="cardno" class="easyui-textbox" style="width:140px;">
+  	 		<span style="margin-left:300px;">
+  	            <a href="#" class="easyui-linkbutton" iconCls="icon-search"  onclick="obj.search();">查询</a>
+  	            <a href="{:U('Hotels/newConsume_excel')}" target="_blank" class="easyui-linkbutton" data-options="iconCls:'icon-redo'" >导出</a>
+  	        </span>
+        </div>
+	</div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        //输入卡号判断该卡号是否是该酒店的卡
+        $("input",$("#cutcardno").next("span")).blur(function(){
+            var cardno= $.trim($('#cutcardno').textbox("getValue"));
+            var cate= $('#cuttype').combobox("getValue");
+            if(cate!=02){
+                $('#quan').hide();
+                return;
+            }
+            getCards(cardno);
+            if(cate=='02'){
+                getQuanBycardno(cardno);
+            }
+        })
+    });
+
+    //通过卡号判断该卡是否是该受理酒店的卡
+    function getCards(cardno){
+        $.ajax({
+            type:'POST',
+            data:{cardno:cardno},
+            dataType:'json',
+            url:'getCards',
+            success:function(data){
+                if(data.status==0){
+                    alert(data.msg);
+                    return false;
+                }
+            }
+        });
+    }
+
+    //通过卡号获取券相关信息
+    function getQuanBycardno(cardno){
+        $.ajax({
+            type:'POST',
+            data:{cardno:cardno},
+            dataType:'json',
+            url:'getQuanByCardno',
+            success:function(res){
+                if(res.status==1){
+                    $('#quanid').html(res.html);
+                    $("#quanid").combobox({});
+                }else{
+                    alert(res.msg);
+                }
+                $('#quan').show();
+            }
+        })
+    }
+</script>
+</body>
+</html>

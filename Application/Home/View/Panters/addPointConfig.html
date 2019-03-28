@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加派送</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;  }
+        .sidebar-nav {padding: 9px 0;  }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+     	#remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+    	#key{margin:0;}
+    	#remind #key li:hover{background-color:#ccc;cursor: pointer;}
+        select{display:inline-block;}
+
+		.tabBar {}
+		.tabBar span {background-color: #f5f5f5;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px; padding-bottom: 4px;padding-top: 8px;margin-bottom: 10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;}
+		.tabBar span.current{background-color: #222;color: #fff;margin-bottom: 10px;}
+		.tabCon {display: none;}
+		.nume{margin: 0 0 5px;}
+
+    </style>
+    <script type='text/javascript'>
+    	$(document).click(function(){
+            $("#remind").css("display","none");
+        });
+		function autoComplete(value){
+	        $.ajax({
+	            type:'GET',
+	            url:'{:U("Common/getComplete")}',
+	            data:{keys:value},
+	            dataType:'json',
+	            success:function(data){
+	                $('#remind').find('ul').html('');
+	                 if(typeof(data)=='object'){
+	                     var childObj='';
+	                     for(var i=0;i<data.length;i++){
+	                         childObj+='<li style="list-style:none;" onclick="addVal(this,'+"'pname','pid','brandid'"+',\''+data[i].panterid+'\')">'+data[i].pname+'</li>';
+	                     }
+	                     $('#remind').css('display','block');
+	                     $('#remind').find('ul').append(childObj);
+	                     if($('#remind').find('ul').height()<180){
+	                         var height=$('#remind').find('ul').height();
+	                         $('#remind').height(height);
+	                     }else{
+	                         $('#remind').height(180);
+	                     }
+	                }else{
+	                    $('#remind').css('display','none');
+	                }
+	            }
+	        })
+	    }
+		function addVal(a,id,id2,id3,pid){
+            if(pid=='') return;
+            $.ajax({
+                type:'post',
+                url:'{:U("Common/getPanterBrands")}',
+                data:{panterid:pid},
+                dateType:'html',
+                success:function(res){
+                    $('#'+id3).html(res);
+                }
+            })
+		    var value=$(a).text();
+		    $('#'+id2).val(pid);
+		    $('#'+id).val(value);
+		    $(a).parent().parent().css('display','none');
+		}
+        function intOnly1(obj){
+            obj.value=obj.value.replace(/^(0\d?)|[^\d]/g,'');
+        }
+	</script>
+	</head>
+<body>
+<div class="dv">
+	<div class="nume">
+		<div id="tab_xuan" class="choice m10  table definewidth" >
+		<form method="post" id="form1">
+				<table class="table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">积分赠送方式</td>
+                        <td>
+                            <label><input type="radio" name="sendtype" value="1" />充值送积分</label>
+                            <label><input type="radio" name="sendtype" value="2" checked="true"/>消费送积分</label>
+                        </td>
+                    </tr>
+                    <tr>
+						<td style="width:150px;text-align:right;background-color:#f5f5f5;">商户名称</td>
+						<td>
+							<div>
+								<input id="pname" type="text" onkeyup="autoComplete(this.value)"  autocomplete="off" placeholder="请输入你想要查询的机构名称" name="pname"/>
+							</div>
+							<div id="remind">
+								 <ul id="key"></ul>
+							</div>
+						</td>
+					</tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">申请机构/商户编号</td>
+                        <td><input id="pid" type="text"  readonly="true" name="panterid"/></td>
+                    </tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">赠送比例（小数）</td>
+						<td>
+							<input id="zsrate" type="text"   name="zsrate" onkeyup="clearNoNum(this)"/>
+						</td>
+					</tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">有效期（单位：月）</td>
+                        <td>
+                            <input id="validity" type="text"  name="validity" onkeyup="intOnly1(this)"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">积分类型</td>
+                        <td>
+                            <label><input type="radio" name="type" value="1" checked="true"/>通用积分</label>
+                            <label><input type="radio" name="type" value="2"/>专用积分</label>
+                        </td>
+                    </tr>
+                    <tr id="mark" style="display:none;">
+                        <td style="text-align:right;background-color:#f5f5f5;">卡段</td>
+                        <td>
+                            <input id="brandid" type="text"  name="brandid" onkeyup="intOnly1(this)"/>
+                        </td>
+                    </tr>
+				</table>
+				<table class=" table-bordered  table-hover " style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;border-top-left-radius: 0;border-top-right-radius: 0;width:100%;border-width: 0 1px 1px 0;">
+					<tr>
+						<td colspan="2" style="padding-left:150px;background-color:#f5f5f5;">
+							<button type="submit" class="btn btn-primary" type="button">添加</button>&nbsp;&nbsp;
+							<a type="button" class="btn btn-success" name="backid" id="backid" href="__URL__/PointConfig">返回列表</a>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+
+	</div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#form1').submit(function(){
+            var sendtype= $.trim($(':radio[name="sendtype"]').val());
+            var panterid= $.trim($('#pid').val());
+            var zsrate=$.trim($('#zsrate').val());
+            var validity= $.trim($('#validity').val());
+            var type=$(':radio[name="type"]').val();
+            if(sendtype==''){
+                alert('赠送方式必选');
+                return false;
+            }
+            if(panterid==''){
+                alert('商户必填必填');
+                return false;
+            }
+            if(zsrate==''){
+                alert('赠送比例必填');
+                return false;
+            }
+            if(validity==''){
+                alert('有效期必填');
+                return false;
+            }
+            if(type==''){
+                alert('积分类型必选');
+                return false;
+            }
+        })
+        $(':radio[name="sendtype"]').click(function(){
+            var sendtype=$(this).val();
+            if(sendtype==1){
+                $(':radio[name="type"]:eq(0)').attr('disabled',true);
+                $(':radio[name="type"]:eq(1)').attr('checked',true);
+                $('#validity').attr('disabled',true).val(0);
+                $('#mark').show();
+            }else{
+                $(':radio[name="type"]:eq(0)').attr('disabled',false);
+                $(':radio[name="type"]:eq(0)').attr('checked','1');
+                $('#validity').attr('disabled',false).val('');
+                $('#mark').hide();
+            }
+        })
+    })
+</script>
+</body>
+</html>

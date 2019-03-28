@@ -1,0 +1,346 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>其他功能</title>
+	<link href="__PUBLIC__/kfcarnteen/else.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+	<script src="__PUBLIC__/kfcarnteen/json2.js"></script>
+	<style>
+	/*计算器*/
+		#container{width:210px;margin:0px auto;background:white;/*border:2px solid #99ccff;*/border-radius:5px; padding-top:2px;}
+		#container h3{text-align:center;margin-top:5px;}
+		.text{width:210px;border:1px solid #c2c2c2;height:50px;border-radius:5px;margin:10px; padding:0 5px;font-size:24px;text-align:right;background:#ffffff;}
+		.buttons{margin:5px 5px 0 5px;position:relative;}
+		.button{width:63px;height:40px;border:1px solid #ddd;border-radius:1px;font-weight:bold;color:#1e395b;background:#eaf1f9; margin-bottom:5px;}
+		.button:hover{background:#ffe77c;}
+		/*.ling{width:145px;}*/
+	</style>
+</head>
+<body>
+<div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;"></div>
+<!--刷卡弹窗开始-->
+<div class="tk_yue" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:20%; background:#fff; padding-bottom:3%; display:none;">
+	<span class="wxts" style=" width:94%; padding:3% 3%;"><span>温馨提示</span><img src="__PUBLIC__/kfcarnteen/img/tk_off.png" class="off" style=" vertical-align:middle; float: right;"/></span>
+	<div class="meun" style="margin-top:3%;">
+		<ul style=" width:60%; margin-left:24%; padding:6% 0 4% 0;">
+			<li><img src="__PUBLIC__/kfcarnteen/img/card_icon.png" style="vertical-align:middle; display:inline-block; width:48px;"/></li>
+			<li style=" font-size:30px; margin-left:4%; vertical-align:middle; display:inline-block; padding-top: 8px;" id="prompt"></li>
+		</ul>
+	</div>
+</div>
+<!--刷卡弹窗结束-->
+
+<!--菜品设置输入密码开始-->
+<div class="tk_yue_password" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:10%; background:#fff;display:none;">
+	<span class="tk_off"><span style="display:inline-block;text-align:center; color:#fff; font-size:24px;">设置密码</span><img src="__PUBLIC__/kfcarnteen/img/tk_off.png" class="off"/></span>
+	<span style=" color:#FF0004; font-size:18px; text-align:center; display:block; margin-top:20px; " ><img src="__PUBLIC__/kfcarnteen/img/warn.png" style=" vertical-align:middle;"/><span id="message">请输入密码</span></span>
+	<span class="password" style=" width:94%; display:block; font-size:24px; text-align:center;"><input type="password" id="text" style="text-align:center;" maxlength="8"/></span>
+	<!--计算器开始-->
+	<div id="container" style=" padding-bottom:20px;" >
+		<form name="computer">
+			<div class="buttons">
+				<input type="button" value="1" class="button" id="1" onClick="show(this)">
+				<input type="button" value="2" class="button" id="2" onClick="show(this)">
+				<input type="button" value="3" class="button" id="3" onClick="show(this)">
+
+				<input type="button" value="4" class="button" id="4" onClick="show(this)">
+				<input type="button" value="5" class="button" id="5" onClick="show(this)">
+				<input type="button" value="6" class="button" id="6" onClick="show(this)">
+
+				<input type="button" value="7" class="button" id="7" onClick="show(this)">
+				<input type="button" value="8" class="button" id="8" onClick="show(this)">
+				<input type="button" value="9" class="button" id="9" onClick="show(this)">
+
+				<input type="button" value="0" class="button" id="0" onClick="show(this)">
+				<input type="button" value="删除" class="button" id="dele" onClick="funback()">
+				<input type="button" value="确定" class="button" id="queding">
+
+			</div>
+		</form>
+	</div>
+	<!--计算器结束-->
+</div>
+<!--菜品设置输入密码结束-->
+<div class="top ">
+	<ul>
+		<li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png"/></li>
+		<li class="text_center_02">点菜</li>
+	</ul>
+</div>
+<div class="main" style="max-height:560px; overflow-y:scroll;">
+	<ul>
+		<li style=" margin-left:0px;">
+			<div class="bg" style=" background:#8789c3;">
+				<img src="__PUBLIC__/kfcarnteen/img/else_set.png" style=" display:block; margin:auto;padding-top:40px;"/>
+				<span style="color:#fff; margin-top:20px;font-size:26px;">设置菜品</span>
+			</div>
+		</li>
+		<li>
+			<div class="bg" style=" background:#35acc5;">
+				<img src="__PUBLIC__/kfcarnteen/img/else_back.png" style=" display:block; margin:auto;padding-top:40px;"/>
+				<span style="color:#fff; margin-top:20px;font-size:26px;">退菜处理</span>
+			</div>
+		</li>
+		<li>
+			<div class="bg" style=" background:#d56f62;">
+				<img src="__PUBLIC__/kfcarnteen/img/else_day.png" style=" display:block; margin:auto;padding-top:40px;"/>
+				<span style="color:#fff; margin-top:20px;font-size:26px;">日结算</span>
+			</div>
+		</li>
+		<li>
+			<div class="bg" style=" background:#6eb78d;">
+				<img src="__PUBLIC__/kfcarnteen/img/else_yjya.png" style=" display:block; margin:auto;padding-top:40px;"/>
+				<span style="color:#fff; margin-top:20px;font-size:26px;">应急预案</span>
+			</div>
+		</li>
+	</ul>
+	<input type="hidden" id="cardno" name="cardno">
+</div>
+</body>
+<script>
+	var MWRFATL = new ActiveXObject("MWREADERRF.mwReaderRfCtrl.1"); //启用控件
+	var int;
+	var clearmsg = false;
+	var ispoint = true;
+	$(function() {
+		//返回上一级
+		$(".text_l").click(function () {
+			window.location.href = "{:U('KfCarnteen/goods')}";
+		});
+
+		//点击不同按钮调转对应的页面
+		$(".bg").click(function(){
+			var name=$(this).find("span").html();
+			if(name=='设置菜品') {
+				$("#mask").show();
+				$(".tk_yue_password").show();
+				$("#queding").click(function(){
+					var password=$("#text").val();
+					$.ajax({
+						type: 'post',
+						url:'{:U("KfCarnteen/setPassword")}',
+						data:{password:password},
+						success: function(result) {
+							if(result.status==0){
+								$("#message").html(result.msg);
+							}else{
+								$("#message").html(result.msg);
+								window.location.href = "{:U('KfCarnteen/setDishes')}";
+							}
+						}
+					});
+				});
+			}else if(name=='退菜处理'){
+				$("#mask").show();
+				$(".tk_yue").show();
+				getdata();
+			}else if(name=='日结算'){
+				window.location.href = "{:U('KfCarnteen/daySettlement')}";
+			}
+		});
+
+		//关闭刷卡或挥卡弹窗
+		$(".off").click(function(){
+			$("#mask").hide();
+			$(".tk_yue").hide();
+			$(".tk_yue_password").hide();
+			readerClose();
+			clearInterval(int);
+		});
+	});
+
+	function show(obj){
+		var data =	obj.value;
+		var text = document.getElementById("text");
+		var textvallen = text.value.length;
+		if(textvallen==8){
+			$("#message").html("管理员密码最多输入八位");
+			return false;
+		}
+		if(clearmsg){
+			clearmsg=false;
+		}
+		if(data == "+" || data == "-" || data == "*" || data == "/"){
+			ispoint = true;
+		}
+		if(data == "0" && text.value == "0"){
+			text.value = parseInt(text.value) + 0;
+		}else if(text.value == "0" && data != "+" && data != "-" && data != "*" && data != "/"){
+			text.value = parseInt(text.value) + parseInt(data);
+		}else{
+			text.value += data;
+		}
+	}
+
+	//计算结果
+	function getResult(){
+		var data = document.getElementById("text");
+		try{
+			ispoint = true;
+			data.value = eval(data.value);
+			clearmsg = true;
+		}catch(err){
+			alert("这怎么算!");
+			data.value = "0";
+		}
+	}
+
+	//点
+	function point(){
+		var p = document.getElementById("point12");
+		var text = document.getElementById("text");
+		var ispoint=true;
+
+		if(ispoint){
+			text.value += p.value;
+			ispoint = false;
+		}
+	}
+
+	//清空
+	function funclear(){
+		var a = document.getElementById("text").value = "0";
+		clearmsg = false;
+		ispoint = true;
+	}
+
+	//退格键
+	function funback(){
+		var text = document.getElementById("text");
+		if(text.value == "0" || text.value == ""){
+			text.value = "";
+		}else{
+			document.getElementById("text").value=document.getElementById("text").value.slice(0,-1);
+		}
+	}
+
+	//调用刷卡设备
+	function getdata(){
+		$("#prompt").html("请刷卡或者挥卡");
+		$("#cardno").html('');
+		readerOpen();
+		int=self.setInterval(function(){
+			var cardno=mifareOneCard();
+			if(typeof(cardno)!="undefined"&&cardno!=""){
+				$.ajax({
+					type: 'post',
+					url:'{:U("KfCarnteen/decryptCardno")}',
+					data:{cardno:cardno},
+					success: function(result) {
+						if(result){
+							var data=JSON.parse(result);
+							if(data.status!='01'){
+								$("#prompt").html(data.msg);
+							}else{
+								$("#prompt").html("刷卡成功");
+								var cardno=data.msg.cardno;
+								window.location.href = "{:U('KfCarnteen/refund')}?cardno="+cardno;
+							}
+							readerClose();
+						}
+					}
+				});
+			}
+		},2000);
+	}
+
+	//M1卡操作
+	function mifareOneCard() {
+		try {
+			//readerOpen();
+			var result = MWRFATL.openCard(1, 10);  //打开卡片,以10进制字符串显示卡号
+			if (MWRFATL.LastRet != 0) {
+				//readerClose();
+				//alert("打开卡片失败！")
+				return;
+			}
+			else {
+				//msg.value = msg.value + "打开卡片成功,卡片序列号: " + result + "\n";
+			}
+
+			result = MWRFATL.cardVerifyPassword(0, 2); //加载密码认证,此函数传入的是扇区号
+			if (MWRFATL.LastRet != 0) {
+				//readerClose();
+				//alert('验证密码失败！')
+				return;
+			}
+			else {
+				//msg.value = msg.value + "验证密码成功"+ result + "\n";
+			}
+
+			result = MWRFATL.cardReadHex(10);
+			if (MWRFATL.LastRet != 0) {
+				//readerClose();
+				//alert('读数据失败！')
+				return;
+			}
+			else {
+				//msg.value = msg.value + "读出的数据" + result + "\n";
+				//readerClose();
+				return result;
+			}
+		}
+		catch (e) {
+			alert(e);
+		}
+	}
+
+	//打开读写器
+	function readerOpen() {
+		try {
+			var version = MWRFATL.openReader(1, 9600);
+			if (MWRFATL.LastRet != 0) {
+				//msg.value = "打开读写器失败" + "\n";
+				//alert("打开读写器失败！");
+				return;
+			}
+			else {
+				//msg.value = version + "\n";
+			}
+
+			MWRFATL.readerLoadKey(0, 2, "f0f0f0f0f0f0"); //加载1扇区密码,对M1卡操作时使用加载密码认证
+			if (MWRFATL.LastRet != 0) {
+				//msg.value = msg.value + "2扇区加载密码失败" + "\n";
+				//alert("2扇区加载密码失败！");
+				return;
+			}
+		}
+		catch (e) {
+			alert(e);
+		}
+	}
+
+	//读写器鸣响
+	function readerBeep() {
+		try {
+			MWRFATL.readerBeep(1);
+			if (MWRFATL.LastRet != 0) {
+				//msg.value = msg.value + "读写器鸣响失败" + "\n";
+			}
+		}
+		catch (e) {
+			alert(e);
+		}
+	}
+
+	//关闭读写器
+	function readerClose() {
+		try {
+			var result = MWRFATL.closeReader();
+			if (MWRFATL.LastRet != 0) {
+				//msg.value = msg.value + "关闭读写器失败" + "\n";
+				//alert("关闭读写器失败！");
+				return;
+			}
+			else {
+				//msg.value = msg.value + "读写器已关闭" + "\n";
+			}
+		}
+		catch (e) {
+			alert(e);
+		}
+	}
+</script>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店礼品卡过期报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  style="padding:6px;">
+    <div>
+        <table id="giftCardList" class="easyui-datagrid" title="酒店礼品卡过期报表"  width="100%" height="765"
+               data-options="
+                                url:'getGiftCardList',
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,50,100,200],
+                                singleSelect: false,
+                                method: 'get',
+                                striped:true,
+                                rownumbers:true,
+                                toolbar:'#tb',
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                showFooter:true,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+
+            <thead>
+                <tr>
+                    <th data-options="field:'ck',checkbox:true"></th>
+                    <th data-options="field:'cardno',width:140,align:'center'">卡号</th>
+                    <th data-options="field:'cardstatus',width:80,align:'center'">卡类型</th>
+                    <th data-options="field:'customid',width:80,align:'center'">会员编号</th>
+                    <th data-options="field:'namechinese',width:150,align:'left'">会员名称</th>
+                    <th data-options="field:'linktel',width:90,align:'center'">手机号</th>
+                    <th data-options="field:'accountid',width:80,align:'center'">账户编号</th>
+                    <th data-options="field:'amount',width:80,align:'center'">账户金额</th>
+                    <th data-options="field:'enddatime',width:120,align:'center'">过期时间</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="visibility:hidden" id="__box">
+        <div id="dialog_details" class="easyui-window" closed="true" title="详情" style="width:600px;height:460px;" data-options="shadow: true,modal: true,collapsible:false">
+            <div class="easyui-panel"  style="padding:30px 60px;border:none;">
+                <form id="detailsform" method="post">
+                    <div style="margin-bottom:10px">
+                        卡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<input class="easyui-textbox"  style="width:70%;height:25px" id="relationcardno" name="relationcardno" disabled="disabled">
+                    </div>
+                    <div style="margin-bottom:10px">
+                        会员编号：<input class="easyui-textbox" style="width:70%;height:25px" id="giftcustomid" name="giftcustomid" disabled="disabled">
+                    </div>
+                    <div style="margin-bottom:10px">
+                        会员名称：<input class="easyui-textbox" style="width:70%;height:25px" id="giftnamechinese" name="giftnamechinese" disabled="disabled">
+                    </div>
+                    <div style="margin-bottom:10px">
+                        账户编号：<input class="easyui-textbox" style="width:70%;height:25px" id="giftaccountid" name="giftaccountid" disabled="disabled">
+                    </div>
+                    <div style="margin-bottom:10px">
+                        账户金额：<input class="easyui-textbox" style="width:70%;height:25px" id="giftamount" name="giftamount" disabled="disabled">
+                    </div>
+                    <div style="margin-bottom:10px">
+                        过期时间：<input class="easyui-datebox" style="width:70%;height:25px" id="overduetime" name="overduetime" disabled="disabled">
+                    </div>
+                    <div style="margin-bottom:10px">
+                        延期时间：<input class="easyui-datebox" style="width:70%;height:25px" id="defertime" name="defertime" >
+                    </div>
+                    <div>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" style="width:30%;height:32px" onclick="saveDeferInfo();">保存</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="tb" style="padding:4px;height:auto;display: none;">
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过期时间:<input class="easyui-datebox" id="startdate" name="startdate" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至:<input class="easyui-datebox" id="enddate" name="enddate" style="width:140px;"></div>
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卡号:<input class="easyui-textbox" id="cardno" name="cardno" style="width:140px;"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onClick="cardnoSearch()" style="height:21px;"></a><font color="red">(注：加号为多卡号查询)</font></div>
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会员编号:<input class="easyui-textbox" id="customid" name="customid" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会员名称:<input class="easyui-textbox" id="cuname" name="cuname" style="width:140px;"></div>
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机号:<input class="easyui-textbox" id="linktel" name="linktel" style="width:140px;">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型:<select class="easyui-combobox" id="type" name="type" style="width:140px;">
+                                                                                        <option value="1">已过期</option>
+                                                                                        <option value="2">待过期</option>
+                                                                                  </select>
+                <span style="margin-left:300px;">
+                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="doSearch()">查询</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>
+                    <?php
+                       if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['GIFTCONSUMEVOUCHER'])||$_SESSION['username']=='admin'){
+                           echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="easyui-linkbutton" iconCls="icon-cut" onClick="consume()">消费</a>';
+                              echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="easyui-linkbutton" iconCls="icon-add" onClick="defer()">延期</a>';
+                          }
+                    ?>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U('Hotels/giftCard_excel')}" class="easyui-linkbutton" data-options="iconCls:'icon-redo'">导出</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id='dialogGiftCard'   title="多卡号查询" style="display:none;"        data-options="
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        cardnoDialog();
+                    }
+                }]">
+        <table>
+            <tr>
+                <td></td>
+                <td><span style="color:red">注:多个卡号请以回车(Enter)或半角逗号分隔</span></td>
+            </tr>
+            <tr>
+                <td>卡号:</td>
+                <td><input class="easyui-textbox" data-options="multiline:true" style="width:300px;height:120px" id="cardnos" name="cardnos"></td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            var startdate="<?php echo date('Y-m-01',time());?>";
+            var enddate="<?php echo date('Y-m-d',time());?>";
+            $("#startdate").datebox("setValue",startdate);
+            $("#enddate").datebox("setValue",enddate);
+        })
+
+        //查询
+        function doSearch(){
+            var o={};
+            o.startdate=$("#startdate").datebox('getValue');
+            o.enddate=$("#enddate").datebox('getValue');
+            o.cardno=$("#cardno").textbox('getValue');
+            o.customid=$("#customid").textbox('getValue');
+            o.cuname=$("#cuname").textbox('getValue');
+            o.linktel=$("#linktel").textbox('getValue');
+            o.type=$("#type").combobox('getValue');
+            $('#giftCardList').datagrid('load',o);
+            return false;
+        }
+
+        //清空查询条件
+        function resetting(){
+            var o={};
+            o.startdate=$("#startdate").datebox('setValue','');
+            o.enddate=$("#enddate").datebox('setValue','');
+            o.cardno=$("#cardno").textbox('setValue','');
+            o.customid=$("#customid").textbox('setValue','');
+            o.cuname=$("#cuname").textbox('setValue','');
+            o.linktel=$("#linktel").textbox('setValue','');
+            doSearch();
+        }
+
+        //多卡号查询
+        function cardnoSearch(){
+            $("#dialogGiftCard").show();
+            $("#dialogGiftCard").dialog({
+                title: "添加",
+                width: 400,
+                height: 220,
+                padding:10,
+            });
+        }
+
+        //点击卡号文本框弹出多行卡号对话框
+        function cardnoDialog(){
+            var s,cardnos,newStr=""; 
+            cardnos=$("#cardnos").textbox('getValue');
+            cardnos=cardnos.replace(/\n/g,","); 
+            s=cardnos.charAt(cardnos.length-1);
+            if(s==","){
+                newStr=cardnos.substring(0,cardnos.length-1);
+                $('#cardno').textbox('setValue',newStr);
+            }else{
+                $('#cardno').textbox('setValue',cardnos);   
+            }
+            $("#dialogGiftCard").dialog('close');
+            
+        }
+
+        //消费过期礼品卡
+        function consume(){
+            var o={};
+            o.cardno = [];
+            var rows = $('#giftCardList').datagrid('getSelections');
+            if(rows.length==0){
+                return false;
+            }
+            var errMsg = '';
+            var mydate = new Date();
+            var str = "" + mydate.getFullYear()+"-";
+            str += (mydate.getMonth()+1)+"-";
+            str += mydate.getDate();
+            for(var i=0 in rows){
+                if(str<=rows[i].enddatime){
+                    errMsg ='当前记录中包含暂未过期记录\r\n不能进行批量消费！';
+                    break;
+                }
+                if(rows[i].amount<=0){
+                    errMsg ='当前记录中包含账户金额为零记录\r\n不能进行批量消费！';
+                    break;
+                }
+                o.cardno.push(rows[i].cardno);
+                confirm_msg = '您确定要对选中的记录进行消费操作吗?';
+            }
+            if(o.cardno.length==0 || errMsg != ''){
+                alert(errMsg);
+                return false;
+            }
+            if(confirm(confirm_msg)){
+                $.ajax({
+                    type: 'post',
+                    url:'{:U("Hotels/giftConsumeVoucher")}',
+                    data:o,
+                    success: function(data) {
+                        alert(data.msg);
+                        $('#giftCardList').datagrid('reload');
+                    }
+                })
+            }
+        }
+
+        //延期礼品卡
+        function defer(){
+            var rows = $('#giftCardList').datagrid('getSelections');
+            if(rows.length>0){
+                if(rows[0].cardstatus=='正常卡'){
+                    return false;
+                }
+                var  confirm_msg = '您确定要对选中的记录进行延期操作吗?';
+                if(confirm(confirm_msg)){
+                    $("#dialog_details").dialog('open');
+                    $("#relationcardno").textbox("setValue",rows[0].cardno);
+                    $("#giftcustomid").textbox("setValue",rows[0].customid);
+                    $("#giftnamechinese").textbox("setValue",rows[0].namechinese);
+                    $("#giftaccountid").textbox("setValue",rows[0].accountid);
+                    $("#giftamount").textbox("setValue",rows[0].amount);
+                    $("#overduetime").textbox("setValue",rows[0].enddatime);
+
+                }
+            }else{
+                return false;
+            }
+        }
+
+        //保存延期礼品卡信息
+        function saveDeferInfo(){
+            var mydate = new Date();
+            var str = "" + mydate.getFullYear()+"-";
+            str += (mydate.getMonth()+1)+"-";
+            str += mydate.getDate();
+            var cardno=$("#relationcardno").textbox("getValue");
+            var defertime=$("#defertime").datebox("getValue");//延期时间
+            if(defertime){
+                if(defertime<str){
+                    alert("延期时间不能小于当前时间！");
+                    return false;
+                }else {
+                    $.ajax({
+                        type: 'post',
+                        url: '{:U("Hotels/saveGiftInfo")}',
+                        data: {cardno: cardno, defertime: defertime},
+                        success: function (data) {
+                            alert(data.msg);
+                            if(data.status==1){
+                                $("#dialog_details").dialog('close');
+                                $('#giftCardList').datagrid('reload');
+                            }
+                        }
+                    })
+                }
+            }else{
+                alert("请选择时间！");
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+ <!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑订单</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes" />
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/css.css">
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Css/bootstrap-filestyle.js"></script>
+<script type="text/javascript">
+$(function(){
+
+	$(".nav p").click(function(){
+		var ul=$(".new");
+		if(ul.css("display")=="none"){
+			ul.slideDown();
+		}else{
+			ul.slideUp();
+		}
+	});
+	
+	$(".set").click(function(){
+		
+		var _name = $(this).attr("name");
+		if( $("[name="+_name+"]").length > 1 ){
+			$("[name="+_name+"]").removeClass("select");
+			$(this).addClass("select");
+		} else {
+			if( $(this).hasClass("select") ){
+				$(this).removeClass("select");
+			} else {
+				$(this).addClass("select");
+			}
+		}
+	});
+	
+	$(".nav li").click(function(){
+		var li=$(this).text();
+		$(".nav p").html(li);
+		$(".new").hide();
+		/*$(".set").css({background:'none'});*/
+		$("p").removeClass("select") ;   
+	});
+})
+</script>
+</head>
+<style type="text/css">
+	.sel select{ float:left;padding:8px 50px 8px 10px;vertical-align:middle;display:block;border:1px solid #ddd;background: url(__PUBLIC__/images/btn_2.png) no-repeat center right;background-position-x: 90%;appearance: none;-webkit-appearance: none;   /*去除chrome浏览器的默认下拉图片*/-moz-appearance: none;  /*去除Firefox浏览器的默认下拉图片*/}
+
+</style>
+<body>
+	<div class="biaoti">订单详情</div>
+    <div class="spxx">
+      <form action="{:U('Fang/order_update',array('o_id'=>$list['o_id']))}" method="post">
+        
+        <div class="b_w">商品信息</div>
+      
+         <div style=" overflow:hidden; width:100%; margin-top:20px;">
+           <div class="xinxi" style=" margin-left:0px;">
+              <div>区域公司：{$company.nameenglish}</div>
+            </div>
+    
+            <div class="xinxi" style=" margin-left:0px;">
+                <div>项目名称：{$list.nameenglish}</div>
+            </div>
+        </div>
+         <div style=" overflow:hidden; width:100%; margin-top:20px;">
+           <div class="xinxi" style=" margin-left:0px;">
+                <div>项目分期：{$list.name}</div>
+            </div>
+            <div class="xinxi" style=" margin-left:0px;">
+                  <div>商品名称：{$list.goods_name}</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <div class="spxx">
+        <div class="b_w">用户信息</div>
+        <div style=" overflow:hidden; width:100%; margin-top:20px;">
+          <div class="xinxi" style=" margin-left:0px;">姓名：{$list.o_name}(主)<span style=" color:#2d96ff; margin-left:10px;font-weight:600"><a href="{:U('Fang/update_name',array('o_id'=>$list['o_id']))}">更名</a></span> <span style="color:#ff7700;margin-left:10px;font-weight:600" id="adduser">+增加用户</span></div>
+          <div class="xinxi">手机号码：{$list.o_phone}</div>
+          <div class="xinxi">身份证号码：{$list.o_card}</div>
+          {$list.gw_name}
+          {$list.gw_phone}
+        </div>
+        <volist name="user" id="vo">
+        <div style=" overflow:hidden; width:100%; margin-top:20px;">
+          <div class="xinxi" style=" margin-left:0px;">姓名：{$vo.username}(从)</div>
+          <div class="xinxi">手机号码：{$vo.usertel}</div>
+          <div class="xinxi">身份证号码：{$vo.usercard}</div>
+        </div>
+        </volist>
+  <!-- <span style=" color:#2d96ff;margin-left:10px;font-weight:600">删除</span> -->
+    </div> 
+
+      <!--  <div style=" overflow:hidden; width:100%; margin-top:20px;">
+          <div class="xinxi" style=" margin-left:0px;">订单编号：1002345678952356</div>
+          <div class="xinxi">订单时间：2018-12-03 12:30:40</div>
+        </div>
+        
+         <div style=" width:100%; margin-top:22px;">
+          <div class="xinxi" style=" margin-left:0px;">订单编号：1002345678952356</div>
+           <div class="sel" style=" margin-left:2%; margin-top:0px;">
+                <span style=" padding-top:0px;">订单状态</span>
+                <select style=" margin-top:-8px;">
+                  <option value="volvo">已支付</option>
+                  <option value="saab">未支付</option>
+                  
+                </select>
+            </div>
+        </div>
+        <div style=" overflow:hidden; width:100%; margin-top:62px;">
+          <div class="xinxi" style=" margin-left:0px;">支付方式：支付宝</div>
+          <div class="xinxi">订单时间：2018-12-03 12:30:40</div>
+        </div>
+        
+        
+        <div style=" width:100%; margin-top:22px;">
+          
+           <div class="sel" style=" margin-top:0px;">
+                <span style=" padding-top:0px;">冻结状态</span>
+                <select >
+                  <option value="volvo">已冻结</option>
+                  <option value="saab">未冻结</option>
+                  
+                </select>
+            </div>
+        </div>
+        
+        
+        
+        
+        
+        
+    </div> -->
+      <div class="spxx">
+        <div class="b_w">订单信息</div>
+       
+        <div style=" overflow:hidden; width:100%; margin-top:20px;">
+          <div class="xinxi" style=" margin-left:0px;">订单编号：{$list.o_sn}</div>
+          <div class="xinxi">订单时间：{$list.ctime}</div>
+        </div>
+        
+         <div style=" width:100%; margin-top:22px;">
+          <div class="xinxi" style=" margin-left:0px;">订单金额：{$list.o_price}</div>
+              <!--   <span style=" padding-top:0px;">订单状态:</span>
+                <select name="o_status" style=" margin-top:-8px;">
+                  <option value="0" <?php if($list['o_status']=='0') echo "selected";?> >未支付</option>
+                  <option value="1" <?php if($list['o_status']=='1') echo "selected";?> >已支付</option>
+                  <option value="2" <?php if($list['o_status']=='2') echo "selected";?> >已完成</option>
+                  <option value="3" <?php if($list['o_status']=='3') echo "selected";?> >已取消</option>
+                </select> -->
+          <div class="xinxi">支付状态：{$list.status}</div>
+
+        </div>
+        <volist name="paylog" id="vo">
+        <div style=" overflow:hidden; width:100%; margin-top:62px;">
+          <div class="xinxi" style=" margin-left:0px;">支付方式：{$vo.type}</div>
+          <div class="xinxi">支付时间：{$vo.time}</div>
+        </div>
+        </volist>
+        
+        <div style=" width:100%; margin-top:22px;">
+             <div class="xinxi" style=" margin-left:0px;">
+                <span style=" padding-top:0px;">冻结状态：</span>
+                <select name="is_freeze" style=" width:120px;">
+                  <option value="1"  <?php if($list['is_freeze']=='1') echo "selected";?>>已冻结</option>
+                  <option value="2"  <?php if($list['is_freeze']=='2') echo "selected";?>>未冻结</option>
+                </select>
+            </div>
+        </div>        
+    </div>
+    
+    
+    <div style=" display:block; width:100%; margin-top:5%;">
+            <button style=" border:none;border:1px solid #2d96ff; background:#2d96ff; color:#fff; width:7%; line-height:2.4rem; border-radius:4px; font-size:1rem;">保存</button>
+            <button style=" border:none; background: none; border:1px solid #2d96ff;color:#2d96ff; width:7%; line-height:2.4rem; border-radius:4px; font-size:1rem; margin-left:20px;">取消</button>
+        </div>
+    </form>
+    <div class="modal fade in" id="myModaledit" hidden="hidden"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <form class="form-horizontal cardform" name="member_group_runedit" method="post" action="{:U('Fang/user_add',array('o_id'=>$list['o_id']))}">
+        <div class="modal-dialog">
+          <input type="hidden" name="auid" id="auid" value="" />
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" id="gb"  data-dismiss="modal"
+                  aria-hidden="true">×
+              </button>
+              <h4 class="modal-title" id="myModalLabel">
+                增加用户
+              </h4>
+            </div>
+            <div class="modal-body">
+
+              <div class="row">
+                <div class="col-xs-12">
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 用户姓名：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" id="au_name"  name="o_name" value="" required/>
+                      </span>
+
+                      <!-- /section:elements.form.input-icon -->
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 手机号：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" id="user_tel"  name="o_phone" value="" required/>
+                      </span>
+
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 身份证号：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" id="au_card"  name="o_card" value="" required/>
+                      </span>
+                    </div>
+                  </div>
+         
+<!-- 
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 置业顾问：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" id="au_adviser"  name="zy_name" value=""/>
+                      </span>
+
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">置业顾问手机号:</label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" id="au_phone"  name="zy_phone" value=""/>
+                      </span>
+                    </div>
+                  </div> -->
+                  <div class="space-4"></div>
+                  <div class="space-4"></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary ajax-search-form-count">
+                提交保存
+              </button>
+              <button type="button" class="btn btn-default"  id="gbb" >
+                关闭
+              </button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </form>
+    </div><!-- /.modal -->
+
+</body>
+
+<script>
+  $('#adduser').click(function(){
+     $("#myModaledit").show(300);
+  });
+
+  $(document).ready(function () {
+    
+    $("#gb").click(function () {
+        $("#myModaledit").hide(200);
+    });
+    $("#gbb").click(function () {
+        $("#myModaledit").hide(200);
+    });
+    $("#gbbb").click(function () {
+        $("#myModaledit").hide(200);
+    });
+});
+
+    
+</script>
+</html>

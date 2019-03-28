@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>挂失/解挂管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .rt{border:1px solid #eee;}
+    </style>
+</head>
+<body>
+<div  class="dv">
+<form name="form1" method="post" id="form1">
+    <input type="hidden" name="is_read" value="<if condition='$is_read eq 1'>1<else/>0</if>" id="is_read"/>
+        <input type="hidden" name="status" value="0" id="status"/>
+        <input type="hidden" name="allow_gs" value="1" id="allow_gs">
+        <input type="hidden" name="allow_jg" value="1" id="allow_jg">
+    <table class="table table-bordered table-hover m10" >
+         <tr>
+             <td style="width:200px;text-align:right;">卡号</td><td><input type="text" class="abc input-default" name="cardno" id="cardno"readonly="true"/></td>
+        </tr>
+         <tr>
+             <td style="text-align:right;">会员姓名</td><td><input type="text" name="cuname" class="abc input-default un-write" readonly="true" id="cuname"/></td>
+        </tr>
+         <tr>
+             <td style="text-align:right;">会员编号</td><td><input type="text" name="customid" class="abc input-default un-write" readonly="true" id="customid"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">卡状态</td><td><input type="text" class="abc input-default un-write" name="card_status" readonly="true" id="card_status"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">证件类型</td><td><input type="text" class="abc input-default un-write" name="personidtype" readonly="true" id="personidtype"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">证件号</td><td><input type="text" class="abc input-default un-write" name="personid" readonly="true" id="personid"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">联系电话</td><td><input type="text" class="abc input-default" value="" name="linktel" readonly="true" id="linktel"/></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:left;padding-left:185px;">
+                <input type="button" class="btn btn-mini btn-primary" value="挂失"  id="btn"/>
+                <input type="button" class="btn btn-mini btn-primary" value="解挂" style="margin-left:15px;" id="btn1"/>
+            </td>
+        </tr>
+    </table>
+    </form>
+<form class="form-inline definewidth m20" action="{:U("AfterSales/lossCard")}" method="POST">
+    <input type="text" name="cardno" value='{$cardno}' style="width:165px; margin-right:7px;" placeholder="卡号"/>
+    <input type="text" name="cuname" value='{$cuname}' style="width:70px; margin-right:7px;" placeholder="会员名称"/>
+    <input type="text" name="customid" value='{$customid}' style="width:90px; margin-right:10px;" placeholder="会员编号"/>
+    卡状态： <select name="status" style="width:83px; margin-right:7px;">
+                <option value="all">所有</option>
+                <option value="Y" <if condition="$status eq 'Y'">selected="selected"</if>>正常</option>
+                <option value="L" <if condition="$status eq 'L'">selected="selected"</if>>锁定</option>
+            </select>
+    <input type="text" name="personid" value='{$personid}' style="width:110px; margin-right:7px;" placeholder="证件号"/>
+    <input type="text" name="linktel" value='{$linktel}' style="width:110px; margin-right:7px;" placeholder="联系电话"/>
+    <button type="submit" class="btn btn-mini btn-primary" id="sub">查询</button>
+    <input type="button" value="重置" onclick="window.location='{:U("AfterSales/lossCard")}'" class="btn btn-mini btn-danger" />
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th>选择</th>
+        <th>旧卡号</th><th>会员编号</th><th>会员名称</th>
+        <th>证件号</th><th>联系电话</th><th>状态</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+        <tr>
+            <td><input type="radio" name="sel_card" value="{$vo.cardno}"/></td>
+            <td>{$vo.cardno}</td><td>{$vo.customid}</td><td>{$vo.cuname}</td><td>{$vo.personid}</td><td>{$vo.linktel}</td>
+            <td id="statusString_{$vo.cardno}">
+                <if condition="$vo.status eq 'Y'">正常卡
+                    <elseif condition="$vo.status eq 'N'"/>新卡
+                    <elseif condition="$vo.status eq 'C'"/>出库
+                    <elseif condition="$vo.status eq 'L'"/>挂失
+                    <elseif condition="$vo.status eq 'D'"/>销卡
+                    <elseif condition="$vo.status eq 'A'"/>待激活
+                    <elseif condition="$vo.status eq 'W'"/>无卡
+                    <elseif condition="$vo.status eq 'J'"/>入库
+                    <elseif condition="$vo.status eq 'T'"/>冻结
+                    <elseif condition="$vo.status eq 'G'"/>锁定
+                </if>
+            </td>
+        </tr>
+    </volist>
+</table>
+<div class="inline pull-right page">{$page}</div>
+    </div>
+<script type="text/javascript">
+    $(function(){
+        $('#btn').click(function(){
+            var cardno= $.trim($('#cardno').val());
+            var is_read= $.trim($('#is_read').val());
+            var status= $.trim($('#status').val());
+            var statusString=$.trim($('#card_status').val());
+            var allow_gs=$.trim($('#allow_gs').val());
+            if(is_read==0){
+                alert('请先查询');
+                return false;
+            }
+            if(cardno==''){
+                alert('请选择挂失卡');
+                return false;
+            }
+            if(status!='Y'){
+                alert('此卡为'+statusString+'状态，不允许挂失');
+                return false;
+            }
+            if(allow_gs==0){
+                alert('正在处理中，请稍后');
+                return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("AfterSales/lossCardDo")}',
+                data:{cardno:cardno,type:1},
+                dataType:'json',
+                beforeSend:function(){
+                    $('#allow_gs').val(0);
+                },
+                success:function(res){
+                    if(res.success==1){
+                        alert('挂失成功');
+                        $('#status').val('L');
+                        $('#statusString_'+cardno).html('挂失');
+                        $('#card_status').val('挂失');
+                    }else{
+                        alert(res.msg);
+                    }
+                    $('#allow_gs').val(1);
+                }
+            })
+        });
+        $('#btn1').click(function(){
+            var cardno= $.trim($('#cardno').val());
+            var is_read= $.trim($('#is_read').val());
+            var status= $.trim($('#status').val());
+            var statusString=$.trim($('#card_status').val());
+            var allow_jg=$.trim($('#allow_jg').val());
+            if(is_read==0){
+                alert('请先查询');
+                return false;
+            }
+            if(cardno==''){
+                alert('请选择解挂卡号');
+                return false;
+            }
+            if(status!='L'){
+                alert('此卡尚未挂起');
+                return false;
+            }
+            if(allow_jg==0){
+                alert('正在处理中，请稍后');
+                return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("AfterSales/lossCardDo")}',
+                data:{cardno:cardno,type:2},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        alert('解挂成功');
+                        $('#status').val('Y');
+                        $('#statusString_'+cardno).html('正常卡');
+                        $('#card_status').val('正常卡');
+                    }else{
+                        alert(res.msg);
+                    }
+                    $('#allow_jg').val(1);
+                }
+            })
+        })
+        $('input:radio[name="sel_card"]').change(function(){
+            var cardno= $.trim($(this).val());
+            $.ajax({
+                type:'POST',
+                url:'{:U("AfterSales/checkCustom")}',
+                data:{cardno:cardno},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        $('#cardno').val(res.data.cardno);
+                        $('#customid').val(res.data.customid);
+                        $('#cuname').val(res.data.cuname);
+                        $('#card_status').val(res.data.statusString);
+                        $('#personidtype').val(res.data.personidtype);
+                        $('#personid').val(res.data.personid);
+                        $('#status').val(res.data.status);
+                        $('#linktel').val(res.data.linktel);
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+    })
+</script>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>
+</body>
+</html>

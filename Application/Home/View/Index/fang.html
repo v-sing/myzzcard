@@ -1,0 +1,33 @@
+<div class="menu_dropdown bk_2 hide" id="fang">
+	<dl id="menu-yx" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe616;</i> 营销商品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fang/index")}" href="javascript:void(0)">营销商品</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG']['ADDGOODS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fang/addgoods")}" href="javascript:void(0)">添加营销商品</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+
+	<dl id="menu-yxs" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe616;</i> 认筹订单管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG']['ORDER_LIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fang/order_list")}" href="javascript:void(0)">认筹订单</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG']['EXCEL_VERIFICATION'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fang/excel_verification")}" href="javascript:void(0)">批量核销订单</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG']['EXCEL_ISFREEZN'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fang/excel_isfreezn")}" href="javascript:void(0)">批量解冻/退款</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<dl id="menu-yxs" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe616;</i> 权限管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG']['FANG_AUTH'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fang/fang_auth")}" href="javascript:void(0)">数据权限</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG']['POS_USER'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fang/pos_user")}" href="javascript:void(0)">POS账号</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FANG']['ORDER_LISTS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Fang/order_lists")}" href="javascript:void(0)">认筹订单</a></li>
+			</ul>
+		</dd>
+	</dl>
+</div>

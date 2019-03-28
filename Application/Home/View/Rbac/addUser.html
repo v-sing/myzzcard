@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script> 
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dv">
+<form action="" method="post" class="definewidth m20" id="form1">
+<table class="table table-bordered table-hover ">
+    <tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">账号</td>
+        <td><input type="text" name="loginname" value="" id='loginname'/></td>
+    </tr>
+	<tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">密码</td>
+        <td><input type="text" name="password1" value="" id="password1"/></td>
+    </tr>
+	<tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">描述</td>
+        <td><input type="text" name="description" value="" id='description'/></td>
+    </tr>
+	<tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">姓名</td>
+        <td><input type="text" name="username" value="" id="username"/></td>
+    </tr>
+	<tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">电话</td>
+        <td><input type="text" name="teleno" value="" id="teleno"/></td>
+    </tr>
+	<tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">panterid</td>
+        <td><input type="text" name="panterid" value=""/></td>
+    </tr>
+    <tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">状态</td>
+        <td >
+            <input type="radio" name="active" value="Y" checked/> 启用
+           <input type="radio" name="active" value="N" /> 禁用
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="padding-left:150px;background-color:#f5f5f5;">
+            <button type="submit" class="btn btn-primary" >保存</button> &nbsp;&nbsp;<button type="button" class="btn btn-success" name="backid" id="backid" onclick="window.location.href='__URL__/roleList'">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+    </div>
+<script type="text/javascript">
+    $('#form1').submit(function(){
+            var loginname= $.trim($('#loginname').val());
+            var password1= $.trim($('#password1').val());
+            var username=$.trim($('#username').val());
+            var teleno= $.trim($('#teleno').val());
+            var panterid= $.trim($('#panterid').val());
+            if(loginname==''){
+                alert('账号必须填写');
+                return false;
+            }
+            if(password1==''){
+                alert('密码必须填写');
+                return false;
+            }
+            if(username==''){
+                alert('用户名必须填写');
+                return false;
+            }
+            if(teleno==''){
+                alert('电话必须填写');
+                return false;
+            }
+    })
+</script>
+</body>
+</html>
+

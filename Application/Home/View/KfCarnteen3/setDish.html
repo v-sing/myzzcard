@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+    <link href="__PUBLIC__/kfcarnteen/else.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+    <script>
+        $(function(){
+            //商品上架
+            $(".ondish").click(function(){
+                $("#mask").show();
+                $("#ondish").show();
+            });
+
+            //确定上架商品
+            $("#ondish .bon_04").click(function(){
+                $("#mask").show();
+                $("#ondish").hide();
+                $(".tk_down_success").show();
+                var goodsid=$(".ondish")[0].value;
+                $.ajax({
+                    type: 'post',
+                    url: '{:U("KfCarnteen/onDish")}',
+                    data: {goodsid:goodsid},
+                    success: function (result) {
+                        var data=JSON.parse(result);
+                        $("#promptmsg").html(data.codemsg);
+                    }
+                });
+            });
+
+            //取消上架商品
+            $("#ondish .bon_03").click(function(){
+                $("#mask").hide();
+                $("#ondish").hide();
+            });
+
+            //关闭上架成功窗口
+            $(".bon_05").click(function(){
+                $("#mask").hide();
+                $("#tk_down_success").hide();
+                $("#promptmsg").html('');
+            });
+
+            //商品下架
+            $(".under").click(function(){
+                $("#mask").show();
+                $("#under").show();
+                $("#promptmsg").html('');
+            });
+
+            //确定下架商品
+            $("#under .bon_04").click(function(){
+                $("#mask").show();
+                $("#under").hide();
+                $(".tk_down_success").show();
+                var goodsid=$(".under")[0].value;
+                $.ajax({
+                    type: 'post',
+                    url: '{:U("KfCarnteen/removeDish")}',
+                    data: {goodsid:goodsid},
+                    success: function (result) {
+                        var data=JSON.parse(result);
+                        $("#promptmsg").html(data.codemsg);
+                    }
+                });
+            });
+
+            //取消下架商品
+            $("#under .bon_03").click(function(){
+                $("#mask").hide();
+                $("#under").hide();
+            });
+
+            //关闭下架成功窗口
+            $(".bon_05").click(function(){
+                $("#mask").hide();
+                $("#tk_down_success").hide();
+                $("#promptmsg").html('');
+            });
+        })
+    </script>
+</head>
+<body>
+		<div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;"></div>
+        <!--上架确定取消弹窗开始-->
+		<div id="ondish" class="tk_qdqx" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:10%; background:#fff; display:none;">
+             <span class="wxts">温馨提示</span>
+             <span class="wxts_text">确定要上架该菜品吗？</span>
+             <div class="bon">
+                <button class="bon_03">取消</button>
+                <button class="bon_04">确定</button>
+             </div>
+        </div>
+        <!--上架确定取消弹窗结束-->
+        <!--下架确定取消弹窗开始-->
+        <div id="under" class="tk_qdqx" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:10%; background:#fff; display:none;">
+            <span class="wxts">温馨提示</span>
+            <span class="wxts_text">确定要下架该菜品吗？</span>
+            <div class="bon">
+                <button class="bon_03">取消</button>
+                <button class="bon_04">确定</button>
+            </div>
+        </div>
+        <!--下架确定取消弹窗结束-->
+        <!--成功弹窗开始-->
+		<div class="tk_down_success" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:10%; background:#fff; display:none;">
+            <span class="wxts">温馨提示</span>
+            <span class="wxts_text">
+            	<span style="overflow: hidden; display: block; margin-left: auto; margin-right: auto; width: 30%;">
+                    <img src="__PUBLIC__/kfcarnteen/img/success.png"/>
+                    <span style="display: block; vertical-align: middle; text-align: center; float: right;" id="promptmsg"></span>
+                </span>
+            </span>
+             <div class="bon">
+                <button class="bon_05">好的</button>
+             </div>
+        </div>
+        <!--成功弹窗结束-->
+    	<div class="top ">
+        	<ul>
+            	<li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png"/></li>
+                <li class="text_center_02">设置菜品</li>
+            </ul>
+        </div>
+        <div class="main" style="max-height:560px; overflow-y:scroll; margin-bottom:15%;">
+        	<ul>
+                
+            </ul>
+        </div>
+        <a class="dishes_plus" href="{:U("KfCarnteen/addDish")}">+添加新的菜品</a>
+</body>
+</html>

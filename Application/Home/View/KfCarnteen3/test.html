@@ -1,0 +1,294 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link href="__PUBLIC__/kfcarnteen/css.css" rel="stylesheet" type="text/css">
+<link href="__PUBLIC__/kfcarnteen/layer.css" rel="stylesheet" type="text/css">
+<script src="http://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+    <script src="__PUBLIC__/kfcarnteen/layer.js"></script>
+    <script src="__PUBLIC__/kfcarnteen/json2.js"></script>
+ <script type="text/javascript">
+         $(function(){
+             var count = {$count};
+             var i=0;
+             for(i;i<count;i++){
+                 $("#a"+i).Spinner({value:0, min:0, len:3, max:100});
+             }
+             $('.bot_03').click(function(){
+                 var o = [];
+                 var j=0;
+                 $('.main').find('li').each(function(i){
+                     var amount = $('.main').find("li").eq(i).find('.Amount').val();
+                     if(amount>0){
+                         o.amount = amount;
+                         var goodsname = $('.main').find("li").eq(i).find('span').eq(0).html();
+                         var price  = $('.main').find("li").eq(i).find('span').eq(1).html();
+                         var goodsid= $('.main').find("li").eq(i).find('input').val();
+                         var sum = (Number(amount)*Number(price)).toFixed(2);
+                         o[j] = [goodsid,goodsname,price,amount,sum];
+                         j++
+                         console.log(goodsname);
+                     }
+                 })
+                 console.log(o);
+                 confirmOrder(o);
+             })
+             $('.bot_02').click(function(){
+                 window.location.href = "{:U('KfCarnteen/noprice')}"
+             });
+         });
+     function confirmOrder(info){
+         sum = 0;
+         var html="<table style='text-align: center;align:center;border:10px;padding: 2px'> <tr> <td>菜品编号</td><td>菜品名</td><td>单价</td><td>数量</td><td>合计</td></tr>";
+         for(var i=0;i<info.length;i++){
+             html=html+"<tr>"+" <td>"+info[i][0]+"</td>"+" <td>"+info[i][1]+"</td>"+" <td>"+info[i][2]+"</td>"+" <td>"+info[i][3]+"</td>"+" <td>"+info[i][4]+"</td>"+"</tr>";
+             sum = (Number(sum)+Number(info[i][4])).toFixed(2);
+         }
+         html = html+"<tr><td>合计</td><td>"+sum+"</td></tr>";
+         html=html+"</table>"
+         layer.open({
+             type: 1
+             ,title: ['下单确认', 'text-align:center;font-size:24px;']//不显示标题栏
+             ,closeBtn: false
+             ,area:['600px','600px']
+             ,shade: 0.8
+             ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+             ,resize: false
+             ,btn: ['确认下单', '残忍拒绝']
+             ,btnAlign: 'c'
+             ,moveType: 1 //拖拽模式，0或者1
+             ,content: '<div style="padding: 50px; line-height: 50px;color:red; font-weight: 300;font-size: 20px;">'+html+'</div>'
+             ,success: function(layero){
+                 var btn = layero.find('.layui-layer-btn');
+                 btn.find('.layui-layer-btn0').attr({
+                     href: "{:U('KfCarnteen/showOrder')}?info="+info
+                     ,target: '_blank'
+                 });
+             }
+         });
+     }
+
+     //余额查询
+     $(".text_l").click(function(){
+         var MWRFATL = new ActiveXObject("MWREADERRF.mwReaderRfCtrl.1"); //启用控件
+         console.log(mifareOneCard());
+
+     });
+
+     function mifareOneCard() {
+         try {
+             readerOpen();
+             var result = MWRFATL.openCard(1, 10);  //打开卡片,以10进制字符串显示卡号
+             if (MWRFATL.LastRet != 0) {
+                 msg.value = msg.value + "打开卡片失败" + "\n";
+                 return;
+             }
+             else {
+                 msg.value = msg.value + "打开卡片成功,卡片序列号: " + result + "\n";
+             }
+
+             result = MWRFATL.cardVerifyPassword(0, 2); //加载密码认证,此函数传入的是扇区号
+             if (MWRFATL.LastRet != 0) {
+                 msg.value = msg.value + "验证密码失败" + "\n";
+                 return;
+             }
+             else {
+                 msg.value = msg.value + "验证密码成功" + "\n";
+             }
+
+
+             result = MWRFATL.cardReadHex(10);
+             if (MWRFATL.LastRet != 0) {
+                 msg.value = msg.value + "读数据失败" + "\n";
+                 return;
+             }
+             else {
+                 //msg.value = msg.value + "读出的数据" + MWRFATL.binToHexString(result) + "\n";
+                 msg.value = msg.value + "读出的数据" + result + "\n";
+             }
+             readerClose();
+
+         }
+         catch (e) {
+             alert(e.Message);
+         }
+     }
+
+     //打开读写器
+     function readerOpen() {
+         try {
+             var version = MWRFATL.openReader(1, 9600);
+             if (MWRFATL.LastRet != 0) {
+                 msg.value = "打开读写器失败" + "\n";
+                 return;
+             }
+             else {
+                 msg.value = version + "\n";
+             }
+
+             MWRFATL.readerLoadKey(0, 2, "f0f0f0f0f0f0"); //加载1扇区密码,对M1卡操作时使用加载密码认证
+             if (MWRFATL.LastRet != 0) {
+                 msg.value = msg.value + "2扇区加载密码失败" + "\n";
+             }
+         }
+         catch (e) {
+             alert(e.Message);
+         }
+     }
+
+     //读写器鸣响
+     function readerBeep() {
+         try {
+             MWRFATL.readerBeep(30);
+             if (MWRFATL.LastRet != 0) {
+                 msg.value = msg.value + "读写器鸣响失败" + "\n";
+             }
+         }
+         catch (e) {
+             alert(e.Message);
+         }
+     }
+
+     //关闭读写器
+     function readerClose() {
+         try {
+             var result = MWRFATL.closeReader();
+             if (MWRFATL.LastRet != 0) {
+                 msg.value = msg.value + "关闭读写器失败" + "\n";
+             }
+             else {
+                 msg.value = msg.value + "读写器已关闭" + "\n";
+             }
+         }
+         catch (e) {
+             alert(e.Message);
+         }
+     }
+</script>
+</head>
+
+<body>
+    
+    	<div class="top ">
+        	<ul>
+            	<li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/balance.png"/><span>余额查询</span></li>
+                <li class="text_center">开封烧烤铺</li>
+                <li class="text_r"><img src="__PUBLIC__/kfcarnteen/img/set.png"/><span>设置</span></li>
+            </ul>
+        </div>
+    
+    	
+        <div class="main">
+        	<!--<ul>-->
+            	<!--<li style=" margin-left:0px;">-->
+                	<!--<div class="bg">-->
+                        <!--<span>羊肉串</span>-->
+                        <!--<span style="color:#f88b0f; font-weight:600; margin-top:10px; font-size:38px;">¥ 3.00</span>-->
+                    <!--</div>-->
+
+                     <!--<div class="center">-->
+                        <!--<div id="a" class="Spinner"></div>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+                <!--<li>-->
+                	<!--<div class="bg">-->
+                        <!--<span>羊肉串</span>-->
+                        <!--<span style="color:#f88b0f; font-weight:600; margin-top:10px; font-size:38px;">¥ 3.00</span>-->
+                    <!--</div>-->
+
+                     <!--<div class="center">-->
+                        <!--<div id="b" class="Spinner"></div>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+                <!--<li>-->
+                	<!--<div class="bg">-->
+                        <!--<span>羊肉串</span>-->
+                        <!--<span style="color:#f88b0f; font-weight:600; margin-top:10px; font-size:38px;">¥ 3.00</span>-->
+                    <!--</div>-->
+
+                     <!--<div class="center">-->
+                        <!--<div id="c" class="Spinner"></div>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+                <!--<li>-->
+                	<!--<div class="bg">-->
+                        <!--<span>羊肉串</span>-->
+                        <!--<span style="color:#f88b0f; font-weight:600; margin-top:10px; font-size:38px;">¥ 3.00</span>-->
+                    <!--</div>-->
+
+                     <!--<div class="center">-->
+                        <!--<div id="d" class="Spinner"></div>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+            <!--</ul>-->
+
+
+            <!--<ul style=" padding:0 5%;">-->
+            	<!--<li style=" margin-left:0px;">-->
+                	<!--<div class="bg">-->
+                        <!--<span>羊肉串</span>-->
+                        <!--<span style="color:#f88b0f; font-weight:600; margin-top:10px; font-size:38px;">¥ 3.00</span>-->
+                    <!--</div>-->
+
+                     <!--<div class="center">-->
+                        <!--<div id="e" class="Spinner"></div>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+                <!--<li>-->
+                	<!--<div class="bg">-->
+                        <!--<span>羊肉串</span>-->
+                        <!--<span style="color:#f88b0f; font-weight:600; margin-top:10px; font-size:38px;">¥ 3.00</span>-->
+                    <!--</div>-->
+
+                     <!--<div class="center">-->
+                        <!--<div id="f" class="Spinner"></div>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+                <!--<li>-->
+                	<!--<div class="bg">-->
+                        <!--<span>羊肉串</span>-->
+                        <!--<span style="color:#f88b0f; font-weight:600; margin-top:10px; font-size:38px;">¥ 3.00</span>-->
+                    <!--</div>-->
+
+                     <!--<div class="center">-->
+                        <!--<div id="g" class="Spinner"></div>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+                <!--<li>-->
+                	<!--<div class="bg">-->
+                        <!--<span>羊肉串</span>-->
+                        <!--<span style="color:#f88b0f; font-weight:600; margin-top:10px; font-size:38px;">¥ 3.00</span>-->
+                    <!--</div>-->
+
+                     <!--<div class="center">-->
+                        <!--<div id="u" class="Spinner"></div>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+            <!--</ul>-->
+            {$str}
+
+        </div>
+    
+    
+        <div class="bottom">
+        	<ul>
+            	<li class="bot_01"><img src="__PUBLIC__/kfcarnteen/img/else.png"/><span>其他</span></li>
+                <li class="bot_02"><img src="__PUBLIC__/kfcarnteen/img/classify.png"/><span>分类结账</span></li>
+                <li class="bot_03"><img src="__PUBLIC__/kfcarnteen/img/menu.png"/><span>已点</span></li>
+            </ul>
+        
+        </div>
+    
+
+</body>
+</html>

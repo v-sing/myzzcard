@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店发票报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  style="padding:6px;">
+<div>
+    <table id="invoiceList" class="easyui-datagrid" title="酒店发票报表"  width="100%" height="820"
+           data-options="
+                                url:'getInvoiceList',
+                                rownumbers: true,
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,50,100,200],
+                                singleSelect: false,                              
+                                method: 'get',
+                                striped:true,
+                                toolbar:'#tb',
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                showFooter:true,
+                                onLoadSuccess: onLoadSuccess,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+
+        <thead>
+        <tr>
+            <th data-options="field:'cuname',width:30,styler:cellStyler">会员名字</th>
+            <th data-options="field:'linktel',width:60,align:'center'">联系电话</th>
+            <th data-options="field:'cardno',width:80,align:'center'">至尊卡号</th>
+            <th data-options="field:'date',width:80,align:'center'">充值日期</th>
+            <th data-options="field:'amount',width:30,align:'center'">充值金额</th>
+            <th data-options="field:'card_purchaseid',width:80,align:'center'">充值编号</th>
+            <th data-options="field:'status',width:50,align:'center'">开发票类型</th>
+            <th data-options="field:'usedamount',width:20,align:'center'">已开发票金额</th>
+            <th data-options="field:'tradeid',width:80,align:'center'">消费编号</th>
+            <th data-options="field:'bdate',width:80,align:'center'">开发票时间</th>
+            <th data-options="field:'billamount',width:20,align:'center'">开发票金额</th>
+            <th data-options="field:'twdate',width:80,align:'center'">消费时间</th>
+            <th data-options="field:'tradeamount',width:20,align:'center'">消费金额</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div style="visibility:hidden" id="__box">
+    <div id="tb" style="padding:4px;height:auto;display: none;">
+        <div style="padding:4px">
+            充值时间：<input  name="start" class="easyui-datebox" style="width:140px;" id="startdate">
+            &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;至：
+            <input  name="enddate" class="easyui-datebox" style="width:140px;" id="enddate">
+        </div>
+        <div style="padding:4px">
+            会员名称：<input  name="cuname" class="easyui-textbox" style="width:140px;" id="cuname">
+            &nbsp;&nbsp;&nbsp;&nbsp;会员电话：<input  name="linktel" class="easyui-textbox" style="width:140px;" id="linktel">
+        </div>
+        <div style="padding:4px">
+            开发票类型：<select  class="easyui-combobox" style="width:140px;" name='status' id='status'>
+            <option value="-1">开发票类型</option>
+            <option value="0">充值开发票</option>
+            <option value="1">充值未开发票</option>
+        </select>
+        </div>
+        <div style="padding:4px">
+            至尊卡号：<input  name="cardno" class="easyui-textbox" style="width:140px;" id="cardno">
+  	 		<span style="margin-left:300px;">
+  	           <a href="#" class="easyui-linkbutton" iconCls="icon-search"  onClick="doSearch()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;
+  	           <a href="{:U("NewHotels/invoice_excel")}" target="_blank" class="easyui-linkbutton" data-options="iconCls:'icon-redo'" >导出</a>
+  	        </span>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        var startdate="<?php echo date('Y-m-01',time());?>";
+        var enddate="<?php echo date('Y-m-d',time());?>";
+        $("#startdate").datebox("setValue",startdate);
+        $("#enddate").datebox("setValue",enddate);
+    })
+    //查询
+    function doSearch(){
+        var o={};
+        o.startdate=$("#startdate").datebox("getValue");
+        o.enddate=$("#enddate").datebox("getValue");
+        o.cuname=$("#cuname").textbox('getValue');
+        o.linktel=$('#linktel').textbox('getValue');
+        o.status=$('#status').combobox('getValue');
+        o.cardno=$("#cardno").textbox('getValue');
+        $('#invoiceList').datagrid('load',o);
+        return false;
+    }
+    //清空查询条件
+    function resetting(){
+        var o={};
+        o.startdate=$("#startdate").datebox("setValue",'');
+        o.enddate=$("#enddate").datebox("setValue",'');
+        o.pid=$('#pid').textbox('setValue','');
+        o.pname=$('#pname').textbox('setValue','');
+        o.cuname=$("#cuname").textbox('setValue','');
+        o.linktel=$('#linktel').textbox('setValue','');
+        o.tradetype=$('#tradetype').combobox('setValue','');
+        o.parents=$('#parents').combobox('setValue','');
+        o.cardno=$("#cardno").textbox('setValue','');
+        $('#consumelist').datagrid('load',o);
+        return false;
+    }
+    //设置列格式
+    function cellStyler(value,row,index){
+        if (value > 0){
+            return 'background-color:#ffee00;color:red;';
+        }
+    }
+    function onLoadSuccess(data){
+        //console.log(data.merges);return false;
+        var merges = data.merges;
+        for(var i=0; i<merges.length; i++){
+            $(this).datagrid('mergeCells',{
+                index: merges[i].index,
+                field: 'cuname',
+                rowspan: merges[i].rowspan
+            });
+            $(this).datagrid('mergeCells',{
+                index: merges[i].index,
+                field: 'linktel',
+                rowspan: merges[i].rowspan
+            });
+            $(this).datagrid('mergeCells',{
+                index: merges[i].index,
+                field: 'cardno',
+                rowspan: merges[i].rowspan
+            });
+            $(this).datagrid('mergeCells',{
+                index: merges[i].index,
+                field: 'date',
+                rowspan: merges[i].rowspan
+            });
+            $(this).datagrid('mergeCells',{
+                index: merges[i].index,
+                field: 'amount',
+                rowspan: merges[i].rowspan
+            });
+            $(this).datagrid('mergeCells',{
+                index: merges[i].index,
+                field: 'card_purchaseid',
+                rowspan: merges[i].rowspan
+            });
+            $(this).datagrid('mergeCells',{
+                index: merges[i].index,
+                field: 'status',
+                rowspan: merges[i].rowspan
+            });
+            $(this).datagrid('mergeCells',{
+                index: merges[i].index,
+                field: 'usedamount',
+                rowspan: merges[i].rowspan
+            });
+        }
+    }
+</script>
+</body>
+</html>
+

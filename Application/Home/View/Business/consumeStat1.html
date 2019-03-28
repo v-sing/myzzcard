@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>消费统计(行业分类)</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("Business/consumeStat1")}" method="get">
+    消费日期:
+    <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/>---
+    <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:5px;"/>
+    消费种类:<select name="hysx">
+            <option value="all">全部</option>
+            <option value="餐饮" <if condition="$hysx eq '餐饮'">selected="selected"</if>>餐饮</option>
+            <option value="娱乐" <if condition="$hysx eq '娱乐'">selected="selected"</if>>娱乐</option>
+            <option value="服饰" <if condition="$hysx eq '服饰'">selected="selected"</if>>服饰</option>
+            <option value="珠宝" <if condition="$hysx eq '珠宝'">selected="selected"</if>>珠宝</option>
+            <option value="美容" <if condition="$hysx eq '美容'">selected="selected"</if>>美容</option>
+            <option value="文教" <if condition="$hysx eq '文教'">selected="selected"</if>>文教</option>
+            <option value="酒店" <if condition="$hysx eq '酒店'">selected="selected"</if>>酒店</option>
+        </select>
+    会员性别:<select name="sex">
+            <option value="all">全部</option>
+            <option value="男" <if condition="$sex eq '男'">selected="selected"</if>>男</option>
+            <option value="女" <if condition="$sex eq '女'">selected="selected"</if>>女</option>
+        </select>
+    年龄段:<select name="age">
+            <option value="all">全部</option>
+            <option value="18" <if condition="$age eq '18'">selected="selected"</if>>18岁以下</option>
+            <option value="18-25" <if condition="$age eq '18-25'">selected="selected"</if>>18-25岁</option>
+            <option value="26-30" <if condition="$age eq '26-30'">selected="selected"</if>>26-30岁</option>
+            <option value="31-40" <if condition="$age eq '31-40'">selected="selected"</if>>31-40岁</option>
+            <option value="41-50" <if condition="$age eq '41-50'">selected="selected"</if>>41-50岁</option>
+            <option value="51-60" <if condition="$age eq '51-60'">selected="selected"</if>>51-60岁</option>
+            <option value="60" <if condition="$age eq '60'">selected="selected"</if>>60岁以上</option>
+        </select>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    <input type="button" value="重置" onclick="window.location='{:U("Business/consumeStat1")}'" class="btn btn-mini btn-danger" />
+    <a href="{:U("Business/consumeStat1_excel")}" target="_blank" class="btn btn-mini">
+        <!-- <img style="margin-top:3px;" src="__PUBLIC__/assets/img/excel.png" width="26" title="导出EXCEL" /> --><i class="Hui-iconfont">&#xe640;</i>导出EXCEL
+    </a><br/>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th>行业属性</th><th>消费次数</th><th>消费金额</th><th>客单价</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+	     <tr>
+             <td>{$vo.hysx}</td><td>{$vo.count}</td>
+             <td><?php echo floatval($vo['tradeamount']);?></td>
+             <td><?php echo round(floatval($vo['tradeamount'])/$vo['count'],2);?></td>
+        </tr>
+    </volist>
+</table>
+<div class="inline pull-right page">{$page}</div>
+    </div>
+</body>
+</html>

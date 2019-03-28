@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>余额查询</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:40%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        input[type="text"].un-write{background:#C8C8C8;}
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div  class="dv">
+<form id="form1" name="form1" method="post">
+<table class="table table-bordered table-hover m10" id="tab">
+     <tr>
+         <td style="text-align:right;">卡号</td><td><input type="text" class="abc input-default" value="" id="cardno"/></td>
+    </tr>
+     <tr>
+         <td style="text-align:right;">有效日期</td><td><input type="text" class="abc input-default un-write" value="" readonly="true" id="exdate"/></td>
+    </tr>
+    <tr>
+        <td style="text-align:right;">会员编号</td><td><input type="text" class="abc input-default un-write" value=""  readonly="true" id="customid"/></td>
+    </tr>
+    <tr>
+        <td style="text-align:right;">会员姓名</td><td><input type="text" class="abc input-default un-write" value="" readonly="true" id="custom_name"/></td>
+    </tr>
+    <tr>
+        <td style="text-align:right;">卡状态</td><td><input type="text" class="abc input-default un-write" value="" readonly="true" id="card_status"/></td>
+    </tr>
+    <tr>
+        <td style="text-align:right;">卡余额</td><td><input type="text" class="abc input-default un-write" value="" readonly="true" id="card_money"/></td>
+    </tr>
+    <tr>
+        <td style="text-align:right;">通用积分</td><td><input type="text" class="abc input-default un-write" value="" readonly="true" id="card_points"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align:left;padding-left:250px;"><input type="button" class="btn btn-small btn-primary" value="读卡" id="btn"/></td>
+    </tr>
+</table>
+</form>
+    </div>
+<script type="text/javascript">
+    $('#btn').click(function(){
+        var cardno= $.trim($('#cardno').val());
+        $('#form1 input[type="text"][name!="cardno"]').val('');
+        if(cardno==''){
+            alert('请输入卡号');
+            return false;
+        }
+        $.ajax({
+            type:'POST',
+            url:'{:U("AfterSales/card_query")}',
+            data:{cardno:cardno,style:1},
+            dataType:'json',
+            success:function(res){
+                if(res.success==1){
+                    $('#cardno').val(res.data.cardno);
+                    $('#exdate').val(res.data.exdate);
+                    $('#customid').val(res.data.customid);
+                    $('#custom_name').val(res.data.cuname);
+                    $('#card_status').val(res.data.status);
+                    $('#card_money').val(res.data.card_money);
+                    $('#card_points').val(res.data.card_points);
+                }else{
+                    alert(res.msg);
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

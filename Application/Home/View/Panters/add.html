@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加会员</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+     	#remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+    	#key{margin:0;}
+    	#remind #key li:hover{background-color:#ccc;cursor: pointer;}
+        select{display:inline-block;}
+    </style>
+    <script type='text/javascript'>
+    	$(document).click(function(){
+            $("#remind").css("display","none");
+        });
+		function autoComplete(value){
+	        $.ajax({
+	            type:'GET',
+	            url:'{:U("Common/getComplete")}',
+	            data:{keys:value},
+	            dataType:'json',
+	            success:function(data){
+	                $('#remind').find('ul').html('');
+	                 if(typeof(data)=='object'){
+	                     var childObj='';
+	                     for(var i=0;i<data.length;i++){
+	                         childObj+='<li style="list-style:none;" onclick="addVal(this,'+"'pname'"+',\''+data[i].panterid+'\')">'+data[i].pname+'</li>';
+	                     }
+	                     $('#remind').css('display','block');
+	                     $('#remind').find('ul').append(childObj);
+	                     if($('#remind').find('ul').height()<180){
+	                         var height=$('#remind').find('ul').height();
+	                         $('#remind').height(height);
+	                     }else{
+	                         $('#remind').height(180);
+	                     }
+	                }else{
+	                    $('#remind').css('display','none');                   
+	                }
+	            }
+	        })
+	    }
+		function addVal(a,id,pid){
+		    var value=$(a).text();  
+		    $('#'+id).siblings('input').val(pid); 
+		    $('#'+id).val(value);
+		    $(a).parent().parent().css('display','none')   
+		}
+	</script>
+</head>
+<body>
+<div class="dv">
+	<form method="post" id="form1">
+		<table class="table table-bordered table-hover definewidth m10">
+		    <tr>
+		        <td style="width:150px;text-align:right;background-color:#f5f5f5;">
+		            <span class="emphasis"> *</span>会员姓名
+		        </td>
+		        <td>
+		            <input type="text" name="namechinese" id="namechinese" value="{$info.namechinese}" maxlength="20" />
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;">英文名称</td>
+		        <td>
+		            <input type="text" name="nameenglish" id="nameenglish" value="{$info.nameenglish}" maxlength="20" />
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>国&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;籍</td>
+		        <td>
+		            <input type="text" name="nameenglish" id="nameenglish" value="{$info.nameenglish}" maxlength="20" />
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;">所属省市</td>
+		        <td>
+		            <select name="provinceid" class="form-control" id="provinceid">
+		                <volist name="pro" id="vo">
+		                    <option value="{$vo.provinceid}" <if condition="$vo.provinceid eq $defaultPro['provinceid']">selected='true'</if>>{$vo.provincename}</option>
+		                </volist>
+		            </select>
+		            <select name="cityid" class="form-control" id="cityid">
+		                <volist name="citys" id="vo">
+		                    <option value="{$vo.cityid}" <if condition="$vo.cityid eq $defaultCity['cityid']">selected='true'</if>>{$vo.cityname}</option>
+		                </volist>
+		            </select>
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>联系方式</td>
+		        <td>
+		            <input type="text" name="linktel" id="linktel" maxlength="20" />
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>证件类型</td>
+		        <td>
+		            <select name="personidtype" class="form-control" >
+		                <option value="身份证">身份证</option>
+		                <option value="护照">护照</option>
+		                <option value="军官证">军官证</option>
+		            </select>
+		        </td>		
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>证件号码</td>
+		        <td>
+		            <input type="text" name="personid" id="personid" maxlength="20" onkeyup="personReg(this)"/>
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>证件有效期</td>
+		        <td>
+		            <input type="text" name="personid" id="personid" maxlength="20" onkeyup="personReg(this)"/>
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;">出生日期</td>
+		        <td><input type="text" name="birthday" id="birthday" maxlength="8" readonly/></td>		
+		    </tr>
+		    <tr>
+		         <td style="text-align:right;background-color:#f5f5f5;">电子邮箱</td>
+		         <td><input type="text" name="email" maxlength="60" /></td>
+		    </tr>
+		    <tr>
+		         <td style="text-align:right;background-color:#f5f5f5;">会员类型</td>
+		         <td>
+		             <select name="customlevel" class="form-control">
+		                 <option value="一般客户">一般客户</option>
+		                 <option value="团购客户">团购客户</option>
+		             </select>
+		         </td>
+		    </tr>
+		    <tr>
+		         <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</td>
+		         <td>
+		             <label style="display: inline;"><input type="radio" name="sex" value="男" checked="checked"/>男</label>
+		             <label style="display: inline;"><input type="radio" name="sex" value="女"/>女</label>
+		         </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;">收入范围</td>
+		        <td>
+                    <select name="staffpaper">
+                        <option value="1">2000以下</option>
+                        <option value="2">2000-3000</option>
+                        <option value="3">3000-5000</option>
+                        <option selected="selected" value="4">5000-8000</option>
+                        <option value="5">8000-10000</option>
+                        <option value="6">10000以上</option>
+                    </select>
+                    <!--input type="text" name="staffpaper" maxlength="10"  onkeyup="clearNoNum(this)"/-->
+                </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业</td>
+		        <td><input type="text" name="residaddress" style="width:400px;" maxlength="60" /></td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>详细地址</td>
+		        <td><input type="text" name="residaddress" style="width:400px;" maxlength="60" /></td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;">邮政编码</td>
+		        <td><input type="text" name="unitzip" maxlength="10" onkeyup="intOnly(this)"/></td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;">客户属性</td>
+		        <td>
+		            <select name="countrycode" class="form-control" id="countrycode">
+		                <option value="建业业主" >建业业主</option>
+		                <option value="酒店客户" <if condition="$hysx eq '酒店'">selected='selected'</if>>酒店客户</option>
+		                <option value="商业客户" >商业客户</option>
+		                <option value="内部员工">内部员工</option>
+		                <option value="其他">其他</option>
+		            </select>
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</td>
+		        <td>
+		            <select name="linkman" class="form-control">
+		                <option value="启用" >启用</option>
+		                <option value="不启用">不启用</option>
+		            </select>
+		        </td>	
+		    </tr>
+		    <tr>
+		        <td style="text-align:right;background-color:#f5f5f5;">
+		        	<span class="emphasis"> *</span>开户机构</td>
+		        <td>
+		            <div>
+		                <input id="pname" type="text" onkeyup="autoComplete(this.value)" value="{$panters.pname}" autocomplete="off" placeholder="请输入你想要查询的机构名称" name="pname"/>
+		                <input type="hidden" name="panterid" id="panterid" value="{$panters.panterid}" />
+		            </div>
+		            <div id="remind">
+		                 <ul id="key"></ul>
+		            </div>
+		        </td>		
+		    </tr>
+		    <tr>
+		        <td colspan="2" style="padding-left:150px;background-color:#f5f5f5;">
+		            <button type="submit" class="btn btn-primary" type="button">添加</button>&nbsp;&nbsp;
+		            <a type="button" class="btn btn-success" name="backid" id="backid" href="__URL__">返回列表</a>
+		        </td>
+		    </tr>
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#birthday').datepicker({dateFormat: 'yymmdd',yearRange:"1953:2020"});
+        $("#ui-datepicker-div").hide();
+        $('#provinceid').change(function(){
+            var provinceid= $.trim($(this).val());
+            $.ajax({
+                type:'POST',
+                data:{'provinceid':provinceid},
+                dataType:'json',
+                url:'__APP__/common/getAjaxCitys',
+                success:function(data){
+                    var html='';
+                    if(data!=''){
+                        for(var i=0;i<data.length;i++){
+                            html+='<option value="'+data[i].cityid+'">'+data[i].cityname+'</option>';
+                        }
+                    }
+                    $('#cityid').html(html);
+                }
+            })
+        })
+        $('#form1').submit(function(){
+            var namechinese= $.trim($('#namechinese').val());
+            var personid=$.trim($('#personid').val());
+            var linktel= $.trim($('#linktel').val());
+            var panterid= $.trim($('#panterid').val());
+            var pname= $.trim($('#pname').val());
+            if(namechinese==''){
+                alert('会员名称必须填写');
+                return false;
+            }
+            if(personid==''){
+                alert('证件号码必须填写');
+                return false;
+            }
+            if(linktel==''){
+                alert('联系方式必须填写');
+                return false;
+            }
+            if(pname==''&&panterid==''){
+                alert('开户机构必须填写');
+                return false;
+            }
+        })
+        $('#personid').blur(function(){
+            var personid= $.trim($(this).val());
+            if(personid.length<18){
+                $('#birthday').val('');
+                return;
+            }
+            var birth=personid.substr(6,8);
+            var birthYear=personid.substr(6,4);
+            var date=new Date();
+            var currentYear=date.getFullYear();
+            if(birthYear<1930&&birthYear>currentYear){
+                $('#birthday').val('');
+                alert('非法身份证');return;
+            }
+            $('#birthday').val(birth);
+        })
+    })
+
+    function personReg(obj){
+        obj.value=obj.value.replace(/[^\dX]+/g,'');
+    }
+</script>
+</body>
+</html>

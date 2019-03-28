@@ -1,0 +1,365 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>散装菜品结账</title>
+    <link href="__PUBLIC__/kfcarnteen/css.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+    <script src="__PUBLIC__/kfcarnteen/json2.js"></script>
+    <script>
+        var MWRFATL = new ActiveXObject("MWREADERRF.mwReaderRfCtrl.1"); //启用控件
+        var int;
+        $(function(){
+            var goodsid;
+            var goodsname;
+            //散装菜品结账弹窗
+            $(".bg_02").click(function(){
+                $("#mask").show();
+                $(".tk_down_success").show();
+                $("#cardno").val('');
+                $("input[name='amount']").val('');
+                goodsname=$(this).find("span").html();
+                $(".wxts span").html(goodsname);
+                goodsid=$(this).find("input[name='goodsid']").val();
+                getdata();
+            });
+
+            //提交结账信息
+            $(".bon_05").click(function(){
+                var amount=$("input[name='amount']").val();
+                var cardno=$("#cardno").val();
+				var o=[];
+				o[0]=[goodsid,goodsname,amount,1,amount];
+				formSubmit(o,cardno,amount);
+                readerClose();
+                clearInterval(int);
+            });
+
+            //关闭散装菜品结账弹窗
+            $(".off").click(function(){
+                $("#mask").hide();
+                $(".tk_down_success").hide();
+                readerClose();
+                clearInterval(int);
+            });
+
+            //返回上一级
+            $(".text_l").click(function(){
+                window.location.href = "{:U('KfCarnteen/goods')}";
+            });
+        });
+
+        //提交订单信息
+        function formSubmit(elementValue,ca,totalsum) {
+            elementValue=elementValue.toString();
+            var turnForm = document.createElement("form");
+            //一定要加入到body中！！
+            document.body.appendChild(turnForm);
+            turnForm.method = 'post';
+            turnForm.action = "{:U('KfCarnteen/saveNoPrice')}";
+            //创建隐藏表单
+            var newElement = document.createElement("input");
+            newElement.setAttribute("name","order");
+            newElement.setAttribute("type","hidden");
+            newElement.setAttribute("value",elementValue);
+            var cardno     = document.createElement("input");
+            cardno.setAttribute("name","cardno");
+            cardno.setAttribute("type","hidden");
+            cardno.setAttribute("value",ca);
+            var sumorder     = document.createElement("input");
+            sumorder.setAttribute("name","total");
+            sumorder.setAttribute("type","hidden");
+            sumorder.setAttribute("value",totalsum);
+            turnForm.appendChild(newElement);
+            turnForm.appendChild(cardno);
+            turnForm.appendChild(sumorder);
+            turnForm.submit();
+        }
+
+        //调用刷卡设备
+        function getdata(){
+            $("#prompt").html("请刷卡或者挥卡");
+            $("#cardno").html('');
+            readerOpen();
+            int=self.setInterval(function(){
+                var cardno=mifareOneCard();
+                if(typeof(cardno)!="undefined"&&cardno!=""){
+                    $.ajax({
+                        type: 'post',
+                        url:'{:U("KfCarnteen/decryptCardno")}',
+                        data:{cardno:cardno},
+                        success: function(result) {
+                            if(result){
+                                var data=JSON.parse(result);
+                                if(data.status!='01'){
+                                    $("#prompt").html(data.msg);
+                                }else{
+                                    $("#prompt").html("刷卡成功");
+                                    $("#cardno").val(data.msg.cardno);
+                                }
+                                readerClose();
+                            }
+                        }
+                    });
+                }
+            },2000);
+        }
+
+        //M1卡操作
+        function mifareOneCard() {
+            try {
+                //readerOpen();
+                var result = MWRFATL.openCard(1, 10);  //打开卡片,以10进制字符串显示卡号
+                if (MWRFATL.LastRet != 0) {
+                    //readerClose();
+                    //alert("打开卡片失败！")
+                    return;
+                }
+                else {
+                    //msg.value = msg.value + "打开卡片成功,卡片序列号: " + result + "\n";
+                }
+
+                result = MWRFATL.cardVerifyPassword(0, 2); //加载密码认证,此函数传入的是扇区号
+                if (MWRFATL.LastRet != 0) {
+                    //readerClose();
+                    //alert('验证密码失败！')
+                    return;
+                }
+                else {
+                    //msg.value = msg.value + "验证密码成功"+ result + "\n";
+                }
+
+                result = MWRFATL.cardReadHex(10);
+                if (MWRFATL.LastRet != 0) {
+                    //readerClose();
+                    //alert('读数据失败！')
+                    return;
+                }
+                else {
+                    //msg.value = msg.value + "读出的数据" + result + "\n";
+                    //readerClose();
+                    return result;
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //打开读写器
+        function readerOpen() {
+            try {
+                var version = MWRFATL.openReader(1, 9600);
+                if (MWRFATL.LastRet != 0) {
+                    //msg.value = "打开读写器失败" + "\n";
+                    //alert("打开读写器失败！");
+                    return;
+                }
+                else {
+                    //msg.value = version + "\n";
+                }
+
+                MWRFATL.readerLoadKey(0, 2, "f0f0f0f0f0f0"); //加载1扇区密码,对M1卡操作时使用加载密码认证
+                if (MWRFATL.LastRet != 0) {
+                    //msg.value = msg.value + "2扇区加载密码失败" + "\n";
+                    //alert("2扇区加载密码失败！");
+                    return;
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //读写器鸣响
+        function readerBeep() {
+            try {
+                MWRFATL.readerBeep(1);
+                if (MWRFATL.LastRet != 0) {
+                    //msg.value = msg.value + "读写器鸣响失败" + "\n";
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //关闭读写器
+        function readerClose() {
+            try {
+                var result = MWRFATL.closeReader();
+                if (MWRFATL.LastRet != 0) {
+                    //msg.value = msg.value + "关闭读写器失败" + "\n";
+                    //alert("关闭读写器失败！");
+                    return;
+                }
+                else {
+                    //msg.value = msg.value + "读写器已关闭" + "\n";
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        var clearmsg = false;
+        var ispoint = true;
+        function show(obj){
+            var data =	obj.value;
+            var text = document.getElementById("text");
+            if(clearmsg){
+                text.value = "";
+                clearmsg=false;
+            }
+            if(data == "+" || data == "-" || data == "*" || data == "/"){
+                ispoint = true;
+            }
+            if(data == "0" && text.value == "0"){
+                text.value = parseInt(text.value) + 0;
+            }else if(text.value == "0" && data != "+" && data != "-" && data != "*" && data != "/"){
+                text.value = parseInt(text.value) + parseInt(data);
+            }else{
+                text.value += data;
+            }
+        }
+
+        //计算结果
+        function getResult(){
+            var data = document.getElementById("text");
+            try{
+                ispoint = true;
+                data.value = eval(data.value);
+                clearmsg = true;
+                //alert(ispoint);
+            }catch(err){
+                alert("这怎么算!");
+                data.value = "0";
+            }
+        }
+
+        //点
+        function point(){
+            var p = document.getElementById("point12");
+            var text = document.getElementById("text");
+            var ispoint=true;
+
+            if(ispoint){
+                text.value += p.value;
+                ispoint = false;
+            }
+            //if(text.value.indexOf(".") == true ){
+            //}else{
+            //	text.value += p.value;
+            //}
+        }
+
+        //清空
+        function funclear(){
+            var a = document.getElementById("text").value = "0";
+            clearmsg = false;
+            ispoint = true;
+            //if(a==null || a==""){
+            //	alert("null");
+            //}else{
+            //	alert(a);
+            //}
+        }
+
+        //退格键
+        function funback(){
+            var text = document.getElementById("text");
+            if(text.value == "0" || text.value == ""){
+                text.value = "0";
+            }else{
+                document.getElementById("text").value=document.getElementById("text").value.slice(0,-1);
+            }
+        }
+
+        //滑动
+        $(".xia").click(function () {
+            var Scroll = $(".main").scrollTop();
+            $(".main").scrollTop(Scroll + 200);
+            //console.log($(".main").scrollHeight);
+        });
+
+        $(".shang").click(function () {
+            var Scroll = $(".main").scrollTop();
+            $(".main").scrollTop(Scroll - 200);
+            //console.log($(".main").scrollHeight);
+        });
+
+    </script>
+    <!--计算器结束-->
+</head>
+<body>
+<div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;"></div>
+<!--散装菜品弹窗开始-->
+<div class="tk_down_success" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:4%; background:#fff; display:none;">
+    <span class="wxts" style=" width:94%; padding:3% 3%;overflow: hidden;"><span style="float: left; margin-top:12px;"></span><img src="__PUBLIC__/kfcarnteen/img/tk_off.png" class="off" style=" vertical-align:middle; float: right;"/></span>
+    <form method="post" action="">
+        <span class="wxts_text_02">
+            <div style=" width:50%; float:left;">
+                <span style="overflow: hidden; display: block; margin-left: auto; margin-right: auto; border-bottom:1px dashed #ddd; ">
+                    <span style=" float:left; color:#333; display: inline-block; text-align:left; padding:3% 0; font-size: 20px;" id="prompt">请刷卡</span>
+                </span>
+                <span style="overflow: hidden; display: block; margin-left: auto; margin-right: auto;height: 50px; border-bottom:1px dashed #ddd;">
+                    <img src="__PUBLIC__/kfcarnteen/img/icon_money.png" style="width:30px; margin-bottom: 10px;"/>
+                    <input style="width:170px; font-size:20px;line-height:30px;height:30px; margin-top: 10px;" id="text" type="text" name="amount" placeholder="请输入收款金额"/>
+                </span>
+                <span style="overflow: hidden; display: block; margin-left: auto; margin-right: auto;height:50px;border-bottom:1px dashed #ddd;">
+                    <span style=" float:left; color:#169e90; display: inline-block;font-size: 20px;line-height: 50px;width: 100%;text-align: left;">卡号<input style="font-size:16px;line-height:30px;height:30px; margin-top: 10px;" id="cardno" type="text" name="cardno" placeholder="请输入卡号"/></span>
+                </span>
+            </div>
+            <!--计算器开始-->
+            <div style=" width:50%; float:left; overflow: hidden;">
+                <div id="container">
+                    <form name="computer">
+                        <!--<input type="text" id="text" name="text" class="text" disabled="disabled" value="0">-->
+                        <div class="buttons">
+                            <input type="button" value="1" class="button" id="1" onClick="show(this)">
+                            <input type="button" value="2" class="button" id="2" onClick="show(this)">
+                            <input type="button" value="3" class="button" id="3" onClick="show(this)">
+
+                            <input type="button" value="4" class="button" id="4" onClick="show(this)">
+                            <input type="button" value="5" class="button" id="5" onClick="show(this)">
+                            <input type="button" value="6" class="button" id="6" onClick="show(this)">
+
+                            <input type="button" value="7" class="button" id="7" onClick="show(this)">
+                            <input type="button" value="8" class="button" id="8" onClick="show(this)">
+                            <input type="button" value="9" class="button" id="9" onClick="show(this)">
+
+                            <input type="button" value="0" class="button" id="0" onClick="show(this)">
+                            <input type="button" value="." class="button" id="point12" onClick="point()">
+                            <input type="button" value="←" class="button" id="dele" onClick="funback()">
+
+                            <!--<input type="button" value="确定" class="button queding"/>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--计算器结束-->
+        </span>
+    </form>
+    <div class="bon" style=" margin-left:0px;border-top: 1px solid #ddd;">
+        <button class="bon_05"  type="submit">提交</button>
+    </div>
+</div>
+<!--散装菜品弹窗结束-->
+<div class="top ">
+    <ul>
+        <li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png"/></li>
+        <li class="text_center_02">散装菜品结账</li>
+    </ul>
+</div>
+<div class="main" style="max-height:560px; overflow-y:scroll;">
+    <!--滑动开始-->
+    <div class="gundong" style="position:absolute; right:6px; top:300px;">
+        <a href="javascript:" style="display:block;"><img src="__PUBLIC__/kfcarnteen/img/shang.png" class="shang" style="border: none;"/></a>
+        <a href="javascript:" style="display:block;"><img src="__PUBLIC__/kfcarnteen/img/xia.png" class="xia" style="border: none; margin-top: 20px;"/></a>
+    </div>
+    <!--滑动结束-->
+    {$str}
+</div>
+</body>
+</html>

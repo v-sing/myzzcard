@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>发行方受理明细</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#cb").click(function(){
+            $(":checkbox[name='consumeid[]']").attr("checked",this.checked);
+        });
+    })
+</script>
+<div  class="dv">
+    <form class="form-inline definewidth m20" action="{:U("CoinAccount/issueConsumeDetail")}" method="get">
+    <input type="hidden" name="isspanterid" value="{$isspanterid}"/>
+    <input type="hidden" name="conpanterid" value="{$conpanterid}"/>
+    日期:<input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/>---
+    <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:5px;"/>
+    <input type="text" name="cardno" id='cardno' value='{$cardno}' style="width:165px; margin-right:7px;" placeholder="卡号"/>
+    <input type="text" name="cuname" id='cuname' value='{$cuname}' style="width:70px; margin-right:7px;" placeholder="会员名称"/>
+    结算情况：
+    <select name="status">
+        <option value="-1" <if condition="$status eq -1">selected="selected"</if>>全部</option>
+        <option <if condition="$status eq 0">selected="selected"</if> value="0">未结算</option>
+        <option <if condition="$status eq 1">selected="selected"</if> value="1">已结算</option>
+    </select>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    <input type="reset" value="重置"  class="btn btn-mini btn-danger" />
+    <a href="{:U("CoinAccount/issueConsumeDetail_excel")}" target="_blank" class="btn btn-mini">
+    <!-- <img style="margin-top:3px;" src="__PUBLIC__/assets/img/excel.png" width="26" title="导出EXCEL" /> -->
+    <i class="Hui-iconfont">&#xe640;</i>导出EXCEL</a>
+    </form>
+    <div style="margin-top:10px;" class="definewidth">
+        <span style="color:#ff2233;font-weight:bold;">{$panter1.pname}</span>
+        赠送通宝在<span style="color:#ff2233;font-weight:bold;">{$panter2.pname}</span>兑换明细</div>
+    <form class="form-inline definewidth m20" <if condition="$is_admin eq 1">action="{:U("CoinAccount/calculateDo")}<else/>action="{:U("CoinAccount/consumecheck")}"</if> method="post">
+    <table class="table table-bordered table-hover definewidth m10" >
+        <thead>
+        <tr>
+            <th style="width:80px;">
+            <if condition="$is_admin eq 1">
+                    <input type='checkbox'  id="cb" <if condition="$disabled eq 1">disabled='disabled'</if>/>&nbsp;
+                    <input type="submit" value="结算"  class="btn btn-mini btn-primary" />
+                <else/>
+                <input type='checkbox'  id="cb" />&nbsp;
+                <input type="submit" value="审核"  class="btn btn-mini btn-primary" />
+            </if>
+            </th>
+            <th>会员名</th><th>卡号</th><th>兑换金额</th><th>订单编号</th><th>终端号</th><th>通宝兑换机构</th><th>兑换时间</th>
+            <th>通宝赠送机构</th><th>赠送时间</th><th>订单状态</th><th>结算状态</th>
+        </tr>
+        </thead>
+        <volist name="list" id="vo">
+            <tr>
+                <td>
+                <if condition="$is_admin eq 1">
+                    <if condition="$vo.status eq 0 and $vo.paycheck eq 1">
+                        <input type='checkbox'  name="consumeid[]" value="{$vo.coinconsumeid}" />
+                    <else/>
+                        <input type='checkbox'   disabled="disabled" />
+                    </if>
+                <else/>
+                        <if condition="$vo.pantercheck eq 0">
+                            <input type='checkbox'  name="consumeid[]" value="{$vo.coinconsumeid}" />
+                        </if>
+                </if>
+                </td>
+                <td>{$vo.cuname}</td><td>{$vo.cardno}</td><td>{$vo.amount}</td><td>{$vo.tradeid}</td><td>{$vo.termposno}</td>
+                <td>{$vo.consumepname}</td><td><?php echo date('Y-m-d H:i:s',strtotime($vo['placeddate'].$vo['placedtime']));?></td>
+                <td>{$vo.issuepname}</td><td><?php echo date('Y-m-d H:i:s',strtotime($vo['issuedate'].$vo['issuetime']));?></td>
+                <td>
+                    <if condition="$vo.flag eq 1">通宝兑换<elseif condition="$vo.flag eq 2"/>兑换撤销<elseif condition="$vo.flag eq 3"/>兑换退款</if>
+                </td>
+                <td><if condition="$vo.status eq 0">未结算<elseif condition="$vo.status eq 1"/>已结算</if></td>
+
+            </tr>
+        </volist>
+    </table>
+    <div class="inline pull-right page">{$page}</div>
+    </form>
+</div>
+</body>
+</html>
+<script>
+    $(function(){
+        if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+            $('[placeholder]').focus(function() {
+                var input = $(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                    input.removeClass('placeholder');
+                }
+            }).blur(function() {
+                var input = $(this);
+                if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                    input.addClass('placeholder');
+                    input.val(input.attr('placeholder'));
+                }
+            }).blur();
+        };
+    })
+    function placeholderSupport() {
+        return 'placeholder' in document.createElement('input');
+    }
+</script>

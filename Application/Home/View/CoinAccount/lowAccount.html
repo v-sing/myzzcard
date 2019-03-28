@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jQuery Easy UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+
+
+</head>
+<body style="padding:6px;">
+
+      <a href="{:U("CoinAccount/la_excel")}" class="easyui-linkbutton" data-options="iconCls:'icon-redo'">导出</a>
+
+<table id="box">
+</table>
+
+
+<div style="visibility:hidden" id="__box">
+
+
+</div>
+</body>
+</html>
+<script>
+$(function () {
+
+	$('#box').datagrid({
+		width : '100%',
+		url : 'getLowAccount',
+		title : '低余额会员信息',
+		striped : true,
+		nowrap : true,
+		rownumbers : true,
+		singleSelect : 0,
+		fitColumns : true,
+		showFooter : true,
+		method:'post',
+		columns : [[
+			{
+				field : 'cardno',
+				title : '卡号',
+				sortable : 0,
+				width:'15%',
+				align:"center"
+			},
+			{
+				field : 'name',
+				title : '会员名字',
+				sortable : 0,
+				width:'5%',
+				align:"center"
+			},
+			{
+				field : 'sex',
+				title : '性别',
+				sortable : 0,
+				width:"5%",
+				align:"center"
+
+			},
+			{
+				field : 'phone',
+				title : '联系电话',
+				width:"10%",
+				sortable : 0,
+				align:"center"
+			},
+			{
+				field : 'amount',
+				title : '账户余额(元)',
+				sortable : 0,
+				align:"center",
+				formatter: function(a,b,c){
+					return parseFloat(a);
+
+				}
+			}
+		]],
+		toolbar : '#tb',
+		pagination : true,
+		pageSize : 20,
+		pageList : [20, 40, 60],
+		pageNumber : 1,
+		sortName : 'customid',
+		sortOrder : 'DESC'
+	});
+
+});
+
+</script>

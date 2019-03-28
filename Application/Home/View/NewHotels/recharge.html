@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店充值报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  style="padding:6px;">
+    <div>
+        <table id="rechargeList" class="easyui-datagrid" title="酒店充值报表"  width="100%" height="820"
+               data-options="
+                                url:'getRechargeList',
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,50,100,200],
+                                singleSelect: false,                              
+                                method: 'get',
+                                striped:true,
+                                toolbar:'#tb',
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                showFooter:true,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+
+            <thead>
+                <tr>
+                    <th data-options="field:'panterid',width:80,align:'left'">发卡机构编号</th>
+                    <th data-options="field:'pname',width:130,styler:cellStyler">发卡机构名称</th>
+                    <th data-options="field:'customid',width:80,align:'center'">会员编号</th>
+                    <th data-options="field:'cname',width:80,align:'center'">会员名称</th>
+                    <th data-options="field:'linktel',width:100,align:'center'">手机号</th>
+                    <th data-options="field:'cardno',width:160,align:'center'">卡号</th>
+                    <th data-options="field:'cardkind',width:80,align:'center'">卡号类型编号</th>
+                    <th data-options="field:'cardf',width:80,align:'center'">卡种</th>
+                    <th data-options="field:'status',width:80,align:'center'">卡状态</th>
+                    <th data-options="field:'cpurchaseid',width:150,align:'center'">充值流水号</th>
+                    <th data-options="field:'activation',width:150,align:'center'">充值时间</th>
+                    <th data-options="field:'purchaseid',width:150,align:'center'">充值单流水号</th>
+                    <th data-options="field:'amount',width:80,align:'center'">充值金额</th>
+                    <th data-options="field:'point',width:80,align:'center'">充值积分</th>
+                    <th data-options="field:'username',width:80,align:'center'">操作员</th>
+                    <th data-options="field:'description',width:130,align:'left'">备注</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="visibility:hidden" id="__box">
+        <div id="tb" style="padding:4px;height:auto;display: none;">
+            <div style="padding:4px">充值时间:<input class="easyui-datebox" id="startdate" name="startdate" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                至:<input class="easyui-datebox" id="enddate" name="enddate" style="width:140px;"></div>
+            <div style="padding:4px"> 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;         
+                <select class="easyui-combobox" name="status" id="status" panelHeight=160 panelWidth=140 style="width: 140px">
+                    <option value="" >卡状态</option>
+                    <option value="A"  >待激活</option>
+                    <option value="D" >销卡</option>
+                    <option value="R" >退卡</option>
+                    <option value="S" >过期</option>
+                    <option value="N" >新卡</option>
+                    <option value="L" >锁定</option>
+                    <option value="Y" >正常卡</option>
+                    <option value="W" >无卡</option>
+                    <option value="C" >已出库</option>
+                    <option value="G" >异常锁定</option>
+                </select>
+
+            </div>
+            <div style="padding:4px">
+                &nbsp;&nbsp;&nbsp;流水号:<input class="easyui-textbox" id="cpurchaseid" name="cpurchaseid" style="width:140px;">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卡号:<input class="easyui-textbox" id="cardno" name="cardno" style="width:140px;">
+            </div>
+            <div style="padding:4px">
+                会员编号:<input class="easyui-textbox" id="customid" name="customid" style="width:140px;">&nbsp;&nbsp;
+                会员名称:<input class="easyui-textbox" id="cname" name="cname" style="width:140px;">
+            </div>
+            <div style="padding:4px">
+                &nbsp;&nbsp;&nbsp;手机号:<input class="easyui-textbox" id="linktel" name="linktel" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                操作员:<input class="easyui-textbox" id="username" name="username" style="width:140px;">
+                <span style="margin-left:100px;"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="doSearch()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U("NewHotels/recharge_excel")}" class="easyui-linkbutton" data-options="iconCls:'icon-redo'">导出</a></span>
+            </div>
+        </div>
+
+    </div>         
+    <div id='dialogRecharge'   title="多卡号查询" style="display:none;"        data-options="
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        cardnoDialog();
+                    }
+                }]">
+        <table>
+            <tr>
+                <td></td>
+                <td><span style="color:red">注:多个卡号请以回车(Enter)或半角逗号分隔</span></td>
+            </tr>
+            <tr>
+                <td>卡号:</td>
+                <td><input class="easyui-textbox" data-options="multiline:true" style="width:300px;height:100px" id="cardnos" name="cardnos"></td>
+            </tr>
+        </table>
+    </div> 
+
+    <script type="text/javascript">
+        $(function(){
+            var startdate="<?php echo date('Y-m-01',time());?>";
+            var enddate="<?php echo date('Y-m-d',time());?>";
+            $("#startdate").datebox("setValue",startdate);
+            $("#enddate").datebox("setValue",enddate);
+        })
+        //查询
+        function doSearch(){
+            var o={};
+            o.startdate=$("#startdate").datebox("getValue");
+            o.enddate=$("#enddate").datebox("getValue");
+            o.cardno=$("#cardno").textbox('getValue');
+            o.status=$('#status').combobox('getValue');
+            o.cpurchaseid=$("#cpurchaseid").textbox('getValue');
+            o.customid=$("#customid").textbox('getValue');
+            o.cname=$("#cname").textbox('getValue');
+            o.linktel=$('#linktel').textbox('getValue');
+            o.username=$("#username").textbox('getValue');
+            $('#rechargeList').datagrid('load',o);
+            return false;
+        }
+        //清空查询条件
+        function resetting(){
+            var o={};
+            o.startdate=$("#startdate").datebox("setValue",'');
+            o.enddate=$("#enddate").datebox("setValue",'');
+            o.cardno=$("#cardno").textbox('setValue','');
+            o.status=$('#status').combobox('setValue','');
+            o.cpurchaseid=$("#cpurchaseid").textbox('setValue','');
+            o.customid=$("#customid").textbox('setValue','');
+            o.cname=$("#cname").textbox('setValue','');
+            o.linktel=$('#linktel').textbox('setValue','');
+            o.username=$("#username").textbox('setValue','');
+            $('#rechargeList').datagrid('load',o);
+            return false;
+        }
+        //多卡号查询
+        function cardnoSearch(){
+            $("#dialogRecharge").show();
+            $("#dialogRecharge").dialog({
+                title: "添加",
+                width: 400,
+                height: 200,
+                padding:10,
+            });
+        }        
+        //点击卡号文本框弹出多行卡号对话框
+        function cardnoDialog(){
+            var s,cardnos,newStr=""; 
+            cardnos=$("#cardnos").textbox('getValue');
+            cardnos=cardnos.replace(/\n/g,","); 
+            s=cardnos.charAt(cardnos.length-1);
+            if(s==","){
+                newStr=cardnos.substring(0,cardnos.length-1);
+                $('#cardno').textbox('setValue',newStr);
+            }else{
+                $('#cardno').textbox('setValue',cardnos);   
+            }
+            $("#dialogRecharge").dialog('close');
+            
+        }
+        //设置列格式
+        function cellStyler(value,row,index){
+            if (value > 0){
+                return 'background-color:#ffee00;color:red;';
+            }
+        }
+    </script>
+
+</body>
+</html>
+

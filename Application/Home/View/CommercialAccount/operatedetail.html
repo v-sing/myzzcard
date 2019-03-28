@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        #ui-datepicker-div{
+          display: none;
+        }
+    </style>
+    <script>
+     $(function(){
+       $('#startdate').datepicker();
+       $('#enddate').datepicker();
+     });
+
+    </script>
+</head>
+<body>
+<div class="dv">
+<form class="form-inline definewidth m20" action="" method="get">
+	<div class="control-group">
+    日期：
+    <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/> ---
+    <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:7px;"/>
+
+    <input type="text" name="panterid" id="panterid"class="abc input-default" placeholder="商户编号" value="" maxlength="60">&nbsp;&nbsp;
+    <input type="text" name="pantername" id="pantername"class="abc input-medium" placeholder="商户名称" value="" maxlength="20">&nbsp;&nbsp;
+    用途：
+    <select size="1" width="20px" name="cate">
+      <option value="">全部</option>
+      <option value="0">充值</option>
+      <option value="3">结算</option>
+    </select>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp;
+     <button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U("exportOp")}';">导出报表</button>
+
+</div>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th style="width: 10px; text-align: center;"></th>
+        <th>商户编号</th>
+        <th style="width: 100px;overflow: hidden;">商户名称</th>
+        <th style="width: 100px;overflow: hidden;">原余额</th>
+        <th style="width: 100px;overflow: hidden;">变动金额</th>
+        <th style="width: 100px;overflow: hidden;">变动后余额</th>
+        <th>用途</th>
+        <th>账户类型</th>
+        
+        <th>操作人员</th>
+        <th>操作日期</th>
+        <th>账户状态</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo">
+        <tr>
+            <td style="text-align: center;">{$key+1}</td>
+            <td>{$vo.panterid}</td>
+            <td>{$vo.pantername}</td>
+            <td>{$vo.before_balance}</td>
+            <td>{$vo.amount}</td>
+            <td>{$vo.after_balance}</td>
+              <td><switch name='vo.cate'>
+                <case value="0">充值</case>
+                <case value="3">结算</case>
+              </switch></td>
+            <td>
+              <switch name='vo.type'>
+                <case value="1">备付金</case>
+              </switch>
+                 </td>
+            <td>{$vo.userid}</td>
+            <td>{$vo.placeddate}</td>
+            <td>
+              <if condition="$vo.status eq 1">
+              <button type="button" class="btn btn-success radius">启用</button>
+              <else />
+              <button type="button" class="btn btn-disable radius">禁用</button>
+            </if>
+            </td>
+        </tr>
+        </volist>
+        </table>
+        <div class="inline pull-right page sabrosus">{$page}</div>
+    </div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>
+</body>
+</html>

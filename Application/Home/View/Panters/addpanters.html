@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.validate.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .tabBar {}
+    		.tabBar span {background-color: #f5f5f5;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px; padding-bottom: 4px;padding-top: 8px;margin-bottom: 10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;}
+    		.tabBar span.current{background-color: #222;color: #fff;margin-bottom: 10px;}
+    		.tabCon {display: none;}
+    		.nume{margin: 0 0 5px;}
+    </style>
+</head>
+<script>
+  jQuery.choice =function(tabBar,tabCon,class_name,tabEvent,i){
+    var $tab_menu=$(tabBar);
+      // 初始化操作
+      $tab_menu.removeClass(class_name);
+      $(tabBar).eq(i).addClass(class_name);
+      $(tabCon).hide();
+      $(tabCon).eq(i).show();
+
+      $tab_menu.bind(tabEvent,function(){
+      $tab_menu.removeClass(class_name);
+        $(this).addClass(class_name);
+        var index=$tab_menu.index(this);
+        $(tabCon).hide();
+        $(tabCon).eq(index).show();
+      });
+  }
+  $(function(){
+    $.choice("#tab_xuan .tabBar span","#tab_xuan .tabCon","current","click","0");
+  });
+</script>
+<body>
+<div class="dv">
+  <div class="nume">
+		<div id="tab_xuan" class="choice m10  table definewidth" >
+				<div class="tabBar cl">
+					<span style="border-left:1px solid #ccc;border-right:1px solid #ccc;border-top-left-radius:4px;border-bottom-left-radius:4px;">基本信息</span>
+					<span>联系人信息</span>
+					<span style="border-left:1px solid #ccc">商户风险控制</span>
+          <span style="border-right:1px solid #ccc;border-left:1px solid #ccc;border-top-right-radius:4px;border-bottom-right-radius:4px;">通宝相关</span>
+				</div>
+<form action="{:U("Panters/addpanters")}" method="post" name="form1" enctype="multipart/form-data">
+<table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+    <tr>
+        <td rowspan="17" style="width:100px;text-align:center;vertical-align:middle;">基本信息</td>
+        <td class="tableleft">商户名称</td>
+        <td><input type="text" name="namechinese" id="namechinese" value="" maxlength="60" /><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">商户地址</td>
+        <td><input type="text" name="panteraddress" id="panteraddress" value="" maxlength="100" /><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">经营范围</td>
+        <td><input type="text" name="operatescope" id="operatescope" value="" maxlength="50" /><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">组织机构代码</td>
+        <td><input type="text" name="organizationcode" id="organizationcode" value="" maxlength="50" /><span class="emphasis">(个体户选填，公司必填)</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">营业执照</td>
+        <td><input type="text" name="business" id="business" value="" maxlength="38" /><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">营业执照有效期</td>
+        <td><input type="text" name="timevalue" id="timevalue" value="" maxlength="38" /><span class="emphasis">*(格式：20160631)</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">税务登记证</td>
+        <td><input type="text" name="taxation" id="taxation" value="" maxlength="50" /><span class="emphasis"> (个体户选填，公司必填)</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">商户简称</td>
+        <td><input type="text" name="nameenglish" id="nameenglish" value="" maxlength="60" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">所属省市</td>
+        <td><select name="province" id="province" onchange="loadRegion('province',3,'cityid','{:U(\"Panters/getCity\")}');">
+                <option value="0">省份/直辖市</option><volist name="province" id="vo">
+                <option value="{$vo.provinceid}">{$vo.provincename}</option>
+                </volist></select>
+                <select name="cityid" id="cityid"></select>
+    </tr>
+    <tr>
+        <td class="tableleft">营业电话</td>
+        <td><input type="text" name="goingteleno" id="goingteleno" value="" maxlength="30" /></td>
+    </tr>
+    <tr>
+        <td class="parent">所属机构</td>
+        <td><select name="parent" id="parent">
+                <option value="">请选择</option>
+                <volist name="parents" id="vo">
+                <option value="{$vo.panterid}">{$vo.namechinese}</option>
+                </volist>
+          </select>
+            </td>
+    </tr>
+    <tr>
+        <td class="tableleft">所属商圈</td>
+        <td><select name="pantergroup" id="pantergroup"><volist name="pantergroups" id="vo">
+                <option value="{$vo.groupid}">{$vo.groupname}</option>
+                </volist></select></td>
+    </tr>
+    <tr>
+        <td class="tableleft">行业属性</td>
+        <td><select name="hysx" id="hysx"><option value="">请选择</option><volist name="hysxs" id="vo">
+                <option value="{$vo}">{$vo}</option>
+                </volist></select><span class="emphasis"> *</span></td>
+    </tr>
+	<tr>
+		<td class="tableleft">营业执照</td>
+		<td>
+			<span class="emphasis"> *</span><input type="file" name="licenseimg" onchange="gx_idcard('licenseimg',this)" /><img id="licenseimg" style="height:120px;" />
+		</td>
+	</tr>
+	  <tr>
+	        <td class="tableleft">组织机构代码证</td>
+	        <td><span class="emphasis">&nbsp;</span><input type="file" name="orzimg"  onchange="gx_idcard('orzimg',this)" value="" maxlength="38" /><img id="orzimg" style="height:120px;" />
+		        <span class="emphasis" style="font-size:14px;">(老证件需要上传)</span></td>
+	    </tr>
+	     <tr>
+	        <td class="tableleft">税务登记证</td>
+	        <td><span class="emphasis">&nbsp;</span><input type="file" name="taximg"  onchange="gx_idcard('taximg',this)" value="" maxlength="38" /><img id="taximg" style="height:120px;" />
+		     <span class="emphasis" style="font-size:14px;">(老证件需要上传)</span></td>
+	    </tr>
+	<tr>
+		<td class="tableleft">商户门头</td>
+		<td>
+			<span class="emphasis"> *</span><input type="file" name="doorplateimg" onchange="gx_idcard('doorplateimg',this)" /><img id="doorplateimg" style="height:120px;" />
+		</td>
+	</tr>
+    <tr>
+        <td class="tableleft">撤销状态</td>
+        <td>
+            <input type="radio" name="revorkflg" value="Y" /> 启用
+            <input type="radio" name="revorkflg" value="N" checked/> 禁用
+        </td>
+    </tr>
+    <tr>
+        <td class="tableleft">账户类型</td>
+        <td id="accounttype">
+            <input type="radio" name="accounttype" value="B" /> B
+            <input type="radio" name="accounttype" value="Z" /> Z
+        </td>
+    </tr>
+</table>
+<table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+    <tr>
+        <td rowspan="7" style="width:100px;text-align:center;vertical-align:middle;">法人信息</td>
+        <td width="10%">法人代表</td>
+        <td><input type="text" name="legalperson" id="legalperson" value="" maxlength="20"/><span class="emphasis"> *</span></td>
+        <!-- <td width="10%" class="tableleft">实际控制人</td>
+        <td><input type="text" name="conpername" id="conpername" value="" maxlength="20" /><span class="emphasis"> *</span></td> -->
+    </tr>
+    <tr>
+        <td class="tableleft">证件类型</td>
+        <td><input type="text" name="conperbtype" id="conperbtype" value="" maxlength="20" /><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">法人代表证件号</td>
+        <td><input type="text" name="conperbpno" id="conperbpno" value="" maxlength="20" /><span class="emphasis"> *</span></td>
+    </tr>
+     <tr>
+        <td class="tableleft">法人代表证件正面</td>
+        <td><span class="emphasis"> *</span><input type="file" name="idface"  onchange="gx_idcard('idface',this)"/><img id="idface" style="height:120px;" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">法人代表证件反面</td>
+        <td><span class="emphasis"> *</span><input type="file" name="idcon"  onchange="gx_idcard('idcon',this)"/><img id="idcon" style="height:120px;" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">证件有效期</td>
+        <td><input type="text" name="period" id="period" value="" maxlength="8" /><span class="emphasis" readonly=""> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">法人代表手机</td>
+        <td><input type="text" name="conpermobno" id="conpermobno" value="" maxlength="11"/><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td rowspan="2" style="width:100px;text-align:center;vertical-align:middle;">常用联系人信息</td>
+        <td width="10%" class="tableleft">联系人</td>
+        <td><input type="text" name="conpername" id="conpername" value="" maxlength="20" /><span class="emphasis"> *</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="tableleft">联系电话</td>
+        <td><input type="text" name="conperteleno" id="conperteleno" value="" maxlength="20" /></td>
+    </tr>
+</table>
+<table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+    <tr>
+        <td rowspan="3" style="width:100px;text-align:center;vertical-align:middle;">商户风险控制</td>
+        <td class="tableleft">每日消费限制</td>
+        <td><input type="text" name="account" id="account" value="5000" onkeyup="clearNoNum(this)" maxlength="10" /><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">每日消费次数</td>
+        <td><input type="text" name="sumnumber" id="sumnumber" value="5" onkeyup="clearNoNum(this)" maxlength="10"/><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+        <td class="tableleft">每笔刷卡限额</td>
+        <td><input type="text" name="oneaccount" id="oneaccount" value="1000" onkeyup="clearNoNum(this)" maxlength="10"/><span class="emphasis"> *</span></td>
+    </tr>
+    <tr>
+</table>
+  <table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+    <tr>
+        <td rowspan="3" style="width:100px;text-align:center;vertical-align:middle;">通宝项目</td>
+        <td width="10%">参与通宝项目</td>
+        <td><select name="tongbaoitem">
+              <option value="">请选择</option>
+              <option value="Y">参与项目</option>
+              <option value="N">不参与</option>
+           </select>
+         </td>
+    </tr>
+    <tr>
+        <td width="10%">通宝比例</td>
+        <td><input type="text" name="tongbao_rate" id="tongbao_rate" value="" maxlength="20" /><span class="emphasis" style="font-size:14px;">(为小数形式：0.01)</span></td>
+    </tr>
+    <tr>
+      <td width="10%" rowspan="2">房掌柜数据同步</td>
+      <td>
+        <div class="check-box">
+          <input type="checkbox" name="syncsy" value='1'>
+          <label for="syncsy">收银一体化</label>
+          <input type="checkbox" name="syncfz" value='1'>
+          <label for="syncfz">房掌柜</label>
+        </div>
+      </td>
+
+    </tr>
+  </table>
+<table class=" table-bordered  table-hover " style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;border-top-left-radius: 0;border-top-right-radius: 0;width:100%;border-width: 0 1px 1px 0;">
+        <tr>
+        <!-- <td class="tableleft"></td> -->
+        <td>
+            <button type="submit" class="btn btn btn-primary" type="button" id="saveform" style="margin-left:200px;">保存</button>&nbsp;&nbsp;<button type="button" class="btn btn btn-success" name="backid" id="backid">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script>
+    $(function () {
+		$('#backid').click(function(){
+				window.location.href="{:U("Panters/index")}";
+		 });
+     $('#period').datepicker({dateFormat: 'yymmdd',yearRange:"2016:2050"});
+     $("#ui-datepicker-div").hide();
+     $('#timevalue').datepicker({dateFormat: 'yymmdd',yearRange:"2016:2050"});
+     $("#ui-datepicker-div").hide();
+     $("#namechinese").blur(function(){
+       var namechinese = $.trim($('#namechinese').val());
+       $.ajax({
+          url:"__URL__/pantername",
+          type:"post",
+          data:{namechinese:namechinese},
+          dataType:"json",
+          success:function(data){
+            if(data.status==1)
+            {
+              alert(data.name);
+            }
+          }
+
+       })
+     });
+        $('#saveform').click(function(){
+            var conpername = $.trim($('#conpername').val());
+            var namechinese = $.trim($('#namechinese').val());
+            var conperbpno = $.trim($('#conperbpno').val());
+            var hysx = $.trim($('#hysx').val());
+            var account=$.trim($('#account').val());
+            var sumnumber=$.trim($('#sumnumber').val());
+            var oneaccount=$.trim($('#oneaccount').val());
+            var panteraddress=$.trim($('#panteraddress').val());
+            var operatescope=$.trim($('#operatescope').val());
+            var business=$.trim($('#business').val());
+            var conperbtype=$.trim($('#conperbtype').val());
+            var legalperson=$.trim($('#legalperson').val());
+            var conpermobno=$.trim($('#conpermobno').val());
+            var period=$.trim($("#period").val());
+            var accounttype=$("input[name='accounttype']:checked").val();
+            if(namechinese==''){
+                alert('商户名称不能为空!');
+                return false;
+            }
+            if(panteraddress=="")
+            {
+              alert("商户地址不能为空!");
+              return false;
+            }
+            if(operatescope=='')
+            {
+              alert("经营范围不能为空!");
+              return false;
+            }
+            if(business=="")
+            {
+              alert("营业执照不能为空!");
+              return false;
+            }
+            if(hysx==''){
+                alert('行业属性不能为空!');
+                return false;
+            }
+            // if(conpername==''){
+            //     alert('实际控制人不能为空!');
+            //     return false;
+            // }
+            if(accounttype=='' ||accounttype==null){
+                alert('账号类型不能为空');
+                return false;
+            }
+            if(conperbtype=='')
+            {
+              alert('证件类型不能为空!');
+              return false;
+            }
+            if(conperbpno==''){
+                alert('法人代表证件号不能为空!');
+                return false;
+            }
+            if(period=="")
+            {
+              alert("证件有效期不能为空!");
+              return false;
+            }
+            if(legalperson=="")
+            {
+              alert("法人不能为空!");
+              return false;
+            }
+            if(conpermobno=="")
+            {
+              alert("法人代表手机不能为空!");
+              return false;
+            }
+            var m =/^[1][34578][0-9]{9}$/;
+            var bool=m.test(conpermobno);
+            if(!bool)
+            {
+              alert("控制人手机号格式不对!");
+              return false;
+            }
+            if(account==''){
+                alert('每日消费限制不能为空!');
+                return false;
+            }
+            if(sumnumber==''){
+                alert('每日消费次数不能为空!');
+                return false;
+            }
+            if(oneaccount==''){
+                alert('每笔刷卡限额不能为空!');
+                return false;
+            }
+            document.form1.submit();
+        })
+    });
+
+	//图片
+	function gx_idcard(x,y){
+		var objUrl = getObjectURL(y.files[0]) ;
+		console.log("objUrl = "+objUrl) ;
+		if (objUrl) {
+			$("#"+x).attr("src", objUrl) ;
+		}
+	}
+	function getObjectURL(file) {
+        var aa = file['name'];
+        var photoExt = aa.substr(aa.lastIndexOf(".")).toLowerCase();
+        var url = null ;
+        if ( photoExt == '.png' || photoExt == '.jpeg' || photoExt == '.jpg') {
+            if (window.createObjectURL!=undefined) { // basic
+                url = window.createObjectURL(file) ;
+            } else if (window.URL!=undefined) { // mozilla(firefox)
+                url = window.URL.createObjectURL(file) ;
+            } else if (window.webkitURL!=undefined) { // webkit or chrome
+                url = window.webkitURL.createObjectURL(file) ;
+            }
+        }
+        else {
+            alert("上传图片格式不正确！");
+            file.outerHTML = file.outerHTML;         //上传控件的清除文本框的值
+            return false;
+        }
+
+        return url ;
+	}
+</script>

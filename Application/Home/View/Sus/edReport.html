@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>大额交易报告</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+
+<body>
+<div class="cl pd-20" style=" background-color:#5bacb6">
+    <dl style="margin-left:80px; color:#fff">
+        <dt>
+            <span class="f-18"><h2>修改可疑交易报告</h2></span>
+        </dt>
+    </dl>
+</div>
+<div class="pd-20" style="align-content:center">
+    <form action="{:U('Sus/doEd')}" method="post">
+    <table class="table" style="align:center;width:600px">
+        <tbody>
+        <tr>
+            <th class="text-r" width="80">姓名：</th>
+            <td width="120">{$data.namechinese}</td>
+            <th class="text-r" width="80">手机：</th>
+            <td width="120">{$data.linktel}</td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">证件类型：</th>
+            <td width="120">{$data.personidtype}</td>
+            <th class="text-r" width="80">证件号：</th>
+            <td width="120">{$data.personid}</td>
+        </tr>
+
+        <tr>
+            <th class="text-r" width="80">客户职业：</th>
+            <td width="120">{$data.unitname}</td>
+            <th class="text-r" width="80">客户国籍：</th>
+            <td width="120">中国</td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">代办人姓名：</th>
+            <td width="120"><input type="text" name="agentname" value="{$data.agentname}"/></td>
+            <th class="text-r" width="80">代办人国籍：</th>
+            <td width="120"><input type="text" name="agentcountry" value="{$data.agentcountry}"/></td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">代办人证件类型：</th>
+            <td width="120"><input type="text" name="agidtype" value="{$data.agentidtype}"/></td>
+            <th class="text-r" width="80">代办人证件号：</th>
+            <td width="120"><input type="text" name="agid" value="{$data.agentid}"/></td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">交易金额(充值)：</th>
+            <td width="120">{$data.chargeamount}</td>
+            <th class="text-r" width="80">交易频次(充值)：</th>
+            <td width="120">{$data.chargenu}</td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">交易金额(消费)：</th>
+            <td width="120">{$data.tradeamount}</td>
+            <th class="text-r" width="80">交易频次(消费)：</th>
+            <td width="120">{$data.tradenu}</td>
+        </tr>
+
+        <tr>
+            <th class="text-r" width="80">交易时间：</th>
+            <td width="120">{$data.datadate}</td>
+            <th class="text-r" width="80">交易发生地：</th>
+            <td width="120"><input type="text" name="tradeaddress" value="{$data.tradeaddress}"/></td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">客户银行卡号：</th>
+            <td width="120"><input type="text" name="cubankno" value="{$data.cusbankno}"/></td>
+
+        </tr>
+        <tr>
+            <th class="text-r" width="80">交易对手名称：</th>
+            <td width="120"><input type="text" name="rivalname" value="{$data.rivalname}"/></td>
+            <th class="text-r" width="80">交易对手银行账号：</th>
+            <td width="120"><input type="text" name="rivalbankno" value="{$data.rivalbankno}"/></td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">可疑交易报告触发点：</th>
+            <td width="120"><input type="text" name="susaddress" value="{$data.susaddress}"/></td>
+            <th class="text-r" width="80">报告紧急程度：</th>
+            <td width="120"><input type="text" name="suslevel" value="{$data.suslevel}"/></td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">可疑交易事件起始日期：</th>
+            <td width="120"><input type="text" name="susbegindate" value="{$data.susbegindate}"/></td>
+            <th class="text-r" width="80">可疑交易事件结束日期：</th>
+            <td width="120"><input type="text" name="susenddate" value="{$data.susenddate}"/></td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80">报送次数：</th>
+            <td width="120"><input type="text" name="reportnu" value="{$data.reportnu}"/></td>
+            <th class="text-r" width="80">疑拟涉罪类型：</th>
+            <td width="120"><input type="text" name="sustype" value="{$data.sustype}"/></td>
+        </tr>
+        <tr>
+            <th class="text-r" width="80" colspan="2">交易信息备注1(初审审定意见)：</th>
+            <td width="120" colspan="2"><input type="text" name="remarkf" value="{$data.remarkf}"/></td>
+
+        </tr>
+        <tr>
+            <th class="text-r" width="80" colspan="2">交易信息备注2(复审审定意见)：</th>
+            <td width="120" colspan="2"><input type="text" name="remarks" value="{$data.remarks}"/></td>
+
+        </tr>
+
+
+        </tbody>
+    </table>
+        <input type="hidden" name="traceid" value="{$data.traceid}"/>
+        <input class="btn btn-primary radius" type="button" value="提交" onclick="submit();">
+    </form>
+</div>
+
+
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+<script>
+    $(function(){
+        if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+            $('[placeholder]').focus(function() {
+                var input = $(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                    input.removeClass('placeholder');
+                }
+            }).blur(function() {
+                var input = $(this);
+                if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                    input.addClass('placeholder');
+                    input.val(input.attr('placeholder'));
+                }
+            }).blur();
+        };
+        layer.config({
+            extend: 'extend/layer.ext.js'
+        });
+    });
+
+
+
+
+    function placeholderSupport() {
+        return 'placeholder' in document.createElement('input');
+    }
+</script>

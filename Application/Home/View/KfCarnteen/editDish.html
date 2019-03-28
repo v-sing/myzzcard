@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑菜品</title>
+	<link href="__PUBLIC__/kfcarnteen/else.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+	<script src="__PUBLIC__/kfcarnteen/json2.js"></script>
+	<script src="__PUBLIC__/kfcarnteen/virtualkeyboard/vk_loader.js"></script>
+
+	<script>
+		$(function(){
+			//类别名称切换
+			$('.y').click(function(){
+				if($(this).attr("id")=='selected'){
+					$(this).attr('src','__PUBLIC__/kfcarnteen/img/02.png');
+					$(this).attr("id","");					
+					$(this).nextAll().eq(1).val(false);
+				}else {
+					$(this).attr('src','__PUBLIC__/kfcarnteen/img/01.png');
+					$(this).attr("id","selected");
+					$(this).nextAll().eq(1).val(true);
+					$('.y').not(this).attr("id","");
+					$('.y').not(this).attr('src','__PUBLIC__/kfcarnteen/img/02.png');
+					$('.y').not(this).nextAll().eq(1).val(false)
+				}
+			});
+
+			//编辑菜品成功弹窗
+			$(".dishes_plus").click(function(){
+				var o={};
+				o.goodsid=$('input[name="goodsid"]').val();
+				o.goodsname=$('input[name="goodsname"]').val();
+				o.price=$('input[name="price"]').val();
+				o.other=$('input[name="other"]').val();
+				o.normal=$('input[name="normal"]').val();
+				o.sort=$('input[name="sort"]').val();
+				$("#mask").show();
+				$(".tk_down_success").show();
+				$.ajax({
+					type: 'post',
+					url: '{:U("KfCarnteen/editDish")}',
+					data: o,
+					success: function (result) {
+						if(result.status==1){
+							window.location.href = "{:U('KfCarnteen/setDishes')}";
+						}
+						$("#promptmsg").html(result.msg);
+					}
+				});
+			});
+
+			//关闭编辑菜品成功弹窗
+			$(".bon_05").click(function(){
+				$("#promptmsg").html('');
+				$("#mask").hide();
+				$(".tk_down_success").hide();
+			});
+
+			//返回上一级
+			$(".text_l").click(function () {
+				window.location.href = "{:U('KfCarnteen/setDishes')}";
+			});
+		});
+	</script>
+</head>
+<body>
+		<div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;"></div>
+		<!--编辑菜品成功弹窗开始-->
+		<div class="tk_down_success" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:10%; background:#fff; display:none;">
+
+			<span class="wxts">温馨提示</span>
+
+            <span class="wxts_text">
+            	<span style="overflow: hidden; display: block; margin-left: auto; margin-right: auto; width: 40%;">
+                    <img src="__PUBLIC__/kfcarnteen/img/success.png"/>
+                    <span style="display: block; vertical-align: middle; text-align: center; float: right;padding-top:4px;" id="promptmsg"></span>
+                </span>
+            </span>
+
+			<div class="bon">
+				<button class="bon_05">好的</button>
+			</div>
+		</div>
+		<!--编辑菜品成功弹窗结束-->
+    	<div class="top ">
+        	<ul>
+            	<li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png"/></li>
+                <li class="text_center_02">编辑菜品</li>
+            </ul>
+        </div>
+
+        <form class="main_dishes" style="z-index: 10; margin-bottom: 100px;">
+        	<ul class="dishes_border" style="height: 50px;">
+            	<li><img src="__PUBLIC__/kfcarnteen/img/dishes_name.png"/></li>
+                <li style=" margin-left:20px;line-height: 50px;">菜品名称</li>
+                <li style=" float:left; height: 50px; width: 650px; margin-left: 20px; line-height: 50px;"><input id="goodsname" type="text" style=" float: left; width: 650px; line-height: 50px;height: 50px"  name="goodsname" value="{$data.goodsname}"/></li>
+            </ul>
+
+			<ul class="dishes_border" style="height: 50px;">
+            	<li><img src="__PUBLIC__/kfcarnteen/img/dishes_pice.png"/></li>
+                <li style=" margin-left:20px;line-height: 50px;">菜品价格</li>
+                <li style=" float:left;height: 50px; width: 650px; margin-left: 20px; line-height: 50px;"><input id="price" type="text" style=" float: left; width: 650px; line-height: 50px;height: 50px;"   name="price" value="{$data.price}"/></li>
+            </ul>
+
+			<ul class="dishes_border" style="height: 50px;">
+            	<li><img src="__PUBLIC__/kfcarnteen/img/dishes_lb.png" style=" margin-top: 4px;"/></li>
+                <li style=" margin-left:20px;line-height: 50px;">类别名称</li>
+                <li style=" float:right;">
+                        <div style="float:left;line-height: 50px;">
+							<img  <?php if($data['type']==1){ echo 'src="__PUBLIC__/kfcarnteen/img/02.png"';}else{ echo 'src="__PUBLIC__/kfcarnteen/img/01.png"';}?> class="y" style=" margin-top:2px; float:right; float:left; vertical-align:middle;"/>
+							<span style="  margin-left:10px;color:#169e90;line-height: 50px;">散装菜品</span>
+							<input type="hidden" name="other" <?php if($data['type']==1){ echo 'value="false"';}else{ echo 'value="true"';}?>>
+                        </div>
+                        
+                        <div  style="float:left; margin-left:30px;line-height: 50px;">
+							<img  <?php if($data['type']==1){ echo 'src="__PUBLIC__/kfcarnteen/img/01.png"';}else{ echo 'src="__PUBLIC__/kfcarnteen/img/02.png"';}?>  class="y" style=" margin-top:2px; float:right;float:left; vertical-align:middle;"/>
+							<span style="  margin-left:10px;color:#169e90;line-height: 50px;">标准菜品</span>
+							<input type="hidden" name="normal" <?php if($data['type']==1){ echo 'value="true"';}else{ echo 'value="false"';}?>>
+                   		</div>
+                </li>
+            </ul>
+			<ul class="dishes_border">
+				<li><img src="__PUBLIC__/kfcarnteen/img/sx.png"/></li>
+				<li style=" margin-left:20px;margin-top:8px;">菜品顺序</li>
+				<li style=" float:right;margin-top:4px;"><input id="sort" type="text" style=" float: left; width: 650px; line-height: 50px;height: 50px;"  name="sort" value="{$data.sort}"/></li>
+			</ul>
+			<input type="hidden" name='goodsid' value="{$goodsid}">
+        </form>
+        <button class="dishes_plus">更新</button>
+</body>
+</html>

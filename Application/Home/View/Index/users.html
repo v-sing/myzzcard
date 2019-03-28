@@ -1,0 +1,87 @@
+<div class="menu_dropdown bk_2 hide" id="users">
+	<dl id="menu-article" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CUSTOMS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe616;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CUSTOMS']['ADD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Customs/add")}" href="javascript:void(0)">添加会员</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CUSTOMS']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Customs/index")}" href="javascript:void(0)">会员管理</a></li>
+              <!--  <li
+				<?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CUSTOMS']['PERSONIDCHANGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Customs/personidchange")}" href="javascript:void(0)">2017年最先身份证过期名单</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CUSTOMS']['PERSONIDCHANGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Customs/personidupdate")}" href="javascript:void(0)">2017年最先更换证件名单</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CUSTOMS']['CONSUME_CUSTOMS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Customs/consume_customs")}" href="javascript:void(0)">2017年最先发生交易名单</a></li>-->
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['CUSTOMS']['CUSTOMS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Customs/customs")}" href="javascript:void(0)">房掌柜更改客户信息专用</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+	<dl id="menu-article" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SEARCHS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe616;</i> 反恐黑名单<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SEARCHS']['ADD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Searchs/add")}" href="javascript:void(0)">添加黑名单</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SEARCHS']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Searchs/index")}" href="javascript:void(0)">反恐黑名单</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SEARCHS']['REDLIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Searchs/redlist")}" href="javascript:void(0)">红色黑名单</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+	<dl id="menu-picture" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTSMAN'])){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe613;</i> 积分管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTSMAN']['ACTIVERULES'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointsMan/activeRules")}" href="javascript:void(0)">积分规则管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTSMAN']['RULES'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointsMan/rules")}" href="javascript:void(0)">积分产生规则管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTSMAN']['POINTSREP'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointsMan/pointsRep")}" href="javascript:void(0)">会员积分报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTSMAN']['RETURNGOODS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointsMan/returnGoods")}" href="javascript:void(0)">退货管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTSMAN']['RETURNGIFT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointsMan/returnGift")}" href="javascript:void(0)">礼品退还管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['POINTSMAN']['POINTSGOODS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PointsMan/pointsGoods")}" href="javascript:void(0)">积分商品管理</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+	<dl id="menu-product" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SELLER'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe620;</i> 会员营销管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SELLER']['PRODUCT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Seller/product")}" href="javascript:void(0)">营销产品设置</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SELLER']['SETPRODUCT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Seller/setProduct")}" href="javascript:void(0)">营销商户设置</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SELLER']['PRODUCTPAY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Seller/productpay")}" href="javascript:void(0)">营销产品充值</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SELLER']['BATCHPRODUCTPAY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Seller/batchproductpay")}" href="javascript:void(0)">营销产品批量充值</a></li>
+				<!--li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['SELLER']['PRODUCTQUERY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Seller/productquery")}" href="javascript:void(0)">营销产品余额查询</a></li-->
+			</ul>
+		</dd>
+	</dl>
+	<dl id="menu-product" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWPRODUCT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe620;</i>新营销券管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWPRODUCT']['JLHCHECKCUSTOM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewProduct/jlhCheckCustom")}" href="javascript:void(0)">会员批量开卡</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWPRODUCT']['PRODUCTPAY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewProduct/productpay")}" href="javascript:void(0)">营销产品充值</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWPRODUCT']['BATCHPRODUCTPAY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewProduct/batchproductpay")}" href="javascript:void(0)">营销产品批量充值</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWPRODUCT']['HBRULES'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewProduct/HbRules")}" href="javascript:void(0)">红包规则</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWPRODUCT']['QUANENDDATE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewProduct/quanenddate")}" href="javascript:void(0)">酒店券有效期管理</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['NEWPRODUCT']['CUSTOMS_OPENCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("NewProduct/customs_opencard")}" href="javascript:void(0)">修改会员开卡信息</a></li>
+			</ul>
+		</dd>
+	</dl>
+    <dl id="menu-product" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['VIPCARD'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+        <dt><i class="Hui-iconfont">&#xe620;</i>艾美贵宾卡管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+        <dd>
+            <ul>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['VIPCARD']['CARDPAY'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("VipCard/cardPay")}" href="javascript:void(0)">贵宾卡充值</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['VIPCARD']['CARDPAY1'])||$_SESSION
+['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("VipCard/cardPay1")}" href="javascript:void(0)">贵宾卡续期券充值</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['VIPCARD']['DISCOUNTRENEWAL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("VipCard/discountRenewal")}" href="javascript:void(0)">贵宾卡续期</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['VIPCARD']['UNBUNDINGLIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("VipCard/unbundingList")}" href="javascript:void(0)">贵宾卡解绑</a></li>
+            </ul>
+        </dd>
+    </dl>
+    <dl id="menu-full" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FULLLAND'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+    <dt><i class="Hui-iconfont">&#xe620;</i>花满地酒店管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    <dd>
+        <ul>
+            <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['FULLLAND']['MENULIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("FullLand/menuList")}" href="javascript:void(0)">套餐列表</a></li>
+        </ul>
+    </dd>
+    </dl>
+</div>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        #remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+        #key{margin:0;}
+        #remind #key li:hover{background-color:#ccc;cursor: pointer;}
+        .tabBar span {background-color: #f5f5f5;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px; padding-bottom: 4px;padding-top: 8px;margin-bottom: 10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;}
+        .tabBar span.current{background-color: #222;color: #fff;margin-bottom: 10px;}
+        .tabCon {display: none;}
+        .nume{margin: 0 0 5px;}
+    </style>
+    <script>
+        jQuery.choice =function(tabBar,tabCon,class_name,tabEvent,i){
+            var $tab_menu=$(tabBar);
+            // 初始化操作
+            $tab_menu.removeClass(class_name);
+            $(tabBar).eq(i).addClass(class_name);
+            $(tabCon).hide();
+            $(tabCon).eq(i).show();
+
+            $tab_menu.bind(tabEvent,function(){
+                $tab_menu.removeClass(class_name);
+                $(this).addClass(class_name);
+                var index=$tab_menu.index(this);
+                $(tabCon).hide();
+                $(tabCon).eq(index).show();
+            });
+        }
+        $(function(){
+            $.choice("#tab_xuan .tabBar span","#tab_xuan .tabCon","current","click","0");
+        });
+    </script>
+</head>
+<body>
+
+<div class="dv">
+    <div class="nume">
+        <div id="tab_xuan" class="choice m10  table definewidth" >
+            <form method="post" id="form1" enctype="multipart/form-data">
+                <table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+                    <input type="hidden" name="card_purchaseid" id="card_purchaseid" value="{$info.card_purchaseid}"/>
+                    <tr>
+                        <td style="width:150px;text-align:right;background-color:#f5f5f5;">缴费流水号</td>
+                        <td>{$info.card_purchaseid}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">会员名称</td>
+                        <td><input type="text" name="cuname" id="cuname" value="{$info.cuname}" maxlength="30" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">手机号</td>
+                        <td><input type="text" name="linktel" id="linktel" value="{$info.linktel}" maxlength="20" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">卡号</td>
+                        <td><input type="text" name="cardno" id="cardno" value="{$info.cardno}" maxlength="30" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">缴费信息</td>
+                        <td><input type="text" name="description" id="description" value="{$info.description}" maxlength="50" /><span style="color:#ff0700;">例：(房型:230平米,缴费月数:12,缴费金额:18907.00)</span></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">赠送积分</td>
+                        <td><input type="text" name="point" id="point" value="{$info.point}" maxlength="20"/></td>
+                    </tr>
+                </table>
+                <table class=" table-bordered  table-hover " style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;border-top-left-radius: 0;border-top-right-radius: 0;width:100%;border-width: 0 1px 1px 0;">
+                    <tr>
+                        <td colspan="2" style="padding-left:150px;background-color:#f5f5f5;">
+                            <button type="submit" class="btn btn-primary" type="button">保存</button>&nbsp;&nbsp;
+                            <a type="button" class="btn btn-success" name="backid" id="backid" href="__URL__/propertyRecharge">返回列表</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $('#form1').submit(function(){
+            var description= $.trim($('#description').val());
+            var point= $.trim($('#point').val());
+            if(description==''){
+                alert('缴费信息必须填写');
+                return false;
+            }
+            if(point==''){
+                alert('赠送积分不能为空');
+                return false;
+            }
+            var m=/(^0\.\d{1,2}$)|(^[1-9]\d*\.\d{1,2}$)|(^[1-9]\d*$)/;
+            var bool=m.test(point);
+            if(!bool){
+                alert('金额最多可以精确到分!');
+                return false;
+            }
+        });
+    })
+
+
+</script>
+</body>
+</html>

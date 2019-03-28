@@ -1,0 +1,72 @@
+@charset "utf-8";
+/* CSS Document */
+*{ padding:0; margin:0;}
+li,ul{ list-style:none;}
+body{ font-family:'微软雅黑';font-size:16px;color:#333; margin:0 auto; padding:0;}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{zoom:1;}
+a:hover{ text-decoration:none;}
+a:link,a:visited{ text-decoration:none;}
+
+/*顶部*/
+.top{overflow:hidden;}
+.top ul{ overflow:hidden; background:#169e90; padding:3% 5%; width:90%; }
+.top ul li{ color:#fff; vertical-align:middle; font-size:26px;}
+.top ul li img{ display:inline-block; vertical-align:middle; margin-right:10px;}
+.top ul li span{vertical-align:middle; display:inline-block;}
+.text_center_02{ text-align:center; font-size:30px;float:left; width:60%;}
+.text_l{ text-align:left; float:left; width:20%;}
+.text_r{ text-align:right; float:right;width:20%;}
+
+/*中间*/
+.main{overflow:hidden; background:#fff; }
+.main ul{ overflow:hidden; width:90%;padding:3% 5% 0%; }
+.main ul li{ float:left; width:190px; margin-left:4.9%;}
+/*.bg{ background:#c8f7c5; padding:15% 5%; border-radius:5px;}
+.bg span{ display:block; font-size:20px; text-align:center;}*/
+.bg{ background:#c8f7c5;border-radius:5px; width:190px; height:190px;}
+.bg span{ display:block; font-size:18px; text-align:center; font-weight:600;}
+
+.center{width:100%;margin:20px auto;text-align:center;}
+
+
+/*设置菜品*/
+.dishes_set{display: block; width:190px; margin: 20px auto;}
+.dishes_set span{ font-size:20px;}
+.dishes_plus{ font-family:'微软雅黑';width:90%; display:block;margin-left:5%;position:fixed; background:#f88b0f; text-align:center; color:#fff; font-size:26px; border:none; padding:2% 0; border-radius:3px;bottom:5%;}
+
+/*编辑菜品*/
+
+.main_dishes{overflow:hidden; background:#fff; }
+.main_dishes ul{ overflow:hidden; width:86%;padding:2% 2%; display:block; margin:3% auto; border:1px solid #ddd; margin-top:3%; }
+.main_dishes ul li{ float:left; font-size:26px; vertical-align:middle; display:block;font-family:'微软雅黑';}
+.main_dishes ul li img{ display:inline-block; vertical-align:middle; float:left;}
+.main_dishes ul li input{ border:none; font-size:26px; text-align:right; color:#169e90; vertical-align:middle; }
+.main_dishes ul li lable{ color:#169e90; font-size:26px; }
+
+/*是否下架*/
+.wxts{ text-align:center; background:#f88b0f; color:#fff; font-size:26px; width:100%; display:block; padding:3% 0;}
+.wxts_text{ text-align:center; font-size:26px; background:#fff; width:100%; padding:10% 0; border-bottom:1px solid #ddd; display:block;}
+.bon{ overflow:hidden; padding:4% 0; width:100%; display:block; margin-left:auto; margin-right:auto;}
+.bon_03{ width:50%; text-align:center; border:none; background:#fff; font-size:26px; float:left; border-right:1px solid #ddd; cursor:pointer;}
+.bon_04{ width:50%; text-align:center; border:none; background:#fff; font-size:26px; float:left; color:#f88b0f; cursor:pointer;}
+
+/*下架成功*/
+.wxts_text img{ display:inline; vertical-align:middle; float:left;}
+.bon_05{ width:100%; text-align:center; border:none; background:#fff; font-size:26px;color:#f88b0f; cursor:pointer;}
+
+/*退菜弹框*/
+.tk_off{ background:#f88b0f; padding:3%; width:94%; display:block; overflow:hidden;}
+.tk_off img{ float:right;}
+.meun{ overflow:hidden; background:#fff; width:94%; padding:0 3%;}
+.meun ul{ overflow:hidden;padding:3%;}
+.meun ul li{ float:left;}
+
+/*设置密码*/
+.password{ text-align:center; padding:0 3%;}
+.password input{border:1px solid #ddd;padding:2%; width:96%; margin-top:20px; font-size:24px;}
+.queding{ font-size:24px; text-align:center; line-height:60px; border-radius:3px;color:#fff; width:80%; margin: 30px auto; display:block; background:#f88b0f; border:none;}
+
+
+
+

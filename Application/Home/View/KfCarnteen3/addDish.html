@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加菜品</title>
+<link href="__PUBLIC__/kfcarnteen/else.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+<script>
+$(function(){
+    //类别名称切换
+    $('.y').click(function(){
+        if($(this).attr("id")=='selected'){
+            $(this).attr('src','__PUBLIC__/kfcarnteen/img/02.png');
+            $(this).attr("id","");
+            $(this).nextAll().eq(1).val(false);
+        }else {
+            $(this).attr('src','__PUBLIC__/kfcarnteen/img/01.png');
+            $(this).attr("id","selected");
+            $(this).nextAll().eq(1).val(true);
+            $('.y').not(this).attr("id","");
+            $('.y').not(this).attr('src','__PUBLIC__/kfcarnteen/img/02.png');
+            $('.y').not(this).nextAll().eq(1).val(false)
+        }
+    });
+
+    //添加菜品成功弹窗
+    $(".dishes_plus").click(function(){
+        var o={};
+        o.goodsname=$('input[name="goodsname"]').val();
+        o.price=$('input[name="price"]').val();
+        o.other=$('input[name="other"]').val();
+        o.normal=$('input[name="normal"]').val();
+        $("#mask").show();
+        $(".tk_down_success").show();
+        $.ajax({
+            type: 'post',
+            url: '{:U("KfCarnteen/addDish")}',
+            data: o,
+            success: function (result) {
+                var data=JSON.parse(result);
+                $("#promptmsg").html(data.msg);
+            }
+        });
+    });
+
+    //关闭添加菜品成功弹窗
+    $(".bon_05").click(function(){
+        $('input[name="goodsname"]').val('');
+        $('input[name="price"]').val('');
+        $('input[name="other"]').val('false');
+        $('input[name="normal"]').val('true');
+        $("#promptmsg").html('');
+        $("#mask").hide();
+        $(".tk_down_success").hide();
+    })
+});
+</script>
+</head>
+<body>
+		<div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;"></div>
+        <!--添加菜品成功弹窗开始-->
+        <div class="tk_down_success" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:10%; background:#fff; display:none;">
+
+            <span class="wxts">温馨提示</span>
+
+            <span class="wxts_text">
+            	<span style="overflow: hidden; display: block; margin-left: auto; margin-right: auto; width: 30%;">
+                    <img src="__PUBLIC__/kfcarnteen/img/success.png"/>
+                    <span style="display: block; vertical-align: middle; text-align: center; float: right;" id="promptmsg"></span>
+                </span>
+            </span>
+
+            <div class="bon">
+                <button class="bon_05">好的</button>
+            </div>
+        </div>
+        <!--添加菜品成功弹窗结束-->
+    	<div class="top ">
+        	<ul>
+            	<li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png"/></li>
+                <li class="text_center_02">添加菜品</li>
+            </ul>
+        </div>
+    	
+        <form class="main_dishes" action="" method="post">
+        	<ul class="dishes_border">
+            	<li><img src="__PUBLIC__/kfcarnteen/img/dishes_name.png"/></li>
+                <li style=" margin-left:20px;">菜品名称</li>
+                <li style=" float:right;"><input name="goodsname" value="请输入菜品名称" onfocus="if(this.value=='请输入菜品名称') this.value='';this.style.color='#169e90'" onblur="if(this.value=='') {this.value='请输入菜品名称';this.style.color='#169e90'}"/></li>
+            </ul>
+            
+            <ul class="dishes_border">
+            	<li><img src="__PUBLIC__/kfcarnteen/img/dishes_pice.png"/></li>
+                <li style=" margin-left:20px;">菜品价格</li>
+                <li style=" float:right;"><input value="请输入菜品价格" name="price" onfocus="if(this.value=='请输入菜品价格') this.value='';this.style.color='#169e90'" onblur="if(this.value=='') {this.value='请输入菜品价格';this.style.color='#169e90'}"/></li>
+            </ul>
+            
+            <ul class="dishes_border">
+            	<li><img src="__PUBLIC__/kfcarnteen/img/dishes_lb.png"/></li>
+                <li style=" margin-left:20px;">类别名称</li>
+                <li style=" float:right;">
+                        <div style="float:left;">
+                            <img src="__PUBLIC__/kfcarnteen/img/02.png" class="y" style=" margin-top:2px; float:right; float:left; vertical-align:middle;"/>
+                            <span style=" vertical-align:middle; margin-left:10px;color:#169e90;">散装菜</span>
+                            <input type="hidden" name="other" value="false">
+                        </div>
+                        
+                        <div  style="float:left; margin-left:30px;">
+                            <img src="__PUBLIC__/kfcarnteen/img/01.png" class="y" id="selected" style=" margin-top:2px; float:right;float:left; vertical-align:middle;"/>
+                            <span style=" vertical-align:middle; margin-left:10px;color:#169e90;">标准菜品</span>
+                            <input type="hidden" name="normal" value="true">
+                   		</div>
+                </li>
+            </ul>
+            <button class="dishes_plus" type="submit">添加</button>
+        </form>
+</body>
+</html>

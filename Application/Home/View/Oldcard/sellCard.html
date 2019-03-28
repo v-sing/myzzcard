@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>老卡充值报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#start').datepicker();
+        $('#end').datepicker();
+        $('#cstart').datepicker();
+        $('#cend').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div class="dv">
+<form class="form-inline definewidth m20" action="{:U('Oldcard/sellCard')}" method="get">
+    交易日期：
+    <input type="text" name="start" id="start" class="abc input-default" value="{$start}" style="width:100px;"/>--
+    <input type="text" name="end" id="end" class="abc input-default" value="{$end}" style="width:100px;"/>
+    清算日期
+    <input type="text" name="cstart" id="cstart" class="abc input-default" value="{$cstart}" style="width:100px; margin-right:10px;"/>--
+    <input type="text" name="cend" id="cend" class="abc input-default" value="{$cend}" style="width:100px; margin-right:10px;"/>
+    <select name="tradetype">
+       <option value="">交易类型</option>
+       <option value="售卖" <?php if($tradetype=='售卖') echo 'selected'; ?> >售卖</option>
+       <option value="充值撤销" <?php if($tradetype=='充值撤销') echo 'selected'; ?> >充值撤销</option>
+       <option value="充值" <?php if($tradetype=='充值') echo 'selected'; ?> >充值</option>
+    </select>
+      <button type="submit" class="btn btn-mini btn-primary">查询</button>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+		<th style="width: 8px; text-align: center;"></th>
+        <th>交易流水号</th><th>发卡商户号</th><th>发卡铺号</th>
+        <th>交易类型</th><th>起始卡号</th><th>终止卡号</th><th>卡数量</th><th>交易金额</th>
+        <th>交易日期</th><th>清算日期</th>
+    </tr>
+    </thead>
+    <volist name="lists" id="vo" key="key">
+	     <tr>
+			<td style="text-align: center;">{$key}</td>
+            <td>{$vo.purchaseid}</td>
+            <td>{$vo.cardissuer}</td>
+            <td>{$vo.panterid }</td>
+            <td>{$vo.tradetype}</td>
+            <td>{$vo.cardno}</td>
+             <td>{$vo.endcardno}</td>
+             <td>{$vo.count}</td>
+             <td>{$vo.amount}</td>
+             <td><?php echo date('Y/m/d',strtotime($vo[tradedate].$vo[tradetime]));?></td>
+             <td><?php echo date('Y/m/d',strtotime($vo[cleardate].'00:00:00'));?></td>
+        </tr>
+        </volist>
+</table>
+<div class="inline pull-right page sabrosus">{$show}</div>
+    </div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>

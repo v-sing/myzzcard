@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script> 
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+
+<script type='text/javascript'>
+    function intOnly1(obj){
+        obj.value=obj.value.replace(/^?(0\d?)|[^\d]/g,'');
+    }
+</script>
+<body>
+<div class="dv">
+<form action="" method="post" class="definewidth m20">
+<table class="table table-bordered table-hover ">
+    <tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">所属品类</td>
+        <td>
+            <select name="cateid">
+                <volist name="cate" id="vo">
+                    <if condition="$vo.children eq null">
+                        <option value="{$vo.cateid}" <?php if($vo['cateid']==$cateid) echo 'selected="selected"'?>>{$vo.catename}</option>
+                        <else/>
+                        <optgroup label="{$vo.catename}">
+                            <volist name="vo['children']" id="v">
+                                <option value="{$v.cateid}" >{$v.catename}</option>
+                            </volist>
+                        </optgroup>
+                    </if>
+                </volist>
+            </select>
+        </td>
+    </tr>
+	<tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">商品名称</td>
+        <td><input type="text" name="pname" /></td>
+    </tr>
+	<tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">价格</td>
+        <td><input type="text" name="price"  onkeyup="clearNoNum(this)"/></td>
+    </tr>
+	<tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">库存数量</td>
+        <td><input type="text" name="stroenum" onkeyup="intOnly1(this)" value="-1"/>&nbsp;&nbsp;&nbsp;<span style="color:#ff2222">*</span>不填写默认为无限库存</td>
+    </tr>
+    <tr>
+        <td style="width:150px;text-align:right;background-color:#f5f5f5;">是否上架</td>
+        <td>
+            <label style="display: inline;"><input type="radio" name="status" value="1" checked/>是</label>
+            <label style="display: inline;"><input type="radio" name="status" value="0"/>否</label>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="padding-left:150px;background-color:#f5f5f5;">
+            <button type="submit" class="btn btn-small btn-primary" >添加</button>
+        </td>
+    </tr>
+</table>
+</form>
+    </div>
+</body>
+</html>

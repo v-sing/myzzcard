@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="title">通宝项目开票</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="https://cdn.bootcss.com/smalot-bootstrap-datetimepicker/2.4.4/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/index.js"></script>
+</head>
+<body>
+
+<div style="padding-left: 40px;padding-top: 20px">
+    <form class="form-inline definewidth m20"  method="get"
+     <if condition="(ACTION_NAME eq index)">
+           action="{:U('index')}"
+    <else/>
+        action="{:U('service')}"
+    </if>
+    >
+    <if condition="(ACTION_NAME eq index)">
+        <input type="text" name="start" id="start" class="datetime input-default" value="{:I('get.start',date('Y-m',strtotime('-1 month')))}" style="width:100px;" autocomplete="off" placeholder="月份"/>
+        <else/>
+        <select name="year">
+            <option value="2019"
+                <if condition="(I('get.year') eq 2019)">
+                    selected="selected"
+                </if>
+            >2019</option>
+            <option value="2018"
+                <if condition="(I('get.year') eq 2018 || I('get.year') eq '' )">
+                    selected="selected"
+                </if>
+            >2018</option>
+            <option value="2017"
+            <if condition="(I('get.year') eq 2017)">
+                selected="selected"
+            </if>
+            >2017</option>
+            <option value="2016"
+            <if condition="(I('get.year') eq 2016)">
+                selected="selected"
+            </if>
+            >2016</option>
+        </select>
+        <select name="quarter">
+            <option value="1"
+            <if condition="(I('get.quarter') eq 1)">
+                selected="selected"
+            </if>
+            >第一季度</option>
+            <option value="2"
+            <if condition="(I('get.quarter') eq 2)">
+                selected="selected"
+            </if>
+            >第二季度</option>
+            <option value="3"
+            <if condition="(I('get.quarter') eq 3)">
+                selected="selected"
+            </if>
+            >第三季度</option>
+            <option value="4"
+
+            >第四季度</option>
+        </select>
+    </if>
+
+        <input type="text" name="pantername"  value="{:I('get.pantername','')}" style="width:165px; margin-right:7px;" placeholder="法人单位"/>
+        <input type="text" name="company"  value="{:I('get.company','')}" style="width:165px; margin-right:7px;" placeholder="项目名称"/>
+
+        <select name="msg">
+            <option value="0"
+            <if condition="(I('get.msg') eq 1 ||I('get.msg') eq '' )">
+                selected="selected"
+            </if>
+
+            >全部</option>
+            <option value="1"
+            <if condition="(I('get.msg') eq 1)">
+                selected="selected"
+            </if>
+
+            >已开票</option>
+            <option value="2"
+            <if condition="(I('get.msg') eq 2)">
+                selected="selected"
+            </if>
+
+            >未开票</option>
+
+        </select>
+
+        <button type="submit" class="btn  btn-primary">查询</button>
+        <input type="reset" value="重置"  class="btn  btn-danger" />
+        <button type="button"  class="btn" id="excel">
+            导出EXCEL</button>
+    </form>
+    <div style="margin-top: 10px;margin-bottom: 10px">
+          <label class="checkbox">
+                 <input type="checkbox"  id="allCheck"/> <label>全选</label>
+          </label>
+    </div>
+    <div style="margin-bottom: 30px">
+        <div class="btn btn-info">
+            <span>总金额：{$totalIsuue}</span>
+        </div>
+        <div class="btn btn-success" style="margin-left: 20%;">
+            <span>已开票金额：{$beforMoney}</span>
+        </div>
+        <div class="btn btn-primary" style="margin-left: 20%">
+            <span>未开票金额：{$afterMoney}</span>
+        </div>
+    </div>
+
+    <button class="btn btn-info pull-right" id="allOpen" data-index='
+    <if condition="(ACTION_NAME eq 'index')">openReceipt<else/>openReceiptTwo</if>
+
+    '>批量开票</button>
+</div>
+
+<table class="table table-striped " >
+    <thead id="thead">
+    <th>选中</th>
+    <th>法人单位</th>
+    <th>项目名称</th>
+        <if condition="(ACTION_NAME eq 'index')">
+            <th>需缴备付金额</th>
+            <else/>
+            <th>应缴服务费</th>
+        </if>
+
+    <th>当前状态</th>
+    <th>开票</th>
+    </thead>
+    <tbody id="tbody">
+        <volist name="data" id="val" key="k">
+                    <tr>
+                        <if condition="(bccomp($val['selltotalmoney'],100000)) egt 0">
+                             <td></td>
+                            <else/>
+                            <td><input type="checkbox" class="smallcheck" data-index="'{$val.panterid}'"></td>
+                        </if>
+                        <td>{$val.panterInfo.namechinese}</td>
+                        <td>{$val.panterInfo.nameenglish}</td>
+                        <td class="sell" data-index="'{$val.panterid}'">
+
+                            <if condition="(bccomp($val['selltotalmoney'],100000)) egt 0">
+                                    <span style="color: red" class="moneys">{$val['selltotalmoney']}</span>
+                                <else/>
+                               <span class="moneys">{$val['selltotalmoney']}</span>
+                            </if>
+
+                        </td>
+                        <td id="panter{$val.panterid}" class="text-info">
+                           <if condition="$val.msg neq 0">
+                                 已开票
+                           <else/>
+                                 未开票
+                           </if>
+                        </td>
+                        <td id="isPrint{$val.panterid}">
+                                <if condition="$val.msg neq 0">
+                                    <if condition="(bccomp($val['selltotalmoney'],100000)) egt 0">
+                                        <button class="btn  btn-danger previewOpen" data-panterid="'{$val.panterid}'">打印  <span class="caret"></span></button>
+                                        <else/>
+                                        <button class="btn  btn-danger print" data-panterid="'{$val.panterid}'">打印</button>
+                                    </if>
+                                    <else/>
+                                    <button class="btn  btn-success Open" data-panterid="'{$val.panterid}'">开票</button>
+                                </if>
+                        </td>
+                    </tr>
+        </volist>
+    </tbody>
+
+</table>
+<div class="pagination pull-right">
+    <ul>
+        {$page}
+    </ul>
+
+</div>
+
+
+
+</body>
+</html>
+<!-- Modal -->
+<div id="Custroms_Chaneg" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">×</button>
+        <p id="changdata">发票打印信息预览</p>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="invoiceForm">
+
+            <div class="control-group">
+                <label class="control-label" >法人单位:</label>
+                <div class="controls">
+                    <input type="text" name="pantername" placeholder="法人单位" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" >开户行:</label>
+                <div class="controls">
+                    <input type="text" name="bank" placeholder="开户行" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" >开户行号码:</label>
+                <div class="controls">
+                    <input type="text" name="bankaccount" placeholder="开户行号码"  />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" >地址:</label>
+                <div class="controls">
+                    <input type="text" name="address" placeholder="地址"  />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" >电话:</label>
+                <div class="controls">
+                    <input type="text" name="linktel" placeholder="电话"  />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+            <if condition="(ACTION_NAME eq 'index')">
+
+                    <button class="btn btn-primary submit"  data-receipt="'007'">打印普票</button>
+                    <button class="btn btn-danger submit"  data-receipt="'026'">打印电子票</button>
+
+                <else/>
+                    <div class="pull-left" style="margin-left: 133px" >
+                                <button class="btn btn-primary submit"  data-receipt="'007'">打印普票</button>
+                                <button class="btn btn-info submit"  data-receipt="'004'">打印专票</button>
+                                <button class="btn btn-danger submit"  data-receipt="'026'">打印电子票</button>
+                    </div>
+            </if>
+
+    </div>
+</div>
+
+<script>
+      var urlExcel = "{:U('Excel')}";
+      $(function () {
+
+          var panterArr = [];
+        //时间控件初始化
+            $('.datetime').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'yy-mm',
+                showButtonPanel: true,
+                onClose: function(dateText, inst) {
+                    var month = $("#ui-datepicker-div .ui-datepicker-month option:selected").val();//得到选中的月份值
+                    var year = $("#ui-datepicker-div .ui-datepicker-year option:selected").val();//得到选中的年份值
+                    $('#Datepicker').val(year+'-'+(parseInt(month)+1));//给input赋值，其中要对月值加1才是实际的月份
+                }
+            });
+          $("#ui-datepicker-div").hide();
+        //全选
+          $('#allCheck').on('click',function () {
+                  if($('#allCheck').attr('checked')){
+                            $('.smallcheck').attr('checked',true);
+                  }else{
+                         $('.smallcheck').removeAttr('checked',true);
+                  }
+          });
+          //批量开票
+          $('#allOpen').on('click',function () {
+                 $('.sublib').remove();
+                      panterArr = [];
+                      var checkedInput =   $('.smallcheck:checked');
+                        $.each(checkedInput,function () {
+                               panterArr.push($(this).data('index').replace(/\'/g,""));
+                        });
+                      sellOpenReceipt();
+          });
+          $('.Open').on('click',function () {
+                 $('.sublib').remove();
+                panterArr = [];
+                panterArr.push($(this).data('panterid').replace(/\'/g,""));
+                sellOpenReceipt();
+          });
+          $('body').on('click','.previewOpen',function () {
+
+              var index =  $(this).parent().siblings('.sell').data('index');
+              if($('#allOpen').data('index').replace(/\s+/g,'') != 'openReceipt'){
+                  data = {
+                      "openreceiptid":index.replace(/\'/g,''),
+                      "type":2,
+                      year:$('input[name="year"]').val(),
+                      quarter:$('select[name="quarter"]').val()
+                  }
+              }else{
+                  data = {
+                      "openreceiptid":index.replace(/\'/g,''),
+                      "type":1,
+                      receiptdate:$('#start').val()
+                  }
+              }
+               var that = $(this);
+              $.post("{:U('PreviewReceiptByPanterid')}",data,function (resp) {
+                   $('.sublib').remove();
+                  var html = "";
+                     $.each(resp.data,function (i,v) {
+                               html +="<tr class='sublib'><td></td><td></td><td></td>";
+                               html +="<td class='sell' data-index=\"'"+index.replace(/\'/g,'')+"'\"><span class='moneys'>"+v+"</span></td>";
+                               html +="<td>已开票</td>";
+                               html +="<td><button class='btn  btn-danger print' data-panterid=\"'"+index.replace(/\'/g,'')+"'\">打印</button></td></tr>";
+                     });
+                     console.log(html);
+                   that.parent().parent().after(html);
+              });
+
+          });
+
+          function sellOpenReceipt() {
+              var url = $('#allOpen').data('index');
+              url = url.replace(/\s+/g,'');
+              if(url != 'openReceipt'){
+                  var data = {
+                      panterids:panterArr,
+                      year:$('input[name="year"]').val(),
+                      quarter:$('select[name="quarter"]').val()
+                  };
+              }else{
+                  var data = {
+                      panterids:panterArr,
+                      start:$('input[name="start"]').val()
+                  };
+              }
+
+              url = "{:U('"+url+"')}";
+              $.post(url,data,function (resp) {
+                  console.log(resp.code);
+                  if(resp.code == 0)
+                  {
+                      layer.open({
+                          content:"开票成功"
+                      });
+                      $.each(resp.panterid,function(index,val)
+                      {
+                          $('#panter'+val).html("已开票");
+                          $('#isPrint'+val).html("<button class='btn  btn-danger print' data-panterid='{$val.panterid}'>打印</button>");
+                      });
+                  }else{
+                      if(resp.code == 1){
+                          layer.open({
+                              content:"开票成功"
+                          });
+                          $.each(resp.panterid,function(index,val)
+                          {
+                              $('#panter'+val).html("已开票");
+                              $('#isPrint'+val).html("<button class='btn  btn-danger previewOpen' data-panterid='{$val.panterid}'>打印 <span class=\"caret\"></span></button>");
+                          });
+                      }else{
+                          layer.open({
+                              content:"开票失败"
+                          });
+                      }
+
+                  }
+
+              });
+          }
+            var data = "";
+          $('body').on('click','.print',function () {
+                   var index =  $(this).parent().siblings('.sell').data('index');
+                   if($('#allOpen').data('index').replace(/\s+/g,'') != 'openReceipt'){
+                       data = {
+                            "openreceiptid":index.replace(/\'/g,''),
+                            "type":2,
+                            year:$('input[name="year"]').val(),
+                            quarter:$('select[name="quarter"]').val()
+                        }
+                   }else{
+                       data = {
+                           "openreceiptid":index.replace(/\'/g,''),
+                           "type":1,
+                           receiptdate:$('#start').val()
+                       }
+                   }
+
+                   data.preview = 1;
+                   data.money   = $(this).parent().siblings(".sell").children(".moneys").text();
+                   Printinvoice(data);
+
+          });
+          $('body').on('click','.submit',function () {
+              var invoiceForm = $('#invoiceForm').serializeArray();
+
+              $.each(invoiceForm, function() {
+                  data[this.name] = this.value;
+              });
+              delete data["preview"];
+              data['printtype'] = $(this).data('receipt').replace(/\'/g,"");
+              Printinvoice(data);
+          });
+
+          function  Printinvoice(data) {
+              var len = 0;
+              $.each(data,function () {
+                     len++;
+              });
+              if(len >4){
+                  layer.open({
+                      type:3
+                  });
+              }
+              $.post("{:U('sendPrint')}",data,function (resp) {
+                  if(resp.code == '10063'){
+                      layer.closeAll();
+                      $.each(resp.data,function (index,v) {
+                          $('.modal-body input[name="'+index+'"]').val(v);
+                      });
+                      $("#Custroms_Chaneg").modal('show')
+                  }else{
+                      layer.closeAll();
+                      layer.open({
+                          'content': resp.msg
+                      });
+                  }
+              });
+          }
+
+
+
+      })
+</script>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店日结算报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  style="padding:6px;">
+<div>
+    <table id="list" class="easyui-datagrid" title="酒店日结算报表"  width="120%" height="820"
+           data-options="
+                                url:'getDailyReportList',
+                                rownumbers: true,
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,50,100,200],
+                                singleSelect: false,                              
+                                method: 'get',
+                                striped:true,
+                                toolbar:'#tb',
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                showFooter:true,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+
+        <thead>
+        <tr>
+            <th data-options="field:'panterid',width:140,align:'left'">商户编码</th>
+            <th data-options="field:'pname',width:50,styler:cellStyler">结算商户</th>
+            <th data-options="field:'settleaccountname',width:90,align:'center'">结算名称</th>
+            <th data-options="field:'statdate',width:50,align:'center'">结算日期</th>
+            <th data-options="field:'tradequantity',width:60,align:'center'">交易笔数</th>
+            <th data-options="field:'tradeamount',width:180,align:'center'">交易金额</th>
+            <th data-options="field:'rate',width:60,align:'center'">结算比例</th>
+            <th data-options="field:'sxf',width:120,align:'center'">结算手续费</th>
+            <th data-options="field:'fuamount',width:150,align:'center'">服务费</th>
+            <th data-options="field:'jsamount',width:60,align:'center'">结算金额</th>
+            <th data-options="field:'settleaccountname',width:60,align:'center'">结算户名</th>
+            <th data-options="field:'settlebank',width:80,align:'center'">结算银行</th>
+            <th data-options="field:'settlebankid',width:60,align:'center'">结算账户</th>
+            <th data-options="field:'settlebankname',width:60,align:'center'">开户行</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div style="visibility:hidden" id="__box">
+    <div id="tb" style="padding:4px;height:auto;display: none;">
+        <div style="padding:4px">
+            结算时间：<input  name="startdate" class="easyui-datebox" style="width:140px;" id="startdate">
+            &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;至：
+            <input  name="enddate" class="easyui-datebox" style="width:140px;" id="enddate">
+        </div>
+        <div style="padding:4px">
+            结算户名：<input  name="jsname" class="easyui-textbox" style="width:140px;" id="jsname">
+        </div>
+        <div style="padding:4px">
+            结算酒店：<select  class="easyui-combobox" style="width:140px;" name='panterid' id='panterid'>
+            <option value="">请选择酒店</option>
+            <foreach name='panters' item="vo" key="k" >
+                <option value="{$k}">{$vo}</option>
+            </foreach>
+        </select>
+        </div>
+        <div style="padding:4px">
+  	 		<span style="margin-left:300px;">
+  	           <a href="#" class="easyui-linkbutton" iconCls="icon-search"  onClick="doSearch()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;
+  	           <a href="{:U("NewHotels/dailyReport_excel")}" target="_blank" class="easyui-linkbutton" data-options="iconCls:'icon-redo'" >导出</a>
+  	        </span>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        var startdate="<?php echo date('Y-m-01',time());?>";
+        var enddate="<?php echo date('Y-m-d',time());?>";
+        $("#startdate").datebox("setValue",startdate);
+        $("#enddate").datebox("setValue",enddate);
+    })
+    //查询
+    function doSearch(){
+        var o={};
+        o.startdate=$("#startdate").datebox("getValue");
+        o.enddate=$("#enddate").datebox("getValue");
+        o.jsname=$('#jsname').textbox('getValue');
+        o.panterid=$('#panterid').textbox('getValue');
+        $('#list').datagrid('load',o);
+        return false;
+    }
+    //清空查询条件
+    function resetting(){
+        var o={};
+        o.startdate=$("#startdate").datebox("setValue",'');
+        o.enddate=$("#enddate").datebox("setValue",'');
+        o.jsname=$('#jsname').textbox('setValue','');
+        o.panterid=$('#panterid').textbox('setValue','');
+        $('#list').datagrid('load',o);
+        return false;
+    }
+    //设置列格式
+    function cellStyler(value,row,index){
+        if (value > 0){
+            return 'background-color:#ffee00;color:red;';
+        }
+    }
+</script>
+</body>
+</html>
+

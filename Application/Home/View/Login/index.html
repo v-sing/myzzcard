@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/html5.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/respond.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/PIE_IE678.js"></script>
+    <![endif]-->
+    <link href="__PUBLIC__/H-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/H-ui/css/H-ui.login.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/H-ui/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__PUBLIC__/Css/keyboard.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <script src="__PUBLIC__/H-ui/lib/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/H-ui/js/H-ui.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/Js/jquery.keyboard.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+        function refreshVerify(){
+            $('#verifyImg').attr('src','__URL__/verify/'+Math.random());
+            $('#verify').val('');
+        }
+    </script>
+    <title>后台登录 - 至尊会员支付一卡通平台</title>
+</head>
+<body onload="refreshVerify();">
+<div class="header"></div>
+<div class="loginWraper">
+    <div id="loginform" class="loginBox">
+        <form class="form form-horizontal" action="__URL__/checkLogin.html" method="post">
+            <div class="row cl">
+                <label class="form-label col-3"><i class="Hui-iconfont">&#xe60d;</i></label>
+                <div class="formControls col-8">
+                    <input id="" name="username" type="text" placeholder="账户" class="input-text size-L" autocomplete="off">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-3"><i class="Hui-iconfont">&#xe60e;</i></label>
+                <div class="formControls col-8">
+                    <input id="field" name="password" type="password" readonly placeholder="密码"  class="input-text size-L">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-3"><i class="Hui-iconfont">&#xe6c7;</i></label>
+                <div class="formControls col-8">
+                    <input id="phone" name="phone" type="text" placeholder="手机号" class="input-text size-L" autocomplete="off">
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="formControls col-8 col-offset-3">
+                    <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" name="code" id="verify" value="验证码:" style="width:150px;">
+
+                    <a id="verifyText" href="javascript:postVerify();"><span id="vertext" class="btn btn-primary radius">发送验证码</span></a>
+
+                     </div>
+            </div>
+            <div class="row" style="display:none;">
+                <div class="formControls col-8 col-offset-3">
+                    <label for="online">
+                        <input type="checkbox" name="online" id="online" value="">
+                        使我保持登录状态</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="formControls col-8 col-offset-3">
+                    <input name="" type="submit" class="btn btn-success size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
+                    <input name="" type="reset" class="btn btn-default size-L ml-20" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="wrapper">
+       <div id="keyboard" class="clearfix">
+         <div class="number" id="1">1</div>
+         <div class="number" id="2">2</div>
+         <div class="number" id="3">3</div>
+         <div class="number" id="4">4</div>
+         <div class="number" id="5">5</div>
+         <div class="number" id="6">6</div>
+         <div class="number" id="7">7</div>
+         <div class="number" id="8">8</div>
+         <div class="number" id="9">9</div>
+         <div class="number" id="0">0</div>
+         <div class="number" id="-">-</div>
+         <div class="char" id="q">q</div>
+         <div class="char" id="w">w</div>
+         <div class="char" id="e">e</div>
+         <div class="char" id="r">r</div>
+         <div class="char" id="t">t</div>
+         <div class="char" id="y">y</div>
+         <div class="char" id="u">u</div>
+         <div class="char" id="i">i</div>
+         <div class="char" id="o">o</div>
+         <div class="char" id="p">p</div>
+         <div class="char" id="a">a</div>
+         <div class="char" id="s">s</div>
+         <div class="char" id="d">d</div>
+         <div class="char" id="f">f</div>
+         <div class="char" id="g">g</div>
+         <div class="char" id="h">h</div>
+         <div class="char" id="j">j</div>
+         <div class="char" id="k">k</div>
+         <div class="char" id="l">l</div>
+         <div class="char" id="z">z</div>
+         <div class="char" id="x">x</div>
+         <div class="char" id="c">c</div>
+         <div class="char" id="v">v</div>
+         <div class="char" id="b">b</div>
+         <div class="char" id="n">n</div>
+         <div class="char" id="m">m</div>
+         <div id="shift">切换</div>
+         <div id="bspace">删除</div>
+         <div id="clear">清空</div>
+         <div id="space">确定</div>
+         <div id="close">关闭</div>
+       </div>
+    </div>
+</div>
+
+<div class="footer">Copyright 郑州建业至尊商务服务有限公司 by jyzz Version1.1</div>
+
+<script type='text/javascript'>
+    var _hmt = _hmt || [];
+     (function() {
+     var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?080836300300be57b7f34f4b3e97d911";
+     var s = document.getElementsByTagName("script")[0];
+     s.parentNode.insertBefore(hm, s);
+     })();
+     var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+     document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F080836300300be57b7f34f4b3e97d911' type='text/javascript'%3E%3C/script%3E"));
+
+     var offset = $('#field').offset();
+     offset.top = offset.top + 41;
+     $('#wrapper').css({'left':offset.left,'top':offset.top});
+
+     $(window).resize(function(){
+     var offset = $('#field').offset();
+     offset.top = offset.top + 41;
+     $('#wrapper').css({'left':offset.left,'top':offset.top});
+     });
+function postVerify(){
+   var phone = $("#phone").val();
+
+        //----20160429-----
+        var wait = 10;
+        function time(o) {
+            if (wait == 0) {
+                o.attr('href', 'javascript:postVerify();');
+                $("#vertext").text("发送验证码");
+
+                wait = 10;
+            } else {
+                o.attr('href', '#');
+                $("#vertext").text("重新发送(" + wait + ")");
+                wait--;
+                setTimeout(function() {
+                    time(o)
+                }, 1000)
+            }
+        }
+        time($("#verifyText"));
+        //---------end-------
+        $.ajax({
+                type : "POST",
+                dataType : "json",
+                url : "{:U('getVerify')}",
+                data : "phone="+phone,
+                success : function(res) {
+                    if(res.code==4){
+                        alert("手机号格式有误");
+                        return false;
+                    }
+                    if(res.code == 1){
+                        return true;
+                    }
+                    if(res.code == 3){
+                        alert("无此手机号");
+                        return false;
+                    }
+                    if(res.code == 0){
+                        alert("验证码发送失败");
+                        return false;
+                    }
+                }
+            });
+
+}
+</script>
+</body>
+</html>

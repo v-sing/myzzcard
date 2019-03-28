@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta content="width=device-width, initial-scale=0.7, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=yes" />
+    <title>君邻会会员卡密码修改</title>
+    <meta name="description" content="修改密码" />
+    <meta name="keywords" content="修改密码" />
+    <script src="__PUBLIC__/H-ui/lib/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+<style type="text/css">
+    *{margin:0px;padding:0px;}
+    body{font-family:'微软雅黑';background-color:#eeeeee;width:100%; font-size:16px;}
+    .rg_page .header_info{background:#c29267;padding:24px 17px;margin-bottom:5px;}
+    .rg_page .header_info a{display:block;background:url("/Public/css/images/leftarrow.png") no-repeat;
+        padding-left:37px;font-size:30px;color:#fff;}
+    .reg_box{padding:10px 20px;}
+    .reg_box .tl{color:#666666;font-size:22px;font-weight: normal;margin-bottom:20px;}
+    .reg_form{padding-bottom:50px;}
+    .reg_form .item i.i1{background-position: -35px -409px}
+    .reg_form .item i.i2{background-position: -35px -266px}
+
+    .reg_form .item{position:relative;background:#fff;padding-left:2%;border:1px solid #ddd;border-bottom:none;line-height:70px;height:70px;overflow:hidden;}
+    .reg_form .item .item_name{float:left;color:#666;font-size:1.2rem;width:18%;font-size:16px;}
+    .reg_form .item .ipt{font-size:1.2rem;color:#999;border:none;padding:20px 20px;width:45%;}
+	.reg_form .item .ipt_2{font-size:1.2rem;color:#E2E2E2;border:none;padding:20px 20px; width:40%;}
+    .reg_form .item .ipt_3{font-size:1.2rem;color:#E2E2E2;border:none;padding:20px 20px; width:25%;}
+    .reg_form .item .xx_btn{height:70px;border:none;background:#c29267;font-size:1.2rem;
+        text-align:center;padding:0 5px;color:#fff; float: right; width:37%;font-size:16px;}
+    .reg_form .sub_item{width:100%;}
+    .reg_form .sub_item .sub_box{margin:50px auto 0;width:388px;}
+    /*.sub_box .sub_btn{height:60px;background:#c29267;color:#fff;font-size:20px;border:none;width:100%;}*/
+	 .sub_box .sub_btn_2{height:60px;background:#c5c5c5;color:#fff;font-size:20px;border:none;width:100%;}
+	 .sub_btn{height:60px;background:#c29267;color:#fff;font-size:20px;border:none;width:100%;}
+
+    .rg_page .footer{padding:10px 20px;}
+    .rg_page .footer .foot_box{width:288px;height:70px;padding:10px;margin:0 auto;}
+    .rg_page .footer .foot_box .copyright{color:#ADADAD;font-size:16px;text-align:center;margin-top:5px;}
+    .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+    .clearfix{zoom:1;}
+
+	.xuanze{background:#ddd; border:none; width:18%; height:40px; line-height:34px; font-size:16px; color:#666; cursor:pointer;font-family:微软雅黑; margin-top:40px; margin-left:3%; float:left}
+	.qkxz{ border: 1px solid #12a8ec; border-radius:5px; padding-left:5px; padding-right:5px; background:#FFF; width:20%; height:40px; line-height:34px; font-size:16px; color:#12a8ec; cursor:pointer;font-family:微软雅黑; margin-top:15px; margin-left:2%; float:left}
+	.qkxz a:hover{border-radius:5px; padding-left:5px; padding-right:5px; background:#12a8ec; width:20%; height:40px; line-height:34px; font-size:16px; color:#fff; cursor:pointer;font-family:微软雅黑; margin-top:15px; margin-left:2%; float:left}
+	
+	
+	.subtj{ width:90%; margin-left:5%; background:#903; color:#fff; font-size:30px; height:76px; margin-top:20px; border:none;}
+	
+	.sub_item{width:100%;}
+	.sub_box{margin:10% auto 10%;width:90%;}
+	.sub_btn{height:4rem;background:#c29267;color:#fff;font-size:1.8rem;border:none;width:100%; border-radius:3px;}
+
+</style>
+</head>
+<body>
+<div class="rg_page">
+    <div class="reg_box">
+        <div class="tl">修改密码：</div>
+        <div class="reg_form">
+               <form action="{:U('Jlh/changePwd')}" method="post" onsubmit="return checkForm();">
+                 <div class="item clearfix">
+               
+                <div class="item_name">君邻会卡号</div>
+                <input type="text" name="cardno" class="ipt" value=""  placeholder="请输入卡号" id="cardno" autocomplete="off"/>
+               </div>
+               
+               
+                <div class="item clearfix " style="">
+                
+                
+                <div class="item_name">预留手机号码</div>
+                <input type="text" name="mobile" class="ipt" value=""  placeholder="请输入手机号"  id="mobile"/>
+               </div>
+               
+               
+                <div class="item clearfix " style="border-bottom:1px solid #ddd;">
+                
+                
+                
+                <div class="item_name">短信验证</div>
+                <input type="text" name="verify" class="ipt_3" value="" placeholder="请确定验证码"  />
+                <input type="button" value="发送验证码" class="xx_btn" onclick="sendVerify();" id="send"/>
+                    <input type="hidden" name="timer" id="timer"/>
+            </div>
+            
+            
+                    <div class="item clearfix " style=" margin-top:-1px;">
+                
+                <div class="item_name">原密码</div>
+                <input type="password" name="oldpwd" class="ipt_2" value=""  placeholder="请输入原密码" id="oldpwd"/>
+            </div>
+            
+            
+            
+             <div class="item clearfix " style=" margin-top:-1px;">
+                
+                <div class="item_name">新密码</div>
+                <input type="password" name="newpwd" class="ipt_2" value=""  placeholder="请输入新密码" id="newpwd"/>
+            </div>
+            
+            <div class="item clearfix" style="border-bottom:1px solid #ddd">
+                
+                <div class="item_name">确定密码</div>
+                <input type="password" name="renewpwd" class="ipt_2" value="" placeholder="请确定密码" id="renewpwd" />
+            </div>
+            
+           <div class="sub_item">
+                <div class="sub_box">
+                    <input type="submit" class="sub_btn" value="确认修改" style="cursor:pointer;"/>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function checkForm(){
+        var cardno= $.trim($('#cardno').val());
+        if(cardno==''){
+            alert('请输入会员卡号');
+            return false;
+        }
+        var verify=$.trim($('#cardno').val());
+        if(verify==''){
+            alert('请输入验证码');
+            return false;
+        }
+        var oldpwd= $.trim($('#oldpwd').val());
+        if(oldpwd==''){
+            alert('请输入会员卡密码');
+            return false;
+        }
+        var newpwd= $.trim($('#newpwd').val());
+        if(newpwd==''){
+            alert('请输入新密码');
+            return false;
+        }
+        var renewpwd= $.trim($('#renewpwd').val());
+        if(renewpwd==''){
+            alert('请输入确定密码');
+            return false;
+        }
+        if(newpwd!=renewpwd){
+            alert('两次新密码输入不一致');
+            return false;
+        }
+    }
+    function sendVerify(){
+        var mobile= $.trim($('#mobile').val());
+        var cardno=$.trim($('#cardno').val());
+        var reg=/^1[34578]\d{9}$/;
+        if(cardno==''){
+            alert('请填写会员卡号');
+            return false;
+        }
+        if(mobile==''){
+            alert('请填写手机号');
+            return false;
+        }
+        if(!reg.test(mobile)){
+            alert('手机号格式错误');
+            return false;
+        }
+        $.ajax({
+            type:'POST',
+            url:'{:U("Jlh/sendVerify")}',
+            dataType:'json',
+            data:{mobile:mobile,cardno:cardno},
+            success:function(res){
+                alert(res.msg);
+                if(res.status==1){
+                    changeStyles();
+                }
+            }
+        })
+    }
+    var c, t,a;
+    function timedCount(){
+        document.getElementById('timer').value=c
+        c=c+1;
+        a=60-c;
+        $('#send').val('（'+a+'）秒后重新发送');
+        if(c>=60){
+            recoveryStyles();
+        }else{
+            t=setTimeout("timedCount()",1000);
+        }
+    }
+    function changeStyles(){
+        c=0;
+        $('#send').css('background','#666666');
+        $('#send').attr('disabled',true);
+        timedCount();
+    }
+    function recoveryStyles(){
+        $('#send').val('发送验证码');
+        $('#send').css('background','#c29267');
+        $('#send').attr('disabled',false);
+    }
+</script>
+</body>
+</html>

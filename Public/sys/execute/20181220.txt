@@ -1,0 +1,10 @@
+ip:127.0.0.1||2018-12-20  18:10:15：admin人员--execute操作： update users set wrpass='0',login_flag='1',session_id='lh2sb01trui5qfogn37dped3n0' where loginname='admin'
+ip:127.0.0.1||2018-12-20  18:10:18：admin人员--execute操作： insert into safety_monitoring values('0000000000000000','20181220','18:10:15','后台登录','admin密码已过期，请尽快修改密码','03')
+ip:127.0.0.1||2018-12-20  18:10:23：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545300623','20181220','20181220','182310','0000000000000000','127.0.0.1','系统首页/系统首页')
+ip:127.0.0.1||2018-12-20  18:10:25：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545300625','20181220','20181220','182510','0000000000000000','127.0.0.1','数据图表分析/通宝统计')
+ip:127.0.0.1||2018-12-20  18:14:16：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545300856','20181220','20181220','181614','0000000000000000','127.0.0.1','建业通宝/建业通报消费报表')
+ip:127.0.0.1||2018-12-20  18:26:08：admin人员--execute操作： INSERT INTO operator_logs (operatorlogid,placedate,logintime,logouttime,userid,loginip,formname)
+                         VALUES ('1545301568','20181220','20181220','180826','0000000000000000','127.0.0.1','建业通宝/建业通报消费报表导出')

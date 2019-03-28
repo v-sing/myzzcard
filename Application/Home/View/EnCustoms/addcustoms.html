@@ -1,0 +1,685 @@
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css">
+<style>
+  table {
+    max-width: 100%;
+    background-color: transparent;
+    border-spacing: 0;
+  }
+  .table-bordered {
+    border: 1px solid #dddddd;
+    border-collapse: separate;
+    border-left: 0;
+    border-radius: 4px;
+  }
+  .table th, .table td {
+    padding: 8px;
+    vertical-align: top;
+    border-top: 1px solid #dddddd;
+  }
+  .table td, .table th {
+    padding-top: 8px;
+    padding-bottom: 4px;
+    line-height: 20px;
+    height: 25px;
+  }
+  .table-bordered th, .table-bordered td {
+    border-left: 1px solid #dddddd;
+  }
+  tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    }
+  td, th {
+    border-bottom:1px solid #dddddd;
+    display: table-cell;
+  }
+  .status {
+    display: none;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: 20px;
+    right: 0;
+    background: url(../images/success.png) no-repeat;
+    _background: url(../images/success.gif) no-repeat;
+    z-index: 2;
+    }
+    .filelist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    }
+    .filelist li {
+    width: 110px;
+    height: 110px;
+    background: url(../images/bg.png) no-repeat;
+    text-align: center;
+    margin: 0 8px 20px 0;
+    position: relative;
+    display: inline;
+    float: left;
+    overflow: hidden;
+    font-size: 12px;
+	}
+	
+	.filelist li p.title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    top: 5px;
+    text-indent: 5px;
+    text-align: left;
+}
+    .filelist1 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    }
+    .filelist1 li {
+    width: 110px;
+    height: 110px;
+    background: url(../images/bg.png) no-repeat;
+    text-align: center;
+    margin: 0 8px 20px 0;
+    position: relative;
+    display: inline;
+    float: left;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  
+  .filelist1 li p.title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    top: 5px;
+    text-indent: 5px;
+    text-align: left;
+}
+	p.imgWrap {
+    position: relative;
+    z-index: 2;
+    line-height: 110px;
+    vertical-align: middle;
+    overflow: hidden;
+    width: 110px;
+    height: 110px;
+    color: #1094FA;
+    font-size: 14px;
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webit-transition: 200ms ease-out;
+    -moz-transition: 200ms ease-out;
+    -o-transition: 200ms ease-out;
+    -ms-transition: 200ms ease-out;
+    transition: 200ms ease-out;
+}
+.filelist li img {
+    width: 100%;
+}
+.filelist div.file-panel {
+    position: absolute;
+    height: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#80000000', endColorstr='#80000000')\0;
+    background: rgba( 0, 0, 0, 0.5 );
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 300;
+}
+.filelist div.file-panel span {
+    width: 24px;
+    height: 24px;
+    display: inline;
+    float: right;
+    text-indent: -9999px;
+    overflow: hidden;
+    background: url(../images/icons.png) no-repeat;
+    _background: url(../images/icons.gif) no-repeat;
+    margin: 5px 1px 1px;
+    cursor: pointer;
+}
+.filelist1 li img {
+    width: 100%;
+}
+.filelist1 div.file-panel {
+    position: absolute;
+    height: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#80000000', endColorstr='#80000000')\0;
+    background: rgba( 0, 0, 0, 0.5 );
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 300;
+}
+.filelist1 div.file-panel span {
+    width: 24px;
+    height: 24px;
+    display: inline;
+    float: right;
+    text-indent: -9999px;
+    overflow: hidden;
+    background: url(../images/icons.png) no-repeat;
+    _background: url(../images/icons.gif) no-repeat;
+    margin: 5px 1px 1px;
+    cursor: pointer;
+}
+</style>
+<script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+<form id="ff" class="easyui-form" method="post" data-options="novalidate:true">
+<div class="easyui-accordion"  style="border-top:none;border-bottom:none;">
+    <div title="会员基本信息"  style="overflow:auto;padding:4px;">
+      <table  class="table-bordered" style="border-bottom:none;" width="100%">
+        <tr>  
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>会员名称:</td>
+          <td>&nbsp;<input class="easyui-textbox" id="addnamechinese" name="addnamechinese" style="width:170px;" ></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">会员属性:</td>
+          <td>              
+              &nbsp;<select class="easyui-combobox" id="addcountrycode" name="addcountrycode" style="width:170px;">
+                  <option value="建业业主">建业业主</option>
+                  <option value="酒店客户">酒店客户</option>
+                  <option value="商业客户">商业客户</option>
+                  <option value="内部员工">内部员工</option>
+                  <option value="房装柜会员">房掌柜会员</option>
+                  <option value="E+会员">E+会员</option>
+                  <option value="君邻会会员">君邻会会员</option>
+                  <option value="football会员">football会员</option>
+                  <option value="南阳公司会员">南阳公司会员</option>
+                  <option value="其他">其他</option>
+              </select></td>
+        </tr>
+        <tr>      
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>联系方式:</td>
+          <td>&nbsp;<input class="easyui-textbox" id="addlinktel" name="addlinktel"  style="width:170px;"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>性别:</td>
+          <td>
+            &nbsp;<div id='addcustomssex'><label style="display: inline;"><input type="radio" name="addsex" value="男"/>男</label>
+            <label style="display: inline;"><input type="radio" name="addsex" value="女"/>女</label></div>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>会员类型:</td>
+          <td>              
+              &nbsp;<select class="easyui-combobox" id="addcustomlevel" name="addcustomlevel" style="width:170px;">
+                  <option value="一般客户">一般客户</option>
+                  <option value="团购客户">团购客户</option>
+              </select>
+          </td>
+        </tr>
+        <tr>  
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">证件类型:</td>
+          <td>              
+              &nbsp;<select class="easyui-combobox" id="addpersonidtype" name="addpersonidtype" style="width:170px;">
+                  <option value="身份证">身份证</option>
+                  <option value="护照">护照</option>
+                  <option value="军官证">军官证</option>
+              </select>
+          </td>
+        </tr>
+        <tr>  
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>证件号码:</td>
+          <td>&nbsp;<input class="easyui-validatebox" type="text" id="addpersonid" name="addpersonid" style="width:170px;" onblur="personidblur()" onkeyup="personReg(this)"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>开户机构:</td>
+          <td>
+              &nbsp;<input class="easyui-textbox" id="addpname" name="addpname"  style="width:170px;" data-options="prompt:'请输入你想要查询的机构名称'"  ></input>
+          </td>
+        </tr>
+        <tr>  
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;"><font color="red">*</font>状态:</td> 
+          <td>          
+              &nbsp;<select class="easyui-combobox" id="addlinkman" name="addlinkman" style="width:170px;">
+                  <option value="启用">启用</option>
+                  <option value="不启用">不启用</option>
+              </select>
+          </td>
+
+        </tr>
+      </table>
+    </div>
+    <div title="证件信息"  style="overflow:auto;padding:4px;">
+      <table  class="table-bordered" style="border-bottom:none;" width="100%">
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">所属省市:</td>
+          <td>              
+              &nbsp;
+              <input class="easyui-combobox" id="addprovinceid" name="addprovinceid" style="width:170px;">
+              <input class="easyui-combobox" id="addcityid" name="addcityid" style="width:170px;">
+              <input class="easyui-combobox" id="addcountyid" name="addcountyid" style="width:170px;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">详细地址（常驻地址）:</td>
+          <td>&nbsp;<input class="easyui-textbox" id="addresidaddress" name="addresidaddress"  style="width:170px;"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">邮编:</td>
+          <td>&nbsp;<input class="easyui-textbox" id="addunitzip" name="addunitzip" style="width:170px;"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;">身份证正面照片:</td>
+          <td>  
+            <div style="padding:5px; Border:2px dashed #E6E6E6;">
+              <div id="queue"></div>
+      				<input id="frontImg" name="frontImg" type="file" multiple="true">	
+      				<div id='btn'>
+        				<a style="text-decoration:none;" id="btnUpload" href="javascript:$('#frontImg').uploadify('upload','*')">确认上传</a> &nbsp;|&nbsp;
+        				<a style="text-decoration:none;" id="btnCancelUpload" href="javascript:$('#frontImg').uploadify('cancel')">取消上传</a> &nbsp;&nbsp;
+        				<span id='successtext'></span>
+      		    </div>	
+      				<ul class="filelist">
+      				</ul>
+      			</div>	
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;">身份证反面照片:</td>
+          <td>  
+            <div style="padding:5px; Border:2px dashed #E6E6E6;">
+              <div id="queue1"></div>
+              <input id="reserveimg" name="reserveimg" type="file" multiple="true"> 
+              <div id='btn1'>
+                <a style="text-decoration:none;" id="btnUpload1" href="javascript:$('#reserveimg').uploadify('upload','*')">确认上传</a> &nbsp;|&nbsp;
+                <a style="text-decoration:none;" id="btnCancelUpload1" href="javascript:$('#reserveimg').uploadify('cancel')">取消上传</a> &nbsp;&nbsp;
+                <span id='successtext1'></span>
+              </div>  
+              <ul class="filelist1">
+              </ul>
+            </div>  
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">邮编:</td>
+          <td>&nbsp;<input class="easyui-textbox" id="addunitzip" name="addunitzip" style="width:170px;"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">证件有效期:</td>
+          <td>&nbsp;<input class="easyui-datebox" id="addpersonidexdate" name="addpersonidexdate"  style="width:170px;"></input></td>
+        </tr>
+      </table>
+    </div>
+    <div title="其他信息"  style="overflow:auto;padding:4px;">
+      <table  class="table-bordered" style="border-bottom:none;" width='100%'>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">英文名称:</td>
+          <td>&nbsp;<input class="easyui-textbox" id="addnameenglish" name="addnameenglish" style="width:170px;"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">生日:</td>
+          <td>&nbsp;<input class="easyui-datebox" id="addbirthday" name="addbirthday"  style="width:170px;"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">E-mail:</td>
+          <td>&nbsp;<input class="easyui-textbox" id="addemail" name="addemail"  style="width:170px;"></input></td>
+        </tr>
+        <tr>
+          <td style="text-align:right;background-color:#f5f5f5;width:130px;line-height:30px;height:35px;">收入:</td>
+          <td>              
+              &nbsp;<select class="easyui-combobox" id="addstaffpaper" name="addstaffpaper" style="width:170px;">
+                  <option value="1">2000以下</option>
+                  <option value="2">2000-3000</option>
+                  <option value="3">3000-5000</option>
+                  <option value="4">5000-8000</option>
+                  <option value="5">8000-10000</option>
+                  <option value="6">10000以上</option>
+              </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <input id="frontimgs" type='hidden' value="">
+    <input id="reserveimgs" type='hidden' value="">
+</div>
+</form>
+<div align="center" style="padding:4px;">
+    <a class="easyui-linkbutton" iconCls="icon-save" onClick="addCustoms();">保存</a>
+</div> 
+<script type="text/javascript">
+	<?php $timestamp = time();?>
+    $(function(){
+        $('#addpname').combobox({
+            url:'../Common/getAllPnames',
+            valueField:'panterid',
+            textField:'namechinese'
+        });
+        $("#ui-datepicker-div").hide();
+
+        //显示所有省份
+        $("#addprovinceid").combobox({
+            url:'../Common/getAllProvince',
+            valueField:'provinceid',
+            textField:'provincename',
+            editable:true,//不可编辑，只能选择
+            value:'请选择省份',
+            onChange:function(){
+              $('#addcityid').combobox({
+                valueField:'cityid', //值字段
+                textField:'cityname', //显示的字段
+                url:'../Common/getAllCity?provinceid='+$('#addprovinceid').combobox('getValue'),
+                editable:true,//不可编辑，只能选择
+                value:'请选择城市',
+                onChange:function(){
+                $('#addcountyid').combobox({
+                    //显示县市区
+                        valueField:'countyid', //值字段
+                        textField:'countyname', //显示的字段
+                        url:'../Common/getAllCounty?cityid='+$('#addcityid').combobox('getValue'),
+                        editable:true,//不可编辑，只能选择
+                        value:'请选择县/区',
+                  });
+                },
+              });
+            },
+        });
+        
+        $('#addlinktel').blur(function(){
+          var linktel= $.trim($('#addlinktel').textbox('getValue'));
+          if(linktel!="")
+          {
+            $.ajax({
+               url:"__URL__/addlinktel",
+               type:"post",
+               dataType:"json",
+               data:{linktel:linktel},
+               success:function(data){
+                 if(data.status==1)
+                 {
+                   alert(data.name);
+                   return false;
+                 }
+               }
+            })
+          }
+        })
+      $('#frontImg').uploadify({
+  			'formData'     : {
+  				'timestamp' : '<?php echo $timestamp;?>',
+  				'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+  			},
+  			'swf'      : '__PUBLIC__/uploadify/uploadify.swf',
+  			'uploader' : 'savePic',
+  			'buttonText' : '选择文件',
+  			'auto'     : false,
+  			'queueSizeLimit': 2, //队列最多可上传文件数量，默认为999 
+  			'multi': true,//是否为多选，默认为true
+  			'fileSizeLimit': '2MB',
+  			'fileTypeExts': '*.gif; *.jpg; *.png; *.bmp',
+  			'removeCompleted' : false,
+  			'width'		: 80,
+  			'height'	: 22,
+  			'sizeLimit': 2048000,
+  	        'onUploadSuccess' : uploadPicture,
+  	        'onQueueComplete' : function(queueData) {
+  				//$('#successtext').html("<font style='color:green;'>"+queueData.uploadsSuccessful+"个文件上传成功!</font>")
+  	        }
+		  });
+      $('#reserveimg').uploadify({
+        'formData'     : {
+          'timestamp' : '<?php echo $timestamp;?>',
+          'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+        },
+        'swf'      : '__PUBLIC__/uploadify/uploadify.swf',
+        'uploader' : 'savePic',
+        'buttonText' : '选择文件',
+        'auto'     : false,
+        'queueSizeLimit': 2, //队列最多可上传文件数量，默认为999 
+        'multi': true,//是否为多选，默认为true
+        'fileSizeLimit': '2MB',
+        'fileTypeExts': '*.gif; *.jpg; *.png; *.bmp',
+        'removeCompleted' : false,
+        'width'   : 80,
+        'height'  : 22,
+        'sizeLimit': 2048000,
+            'onUploadSuccess' : uploadPicture1,
+            'onQueueComplete' : function(queueData) {
+          //$('#successtext').html("<font style='color:green;'>"+queueData.uploadsSuccessful+"个文件上传成功!</font>")
+            }
+      });
+
+		function uploadPicture(file, data){
+			var data = $.parseJSON(data);
+			if(data.status){
+				$('#' + file.id).find('.data').html('<font style="color:green; padding-left:10px;">上传完毕</font>')
+				imgObj = "<li id='file_"+file.id+"'><div style=><p class='title'>"+data.info.savename+"</p><p class='imgWrap'><img src='/public"+data.info.savepath + "thumb_"+data.info.savename+"' /></p><p class='progress'><span></span></p></div></li>";
+        // <div class='file-panel' style='height: 20px;'><input type='button' value='删除'></div>
+	      $('.filelist').append(imgObj);   
+        var str=$('#frontimgs').val();
+        if(str==''){
+           str=str+data.info.savepath+"thumb_"+data.info.savename;
+         }else{
+           str=str+","+data.info.savepath+"thumb_"+data.info.savename;
+         }
+        $('#frontimgs').val(str);
+			} else {
+				$('.filelist').append(data.info);
+			}				
+		}
+    function uploadPicture1(file, data){
+      var data = $.parseJSON(data);
+      if(data.status){
+        $('#' + file.id).find('.data').html('<font style="color:green; padding-left:10px;">上传完毕</font>')
+        imgObj = "<li id='file_"+file.id+"'><div style=><p class='title'>"+data.info.savename+"</p><p class='imgWrap'><img src='/public"+data.info.savepath + "thumb_"+data.info.savename+"' /></p><p class='progress'><span></span></p></div></li>";
+        // <div class='file-panel' style='height: 20px;'><input type='button' value='删除'></div>
+        $('.filelist1').append(imgObj);   
+        var str=$('#reserveimgs').val();
+        if(str==''){
+           str=str+data.info.savepath+"thumb_"+data.info.savename;
+         }else{
+           str=str+","+data.info.savepath+"thumb_"+data.info.savename;
+         }
+        $('#reserveimgs').val(str);
+      } else {
+        $('.filelist1').append(data.info);
+      }       
+    }
+
+
+		// $(".filelist").on("click","li", function() {
+		// 	var imgUrl = $(this).find('img').attr('src');
+		// 	var imgUrl2 = imgUrl.replace(/thumb_/ig, '');
+  //     var re = /,{1,}/g;
+  //     var b=$('#frontimgs').val();
+  //     var a=imgUrl.replace('/public','');
+  //     var c=b.replace(a,'');
+  //     var d=c.replace(re,',');
+  //     // d=(d.replace(/,$/g,"");
+  //     //reserveimg
+  //     var e=$('#reserveimgs').val();
+  //     var f=imgUrl2.replace('/public','');
+  //     var g=e.replace(f,'');
+  //     var h=g.replace(re,',');
+  //     // h=(h.replace(/,$/g,"");
+		// 	$(this).remove();
+		// 	$.ajax({
+		// 		type : "POST",
+		// 		url : "delPic",
+		// 		data : {
+		// 			"url" : imgUrl,
+		// 			"url2": imgUrl2
+		// 		},
+		// 		success : function(data) {
+		// 			if(data.status == 1) {
+		// 				alert("删除成功");
+		// 			}else{
+  //           if(d!==''){
+  //             $('#frontimgs').val(d);
+  //           }else{
+  //             $('#frontimgs').val("");
+  //           }            
+  //           if(h!==''){
+  //             $('#reserveimgs').val(h);
+  //           }else{
+  //             $('#reserveimgs').val("");
+  //           }
+		// 				alert("删除失败");
+		// 			}
+		// 		}
+		//     });
+		//   });
+    });
+    //根据身份证号码提取生日
+    function personidblur(){
+      var personid= $.trim($("#addpersonid").val());
+      if(personid.length<18){
+          $('#addbirthday').val('');
+          return;
+      }
+      var birth=personid.substr(6,8);
+      var birthYear=personid.substr(6,4);
+      var date=new Date();
+      var currentYear=date.getFullYear();
+      if(birthYear<1930&&birthYear>currentYear){
+          $('#addbirthday').val('');
+          alert('非法身份证');return;
+      }
+      var a=birth.substr(0,4);
+      var b=birth.substr(4,2);
+      var c=birth.substr(6,2);
+      birth=a+'-'+b+'-'+c;
+      $('#addbirthday').datebox('setValue',birth);
+      if(personid!="")
+      {
+        $.ajax({
+           url:"__URL__/addpersonid",
+           type:"post",
+           data:{personid:personid},
+           dataType:"json",
+           success:function(data){
+             if(data.status==1)
+             {
+               alert(data.name);
+               return false;
+             }
+           }
+        })
+      }
+    }
+    //保存会员信息
+  	function addCustoms(){
+  		var o={};
+      var reg;
+      var imgurl;
+      reg=/^[\u4e00-\u9fa5]+$/;
+      o.namechinese=$("#addnamechinese").textbox('getValue');
+      if(o.namechinese==''||o.namechinese=='undefined'){
+        alert('会员名称必须填写');
+        return false;
+      }
+      if(reg.test(o.namechinese)){
+        
+      }else{
+        alert('会员名称必须为中文');
+        return false;
+      }
+      o.countrycode=$('#addcountrycode').combobox('getValue');
+      o.linktel=$('#addlinktel').textbox('getValue');
+      if(o.linktel==''||o.linktel=='undefined'){
+        alert('联系方式必须填写');
+        return false;
+      }
+      if(o.linktel && /^1[3|4|5|8]\d{9}$/.test(o.linktel)){
+        //对的
+      } else{
+        //不对
+        alert('手机号格式不正确');
+        return false;
+      } 
+      o.sex=$('#addcustomssex input[name="addsex"]:checked').val();
+      if(o.sex==''||o.sex=='undefined'){
+        alert('性别必须选择');
+        return false;
+      }
+      o.customlevel=$('#addcustomlevel').combobox('getValue');
+      o.personidtype=$('#addpersonidtype').combobox('getValue');
+      o.personid=$('#addpersonid').val();
+      if(o.personid==''||o.personid=='undefined'){
+        alert('证件号码必须填写');
+        return false;
+      }
+      if(o.personid && /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(o.personid)){
+        //对的
+      } else{
+        //不对
+        alert('身份证号格式不正确');
+        return false;
+      } 
+      o.panterid=$('#addpname').combobox('getValue');
+      o.linkman=$('#addlinkman').combobox('getValue');
+      o.provinceid=$('#addprovinceid').combobox('getValue');
+      o.cityid=$('#addcityid').combobox('getValue');
+      o.countyid=$('#addcountyid').combobox('getValue');
+      o.residaddress=$('#addresidaddress').textbox('getValue');
+      o.unitzip=$('#addunitzip').textbox('getValue');
+      o.personidexdate=$('#addpersonidexdate').textbox('getValue');
+      o.nameenglish=$('#addnameenglish').textbox('getValue');
+      o.birthday=$('#addbirthday').datebox('getValue');
+      o.email=$('#addemail').textbox('getValue');
+      o.staffpaper=$('#addstaffpaper').combobox('getValue');
+      o.frontimgs=$('#frontimgs').val();
+      o.reserveimgs=$('#reserveimgs').val();
+      $.ajax({
+           type: "post",
+           url: "saveCustoms",
+           data: o,
+           dataType:'json',
+           success: function(data){
+              if(data.status==1){
+                alert(data.info);
+                $('#dialog_details1').window('close');
+                $('#customsList').datagrid('reload');
+              }else{
+                alert(data.info);
+              }
+           }
+      })
+  	}
+    function addVal(a,id,pid){
+        var value=$(a).text();
+        $('#'+id).siblings('input').val(pid);
+        $('#'+id).val(value);
+        $(a).parent().parent().css('display','none')
+    }
+    function personReg(obj){
+        obj.value=obj.value.replace(/[^\dX]+/g,'');
+    }
+    //图片
+    function gx_idcard(x,y){
+      var objUrl = getObjectURL(y.files[0]) ;
+      console.log("objUrl = "+objUrl) ;
+      if (objUrl) {
+        $("#"+x).attr("src", objUrl) ;
+      }
+    }
+    function getObjectURL(file) {
+      var url = null ;
+      if (window.createObjectURL!=undefined) { // basic
+        url = window.createObjectURL(file) ;
+      } else if (window.URL!=undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file) ;
+      } else if (window.webkitURL!=undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file) ;
+      }
+      return url ;
+    }
+    
+</script>
+

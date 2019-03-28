@@ -1,0 +1,90 @@
+.login_box {
+	background: url('icon/loginbg.png') no-repeat;
+	height: 416px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -301px;
+	margin-top: -208px;
+	overflow: hidden;
+	width: 602px;
+}
+
+.login_iptbox {
+	bottom: 90px;
+	color: #ffffff;
+	font-size: 12px;
+	height: 30px;
+	left: 50%;
+	margin-left: -280px;
+	overflow: visible;
+	position: absolute;
+	width: 560px;
+}
+
+.login_iptbox .ipt {
+	background: #EBEBEB;
+	border: medium none;
+	color: #000;
+	height: 24px;
+	margin-right: 22px;
+	overflow: hidden;
+	width: 110px;
+}
+
+.login_iptbox .ipt_reg {
+	background: #EBEBEB;
+	font-size: 16px;
+	font-weight: bold;
+	margin-left: 12px;
+	margin-right: 16px;
+	padding: 2px 0 2px 5px;
+	text-align: left;
+	width: 46px;
+}
+
+.login_tj_btn {
+	background: url('icon/login_dl_btn.png');
+	border: medium none;
+	cursor: pointer;
+	float: right;
+	height: 24px;
+	margin-left: 16px;
+	padding: 0;
+	width: 52px;
+}
+
+.yzm {
+	background: url("icon/login_ts140x89.gif");
+	display: none;
+	font-size: 12px;
+	height: 89px;
+	position: absolute;
+	right: 56px;
+	text-align: center;
+	top: -96px;
+	width: 140px;
+}
+
+.yzm img {
+	border: 1px solid #fff;
+	cursor: pointer;
+	height: 50px;
+	margin: 4px auto 7px;
+	width: 130px;
+}
+
+.yzm a:link, .yzm a:visited {
+	color: #036;
+	text-decoration: none;
+}
+
+.cr {
+	bottom: 58px;
+	color: #ccc;
+	font-size: 12px;
+	font-style: inherit;
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}

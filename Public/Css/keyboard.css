@@ -1,0 +1,80 @@
+html, body, div, h1, h2, h3, h4, h5, p, a, ul, ol, li, span {
+	margin:0;
+	padding:0;
+	vertical-align: baseline;
+	text-decoration:none;
+}
+.clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibly: hidden;
+}
+#wrapper {
+  position: absolute;
+  font-family: Tahoma;
+  /*background: rgba(255,255,255,.3);*/
+  border-radius: 20px;
+}
+#keyboard {
+  display: none;
+  position: relative;
+  width: 346px;
+  padding: 8px 3px 6px 10px;
+  border: 1px solid #555;
+  border-radius: 15px;
+  background: rgba(255,255,255,1);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,.5);
+}
+#keyboard>div {
+	float: left;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	text-align: center;
+  font-size:18px;
+	margin:0 3px 3px 0;
+	border: 1px solid #555;
+	background: rgba(119,115,107,.6);
+  cursor: pointer;
+  border-radius:3px;
+}
+#keyboard #q,
+#keyboard #a,
+#keyboard #z,
+#keyboard #shift {
+	clear: left;
+}
+#keyboard #shift {
+  margin-left: 32px;
+  width: 45px; 
+}
+#keyboard #space {
+  margin-left: 5px;
+  width: 45px; 
+}
+#keyboard #bspace {
+  margin-left: 5px;
+  width: 45px; 
+}
+#keyboard #clear {
+  margin-left: 5px;
+  width: 45px; 
+}
+#keyboard #close {
+  margin-left: 5px;
+  width: 45px; 
+}
+#keyboard #q {
+ margin-left: 13px;
+}
+#keyboard #a {
+ margin-left: 27px; 
+}
+#keyboard #z {
+  margin-left: 54px;
+}
+#keyboard>div:hover {
+  background: gray;
+}

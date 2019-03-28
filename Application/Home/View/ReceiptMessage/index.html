@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="title">开票信息管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/index.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#cb").click(function(){
+            $(":checkbox[name='consumeid[]']").attr("checked",this.checked);
+        });
+    })
+</script>
+<div style="padding-left: 40px;padding-top: 20px">
+    <form class="form-inline definewidth m20"  method="get" action="{:U('index')}">
+        <input type="text" name="pantername"  value="{:I('get.pantername','')}" style="width:165px; margin-right:7px;" placeholder="法人单位"/>
+        <input type="text" name="company"  value="{:I('get.company','')}" style="width:165px; margin-right:7px;" placeholder="项目名称"/>
+        <button type="submit" class="btn  btn-primary">查询</button>
+        <input type="reset" value="重置"  class="btn  btn-danger" />
+        <button type="button"  class="btn" id="excel">
+            导出EXCEL</button>
+        <script>
+            var url = "{:U('UploadExcel')}";
+        </script>
+        <include file="Public:Upload" />
+    </form>
+    <div style="margin-top: 10px;margin-bottom: 10px">
+    <a href="#indexadd" id="add" class="btn btn-danger" data-toggle="modal" data-type="1"> 新增记录</a>
+
+    </div>
+</div>
+
+<table class="table table-striped " >
+    <thead id="thead">
+        <th>#</th>
+        <th>法人单位</th>
+        <th>项目名称</th>
+        <th>纳税人识别号</th>
+        <th>开户行</th>
+        <th>银行账号</th>
+        <th>电话</th>
+        <th>地址</th>
+        <th>修改</th>
+    </thead>
+     <tbody id="tbody" >
+        <volist name="data" id="val" key="k" >
+                    <tr >
+                        <td data-index="tenantid">{$k+1}</td>
+                        <td data-index="pantername">{$val.pantername}</td>
+                        <td data-index="company">{$val.company}</td>
+                        <td data-index="orderno">{$val.orderno}</td>
+                        <td data-index="bank">{$val.bank}</td>
+                        <td data-index="bankaccount">{$val.bankaccount}</td>
+                        <td data-index="linktel">{$val.linktel}</td>
+                        <td data-index="address">{$val.address}</td>
+                        <td>
+                            <a class="btn btn-info edit" href="#indexadd" data-index="{$val.tenantid}" data-toggle="modal">信息修改</a>
+
+                        </td>
+                    </tr>
+
+        </volist>
+     </tbody>
+</table>
+<div class="pagination pull-right">
+    <ul>
+        {$page}
+    </ul>
+</div>
+
+
+<!-- Modal -->
+<div id="indexadd" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">×</button>
+        <p id="changdata">新增记录</p>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="form">
+
+            <div class="control-group">
+                <label class="control-label" >法人单位：</label>
+                <div class="controls">
+                    <input type="text" name="pantername" placeholder="单位名称" value="">
+                </div>
+            </div>
+
+            <div class="control-group" >
+                <label class="control-label" >项目名称：</label>
+                <div class="controls">
+                    <input type="text" name="company" id="panterName" placeholder="项目名称">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" >固定电话：</label>
+                <div class="controls" >
+                        <input type="text" name="linktel" id="phone" placeholder="固定电话">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" >纳税人识别号：</label>
+                <div class="controls">
+                    <input type="text"  name="orderno"  placeholder="纳税人识别号" >
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" >地址：</label>
+                <div class="controls">
+                    <input type="text" name="address"  placeholder="地址">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" >开户行：</label>
+                <div class="controls">
+                    <input type="text" name="bank"  placeholder="开户行（支行）必填">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" >账号：</label>
+                <div class="controls">
+                    <input type="text" name="bankaccount" placeholder="账号">
+                </div>
+            </div>
+            <input type="hidden" name="id" value="">
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" id="submit">确定</button>
+        <button class="btn btn-success cancel" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    var urlExcel = "{:U('Excel')}";
+
+      $(function () {
+            //提交
+           $('body').on('click','#submit',function () {
+                      var formArr =   $('#form').serializeArray();
+                      var data ={} ;
+                      var name = "";
+                      var value ="";
+                      var door = 1;
+                      $.each(formArr,function () {
+
+                             name = this.name;
+                             value = this.value;
+                             if(value == '' && name !='id' && name !='linktel' && name !="address"){
+                                     layer.open({
+                                          content:"抱歉，信息框不能为空"
+                                     });
+                                  door=0 ;
+                             }
+                             data[name] = value;
+                      });
+                if(door == 1){
+                    $.post("{:U('addAction')}",data,function (resp) {
+                        if(resp.code == 0){
+                             layer.open({
+                                  content:resp.msg
+                             });
+                             $('#indexadd').modal('hide');
+                        }else{
+                            layer.open({
+                                content:"信息修改失败"
+                            });
+                            $('#indexadd').modal('hide');
+                        }
+                    });
+                }
+           });
+            //清空表单
+           $('#add').on('click',function () {
+                $('#form')[0].reset();
+               $("#indexadd input[name='id']").val("");
+           });
+           //修改按钮
+          $('.edit').on('click',function () {
+                    var tenantid = $(this).data('index');
+                 $("#indexadd input[name='id']").val(tenantid);
+                    var tr       = ($(this).parent()).parent().children();
+                     $.each(tr,function (index,val) {
+                         if(index<=7){
+                                var name = $(this).data('index');
+                                var vals = $(this).html();
+                                    vals  = vals.replace(/\s+/g,"");
+                                $("#indexadd input[name='"+name+"']").val(vals);
+                         }
+                     })
+
+          });
+
+          $('tbody').children();
+          $('#excel').on('click',function () {
+                  var excelTitle =$('#title').html();
+                  var  TH        = {};
+                  var data       = {};
+                   $.each($('th'),function (index,val) {
+
+                               TH[index] = $(this).html();
+
+                   });
+                  $.each($('tr'),function (index,val) {
+                           var item = {};
+                           $.each($(this).children("td"),function (index,cval) {
+                                 if(index<8){
+                                    item[index] = ($(this).html()).replace(/\s+/g,'');
+                                 }
+                           });
+                           if(!$.isEmptyObject(item)){
+                               data[index] = item;
+                           }
+
+                  });
+
+                  DownLoadFile({
+                        url : "{:U('Excel')}",
+                        data:{
+                             th:TH,
+                             data:data,
+                             title:excelTitle
+                        },
+                        method:'get'
+                  });
+          });
+
+
+          var DownLoadFile = function (options) {
+              var config = $.extend(true, { method: 'post' }, options);
+              var $iframe = $('<iframe id="down-file-iframe" />');
+              var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
+              $form.attr('action', config.url);
+              for (var key in config.data) {
+                  if(key == "th"){
+
+                      $.each(config.data[key],function (index,val) {
+                               $form.append('<input type="hidden" name="' + key + '[]" value="' + val + '" />');
+                      });
+                  }
+                  if(key == "data"){
+                      $.each(config.data[key],function (index,val) {
+                            $.each(val,function (i,v) {
+                                $form.append('<input type="hidden" name="' + key + '[]" value="' + v + '" />');
+                            });
+                      });
+                  }else{
+                      $form.append('<input type="hidden" name="' + key + '[]" value="' + config.data[key] + '" />');
+                  }
+
+              }
+              $iframe.append($form);
+              $(document.body).append($iframe);
+              $form[0].submit();
+              $iframe.remove();
+          }
+      })
+</script>

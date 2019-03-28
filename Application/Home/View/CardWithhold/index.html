@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>至尊卡后台扣款</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+    </style>
+</head>
+<body>
+<div  class="dv">
+    <form class="form-inline definewidth m20" action="{:U('CardWithhold/withholdDo')}" method="post" onsubmit="return checkForm1();">
+        <table class="table table-bordered table-hover m10" >
+            <tr>
+                <th style="width:200px;text-align:right;">受理酒店</th>
+                <td>
+                    <select name="panterid">
+                        <volist name="hotels" id="vo" key="k">
+                            <option value="{$vo.panterid}">{$vo.name}</option>
+                        </volist>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th style="width:200px;text-align:right;" >扣款类型</th>
+                <td>
+                    <select name="cate" id="cate"><option value="1">余额消费</option><option value="2">劵消费</option></select>
+                </td>
+            </tr>
+            <tr>
+                <th style="width:200px;text-align:right;">至尊卡号</th>
+                <td>
+                    <input type="text" name="cardno" onkeyup="intOnly1(this)" id="cardno"/>
+                </td>
+            </tr>
+            <tr id="amount1">
+                <th style="width:200px;text-align:right;">扣款金额</th>
+                <td>
+                    <input type="text" name="amount1"  onkeyup="clearNoNum(this)"/>
+                </td>
+            </tr>
+            <tr id="amount2" style="display:none;">
+                <th style="width:200px;text-align:right;">扣款数量</th>
+                <td>
+                    <input type="text" name="amount"  onkeyup="intOnly1(this)"/>
+                </td>
+            </tr>
+            <tr id="quan" style="display:none;">
+                <th style="width:200px;text-align:right;">扣款类型</th>
+                <td>
+                    <select name="quanid" id="quanid"></select>
+                </td>
+            </tr>
+            <tr>
+                <th style="width:200px;text-align:right;">消费日期</th>
+                <td>
+                    <input type="text" name="consumedate" id="consumedate"/>
+                </td>
+            </tr>
+            <tr>
+                <th style="width:200px;text-align:right;"></th>
+                <td>
+                    <button type="submit" class="btn btn-mini btn-primary" id="sub">执行扣款</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+    function intOnly1(obj){
+        obj.value=obj.value.replace(/^(0\d?)|[^\d]/g,'');
+    }
+    function clearNoNum(obj){
+        obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+
+        obj.value = obj.value.replace(/^\./g,"");  //验证第一个字符是数字而不是.
+
+        obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的.
+
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+
+    }
+    function checkForm1(){
+        document.getElementById('sub').disabled=true;
+        document.getElementById('sub').value='正在导出中...';
+    }
+    function getQuanBycardno(cardno){
+        $.ajax({
+            type:'POST',
+            data:{cardno:cardno},
+            dataType:'json',
+            url:'getQuanByCardno',
+            success:function(res){
+                if(res.status==1){
+                    $('#quanid').html(res.html);
+                }else{
+                    alert(res.msg);
+                }
+                $('#quan').show();
+            }
+        })
+    }
+    $(function(){
+        $('#consumedate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $('#cate').change(function(){
+            var cardno= $.trim($('#cardno').val());
+            if($(this).val()==1){
+                $('#amount1').show();$('#amount2').hide();
+                $('#quan').hide();$('#quanid').html('');
+            }else if($(this).val()==2){
+                $('#amount2').show();$('#amount1').hide();
+                if(cardno!=null){
+                    getQuanBycardno(cardno);
+                }else{
+                    $('#quan').hide();$('#quanid').html('');
+                }
+            }
+        });
+        $('#cardno').blur(function(){
+            var cardno= $.trim($(this).val());
+            var cate= $('#cate').val();
+            if(cate!=2){
+                $('#quan').hide();
+                return;
+            }
+            getQuanBycardno(cardno);
+        })
+    })
+</script>
+</body>
+</html>

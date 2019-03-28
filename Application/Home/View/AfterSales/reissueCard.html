@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>补卡管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .rt{border:1px solid #eee;}
+        .btn-primary1{
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #006dcc;
+            *background-color: #0044cc;
+            background-repeat: repeat-x;
+            border-color: #0044cc #0044cc #002a80;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+        }
+    </style>
+</head>
+<body>
+<div  class="dv">
+<form name="form1" method="post" id="form1">
+    <input type="hidden" name="is_read" value="0" id="is_read"/>
+    <table class="table table-bordered table-hover m10" >
+         <tr>
+             <td style="width:200px;text-align:right;">卡号</td><td><input type="text" class="abc input-default" name="cardno" id="cardno"/></td>
+        </tr>
+         <tr>
+             <td style="text-align:right;">会员姓名</td><td><input type="text" name="cuname" class="abc input-default un-write" readonly="true" id="cuname"/></td>
+        </tr>
+         <tr>
+             <td style="text-align:right;">会员编号</td><td><input type="text" name="customid" class="abc input-default un-write" readonly="true" id="customid"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">卡状态</td><td><input type="text" class="abc input-default un-write" name="card_status" readonly="true" id="card_status"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">卡余额</td><td><input type="text" class="abc input-default un-write" name="cardbalance" readonly="true" id="card_money"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">通用积分</td><td><input type="text" class="abc input-default un-write" name="cardpoint" readonly="true" id="card_points"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">备注</td><td><input type="text" class="abc input-default" value="" name="meno" /></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">新卡</td><td><input type="text" class="abc input-default" name="newcard" id="newcard"/></td>
+        </tr>
+        <tr>
+        	<td colspan="2" style="text-align:left;padding-left:185px;">
+        		<input type="button"  class="btn btn-mini btn-primary" value="新卡读取"  id="btn"/>
+                <input type="button"  class="btn btn-mini btn-primary" value="补卡" style="margin-left:15px;" id="btn1"/>&nbsp;&nbsp;
+                <a href="__URL__/reissueList">补卡成功记录</a>
+        	</td>
+        </tr>
+    </table>
+    </form>
+    <form class="form-inline definewidth m20" action="{:U("AfterSales/reissueCard")}" method="get">
+    <input type="text" name="cardno" value='{$cardno}' style="width:165px; margin-right:7px;" placeholder="卡号"/>
+    <input type="text" name="cuname" value='{$cuname}' style="width:70px; margin-right:7px;" placeholder="会员名称"/>
+    <input type="text" name="customid" value='{$customid}' style="width:90px; margin-right:10px;" placeholder="会员编号"/>
+    <button type="submit" class="btn btn-primary" id="sub">查询</button>
+    <input type="button" value="清空" onclick="window.location='{:U("AfterSales/reissueCard")}'" class="btn btn-danger" />
+    <button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+    </form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th>选择</th>
+        <th>卡号</th><th>会员编号</th><th>会员名称</th>
+        <th>卡状态</th><th>卡余额</th><th>积分余额</th>
+        <th></th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+        <tr>
+            <td><input type="radio" name="sel_card" value="{$vo.cardno}"/></td>
+            <td>{$vo.cardno}</td><td>{$vo.customid}</td><td>{$vo.cuname}</td>
+            <td>锁定</td>
+            <td>{$vo.balanceamount}</td>
+            <td>{$vo.pointamount}</td>
+        </tr>
+    </volist>
+</table>
+<div class="inline pull-right page">{$page}</div>
+    </div>
+<script type="text/javascript">
+    $(function(){
+        $('#btn').click(function(){
+            var cardno= $.trim($('#cardno').val());
+            var newcard=$.trim($('#newcard').val());
+            if(cardno==''){
+                alert('请选择挂失卡');
+                return false;
+            }
+            if(newcard==''){
+                alert('请填写新卡卡号');
+                return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("AfterSales/check_reissue")}',
+                data:{cardno:cardno,newcard:newcard},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        $('#is_read').val(1);
+                        $('#btn1').removeClass('btn-primary1').addClass('btn-primary');
+                    }else{
+                        alert(res.msg);
+                        $('#is_read').val(2);
+                        if($('#btn1').hasClass('btn-primary')){
+                            $('#btn1').removeClass('btn-primary');
+                        }
+                        $('#btn1').addClass('btn-primary1');
+                    }
+                }
+            })
+        });
+        $('#btn1').click(function(){
+            var is_read= $.trim($('#is_read').val());
+            if(is_read==0){
+                alert('请先读取新卡');
+                return false;
+            }else if(is_read==2){
+                alert('读卡失败，请换新卡号重试!');
+                return false;
+            }
+            document.form1.submit();
+        })
+        $('input:radio[name="sel_card"]').change(function(){
+            if( $('#btn1').hasClass('btn-primary')){
+                $('#btn1').removeClass('btn-primary');
+            }
+            $('#btn1').addClass('btn-primary1');
+            $('#is_read').val(0);
+            var cardno= $.trim($(this).val());
+            $.ajax({
+                type:'POST',
+                url:'{:U("AfterSales/card_query")}',
+                data:{cardno:cardno,style:3},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        $('#cardno').val(res.data.cardno);
+                        $('#customid').val(res.data.customid);
+                        $('#cuname').val(res.data.cuname);
+                        $('#card_status').val('卡挂失');
+                        $('#card_money').val(res.data.card_money);
+                        $('#card_points').val(res.data.card_points);
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#backid').click(function(){
+            window.location.href="{:U("AfterSales/reissueCard")}";
+        });
+    })
+
+</script>
+</body>
+</html>

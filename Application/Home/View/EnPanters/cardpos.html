@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>POS配置参数</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+   #remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+    #key{margin:0;}
+    #remind #key li:hover{background-color:#ccc;cursor: pointer;}
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dv">
+  <hr width="90%">
+   <span style="margin-left:40px;margin-top:30px;" >配置参数</span> &nbsp;&nbsp;
+    <button type="button" class="btn btn-mini btn-info" style="font-size:14px" onclick="window.location.href='{:U('configpos',array('aid'=>$aid))}'">  &nbsp;银 行 卡  &nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+   <button type="button" class="btn btn-mini btn-success" style="font-size:14px" onclick="window.location.href='{:U('cardpos',array('aid'=>$aid))}'">  &nbsp;至 尊 卡  &nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+   <button type="button" class="btn btn-mini btn-info" style="font-size:14px" onclick="window.location.href='{:U('alipos',array('aid'=>$aid))}'">支付宝/微信</button>&nbsp;&nbsp;&nbsp;&nbsp;
+<form action="{:U("Panters/editzzcard1")}" method="post" name="form1" enctype="multipart/form-data">
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+      <td rowspan="13" style="width:100px;text-align:center;vertical-align:middle;">至尊卡配置</td>
+         <td class="tableleft">序号:</td>
+         <td><input type="text" name="aid" id="aid" value="{$aid}" readonly=""/></td>
+    </tr>
+    <tr><input type="hidden" name="payid" value="02"></tr>
+      <tr>
+        <td class="tableleft">商户名:</td>
+        <td>
+         <!-- <input type="text" name="namechinese" id="namechinese" value="{$res.namechinese}" maxlength="50" />
+         -->
+            <div>
+             <input id="namechinese" type="text" onkeyup="autoComplete(this.value)"  autocomplete="off" placeholder="请输入你想要查询的机构名称" name="namechinese" value="{$res.namechinese}" />
+            </div>
+            <div id="remind">
+                 <ul id="key">
+                 </ul>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">商户号:</td>
+        <td>
+        <input type="text" name="panterid" id="panterid" value="{$res.panterid}" maxlength="20"/><span class="emphasis">*</span>
+        </td>
+    </tr>
+  
+    <tr>
+        <td class="tableleft">终端号:</td>
+        
+        <td>
+         <select name="pos_id" id="pos_id">
+          <option value="{$res.pos_id}">{$res.pos_id}</option>
+          </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="tableleft">主机IP:</td>
+        <td><input type="text" name="ip_address" id="ip_address" value="{$res.ip_address}" maxlength="100" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">端口号:</td>
+        <td><input type="text" name="num_id" id="num_id" value="{$res.num_id}" /></td>
+    </tr>
+      <!-- <tr>
+        <td class="tableleft">赠送方式:</td>
+        <td>
+          <select name="sendmethod" id="sendmethod">
+          <option value="">请通宝或者积分</option>
+              <foreach name="sendMethod" item="vo" key="key">
+                  <option value="{$key}" <?php if($key==$res['sendmethod']) echo 'selected';?> >{$vo}</option>
+              </foreach>
+          </select>
+          <span class="emphasis"> *</span>
+      </td>
+    </tr>
+    <tr>
+        <td class="tableleft">赠比例:</td>
+        <td><input type="text" name="tb_rate" id="tb_rate" value="{$res.tb_rate}" /></td>
+    </tr> -->
+    <tr>
+        <td class="tableleft">开启禁用:</td>
+        <td>
+           <select name="forbid">
+               <option value="0" <?php if($res['forbid']=='0') echo selected ?> >关闭</option>
+               <option value="1" <?php if($res['forbid']=='1') echo selected ?> >开启</option>
+           </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <button class="btn btn-small btn-primary" type="submit" id="saveform">保存</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-small btn-success" name="backid" id="backid" onclick="{:U("Panters/poscontrol")}">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+		$('#backid').click(function(){
+				window.location.href="{:U("Panters/poscontrol")}";
+		 });
+		 $(document).click(function(){
+	            $("#remind").css("display","none");
+	        });
+     $('#add_time').datepicker({dateFormat: 'yymmdd',yearRange:"2016:2050"});
+     $("#ui-datepicker-div").hide();
+     $('#saveform').click(function(){
+       var aid=$.trim($('#aid').val());
+      //  var type=$.trim($("input[type='radio']").val());
+       var panterid=$.trim($("#panterid").val());
+       var namechinese=$.trim($("#namechinese").val());
+       var ip_address=$.trim($('#ip_address').val());
+       var num_id=$.trim($('#num_id').val());
+       var pos_id=$.trim($('#pos_id').val());
+       var tb_rate=$.trim($('#tb_rate').val());
+       var sendmethod=$.trim($('#sendmethod').val());
+       if(aid=='')
+       {
+         alert("pos序号不能为空!");
+         return false;
+       }
+       if(panterid=='')
+       {
+         alert("商户号不能为空!");
+         return false;
+       }
+       if(namechinese=='')
+       {
+         alert("商户名不能为空!");
+         return false;
+       }
+       if(pos_id=='')
+       {
+         alert('终端号不能为空!');
+         return false;
+       }
+       if(ip_address=='')
+       {
+         alert('主机IP不能为空!');
+         return false;
+       }
+       if(num_id=='')
+       {
+         alert("端号不能为空!");
+         return false;
+       }
+      //  if(sendmethod==''){
+    	//    alert('赠送方式不能为空！');
+    	//    return false;
+      //  }
+      //  if(tb_rate!=''){
+    	//    var m=/^0\.[0-9]{0,4}[1-9]$/;
+      //      var bool = m.test(tb_rate);
+      //      if(!bool){
+      //   	   alert('比例为1-5位小数!');
+      //   	   return false;
+      //      }
+      //  }
+       document.form1.submit();
+
+     });
+     //数据查找
+   // $("#namechinese").click(function(){
+    	 
+    	/*var url="__URL__/jsondata";
+    	
+    	var data={name:$("#namechinese").val()};
+    	$.getJSON(url,data,function(res){
+    		var str="";
+    		$.each(res,function(i,v){
+    			 str+='<option value='+v.panterid+'>'+v.namechinese+'</option>';
+    			  
+    		});
+    		$("#namechinese2").html(str);
+    		 
+    	});*/
+    	
+    	 
+  //   });
+     
+    
+     
+    //  $('#pos_id').blur(function(){
+    //    var pos_id=$.trim($(this).val());
+    //    var aid=$.trim($('#aid').val());
+    //    $.ajax({
+    //      url:"__URL__/poseditid",
+    //      type:'post',
+    //      data:{pos_id:pos_id,aid:aid},
+    //      dataType:'json',
+    //      success:function(data){
+    //        if(data.status==1)
+    //        {
+    //          alert(data.name);
+    //        }
+    //      }
+     //
+    //    })
+    //  });
+    })
+    function autoComplete(value){
+       $.ajax({
+            type:'GET',
+            url:'{:U("Common/getComplete")}',
+            data:{keys:value},
+            dataType:'json',
+            success:function(data){
+                $('#remind').find('ul').html('');
+                 if(typeof(data)=='object'){
+                     var childObj='';
+                     for(var i=0;i<data.length;i++){
+                         childObj+='<li style="list-style:none;" onclick="addVal(this,'+"'namechinese'"+',\''+data[i].panterid+'\')">'+data[i].pname+'</li>';
+                     }
+                     $('#remind').css('display','block');
+                     $('#remind').find('ul').append(childObj);
+                     if($('#remind').find('ul').height()<180){
+                         var height=$('#remind').find('ul').height();
+                         $('#remind').height(height);
+                     }else{
+                         $('#remind').height(180);
+                     }
+                }else{
+                    $('#remind').css('display','none');
+
+                }
+            }
+        });
+    }
+    function addVal(a,id,pid){
+        var value=$(a).text();
+        $('#'+id).siblings('input').val(pid);
+        $('#'+id).val(value);
+        $(a).parent().parent().css('display','none');
+        var str='0000000'+pid;
+        $("#panterid").val(str);
+        var url="__URL__/jsondata";
+    	var data={name:str};
+    	$.getJSON(url,data,function(res){
+    		var str="";
+    		$.each(res,function(i,v){
+    			 str+='<option value='+v+'>'+v+'</option>';
+    			  
+    		});
+    		$("#pos_id").html(str); 
+    	});
+    }
+    
+</script>

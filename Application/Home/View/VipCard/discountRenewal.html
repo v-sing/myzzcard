@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>贵宾卡续期</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css"/>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+
+        .w1 {
+            width: 50%;
+            margin: 20px;
+            border: none;
+        }
+
+        .w1 td {
+            border: none;
+        }
+
+        .abc {
+            width: 160px;
+        }
+
+        input[type="text"].un-write {
+            background: #C8C8C8;
+        }
+
+        .rt {
+            border-bottom: 1px solid #eee;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ff2222;
+            text-decoration: underline;
+        }
+
+        .tb-box {
+            overflow-y: auto;
+            width: 100%;
+            min-height: 120px;
+            max-height: 300px;
+        }
+
+        .tb-box td {
+            width: 160px;
+        }
+
+        .tb-box td.td-f {
+            border-left: none;
+            width: 159px
+        }
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $('#originaldate').datepicker();
+        $('#renewaldate').datepicker();
+        $("#ui-datepicker-div").hide();
+    });
+    function getName(firstId, secondId, paraValue) {
+        if (paraValue == '-1') {
+            $('#' + secondId).val('');
+            return false;
+        }
+        var gname = $('#' + firstId).find("option:selected").attr('gname');
+        $('#' + secondId).val(gname);
+    }
+    function checkCardno(){
+        var cardno = $.trim($('#cardno').val());
+        if (cardno == ''||cardno=='null') {
+            alert('卡号必须填写');
+            return false;
+        }
+        $.ajax({
+            type:'POST',
+            url:'{:U("VipCard/getOriginalDate")}',
+            data:{cardno:cardno},
+            dataType:'json',
+            success:function(res){
+                if(res.status==1){
+                    $('#originaldate').val(res.originaldate);
+                }else{
+                    alert(res.codemsg);
+                }
+            }
+        })
+    }
+    function checkForm() {
+        var cardno = $.trim($('#cardno').val());
+        var renewaldate = $.trim($('#renewaldate').val());
+        var paytype = $.trim($('#paytype').val());
+        var payamount = $.trim($('#payamount').val());
+        if (cardno == '') {
+            alert('卡号必须填写');
+            return false;
+        }
+        if (renewaldate == '') {
+            alert('新过期时间必须填写');
+            return false;
+        }
+        if (paytype == '-1') {
+            alert('支付方式必须选择');
+            return false;
+        }
+        if (payamount == '') {
+            alert('支付金额必须填写');
+            return false;
+        }
+    }
+    function intOnly1(obj) {
+        obj.value = obj.value.replace(/^(0\d?)|[^\d]/g, '');
+    }
+</script>
+<div class="dv">
+    <form name="form3" method="post" action="{:U('VipCard/renewal')}" class="form-inline definewidth m10"
+          style="border: 1px solid #D6D6D6;padding: 5px;" onsubmit="return checkForm();">
+        卡号:&nbsp;<input type="text" name="cardno" class="abc input-default"  id="cardno" onblur="checkCardno()"/>&nbsp;&nbsp;
+        原过期时间:&nbsp;
+        <input type="text" name="originaldate" id="originaldate" class="abc input-default un-write" readonly="true" style="width:120px;"/>&nbsp;&nbsp;
+        新过期时间:&nbsp;<input type="text" name="renewaldate" class="abc input-default"  id="renewaldate"/>&nbsp;&nbsp;
+        支付方式:&nbsp;
+        <select name="paytype" id="paytype" style="width:83px; margin-right:7px;">
+            <option value="-1">请选择</option>
+                <option value="1">支付宝</option>
+                <option value="2">微信</option>
+                <option value="3">银行卡</option>
+                <option value="4">现金</option>
+        </select>&nbsp;&nbsp;
+        支付金额:&nbsp;<input type="text" name="payamount" class="abc input-default" id="payamount"/>&nbsp;&nbsp;
+        <input type="submit" value="续期" class="btn btn-mini btn-primary" id="sub"/>
+    </form>
+    <form class="form-inline definewidth m20" action="{:U('VipCard/discountRenewal')}" method="post">
+        卡号:<input type="text" name="cardnos"  style="width:120px; margin-right:7px;" value="{$cardnos}"/>
+        过期日期:
+        <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}"
+               style="width:120px;"/>
+        --- <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}"
+                   style="width:120px; margin-right:5px;"/>
+        <button type="submit" class="btn btn-mini btn-primary">查询</button>
+        <input type="reset" value="清空" class="btn btn-mini btn-danger"/>
+        <br/>
+    </form>
+    <form class="form-inline m20">
+        <table class="table table-bordered table-hover definewidth m10" id="lists">
+            <thead>
+            <tr>
+                <th>卡号</th>
+                <th>原过期时间</th>
+                <th>新过期时间</th>
+                <th>支付方式</th>
+                <th>支付金额</th>
+                <th>操作人</th>
+                <th>操作日期</th>
+                <th>操作时间</th>
+            </tr>
+            </thead>
+            <volist name="data" id="vo" key="key">
+                <tr>
+                    <td>{$vo.cardno}</td>
+                    <td>{$vo.originaldate}</td>
+                    <td>{$vo.renewaldate}</td>
+                    <td>{$vo.paytype}</td>
+                    <td>{$vo.payamount}</td>
+                    <td>{$vo.operater}</td>
+                    <td>{$vo.operatedate}</td>
+                    <td>{$vo.operatetime}</td>
+                </tr>
+            </volist>
+        </table>
+        <div class="inline pull-right page sabrosus">{$page}</div>
+</div>
+</body>
+</html>

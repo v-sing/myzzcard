@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {  padding-bottom: 40px;  }
+        .sidebar-nav {  padding: 9px 0;  }
+        @media (max-width: 980px) {  .navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  }  }
+    </style>
+	<script>
+		function sendMes(){
+			var msg=$("#msg").val();
+			if(msg==""){
+				alert('内容为空！');
+				return false;
+			}
+			$("#sendbut").attr('disabled',true);
+			$("#sendbut").text("发送成功");
+			$.post('__URL__/send_message',{'msg':msg},function(rs){
+				//alert(rs);
+			})
+		}
+	</script>
+</head>
+<body>
+<div class="dv">
+	<form class="form-inline definewidth m20"  method="get">		
+		<table class="table table-bordered table-hover definewidth m10">
+		    <tr>
+		        <td style="width:150px;text-align:right;background-color:#f5f5f5;">所属城市：</td>
+		        <td><input type="text" name="shi" value="{$shi}" /></td>
+		    </tr>
+		    <tr>
+		        <td style="width:150px;text-align:right;background-color:#f5f5f5;">性别：</td>
+		        <td>
+		        	<select name="sex">
+			        	<option value="男" <?php if($sex=='男'){echo 'selected';}?>>男</option>
+			        	<option value="女" <?php if($sex=='女'){echo 'selected';}?>>女</option>
+		        	</select>
+		        </td>
+		    </tr>
+		    <tr>
+		        <td style="width:150px;text-align:right;background-color:#f5f5f5;">起始会员编号：</td>
+		        <td><input type="text" name="sMemid" value="{$sMemid}" /></td>
+		    </tr>
+		    <tr>
+		        <td style="width:150px;text-align:right;background-color:#f5f5f5;">结束会员编号：</td>
+		        <td><input type="text" name="eMemid" value="{$eMemid}" /></td>
+		    </tr>
+		    <tr>
+		        <td style="width:150px;text-align:right;background-color:#f5f5f5;">请输入短信内容：</td>
+		        <td><textarea id="msg" rows="5" cols="20"></textarea></td>
+		    </tr>
+		    <tr>
+		        <td colspan="2" style="padding-left:130px;background-color:#f5f5f5;">
+					<button type="submit" class="btn btn-mini btn-info">查询</button>&nbsp;&nbsp;&nbsp;&nbsp;
+					<button type="button" class="btn btn-mini btn-success" id="sendbut" onclick="sendMes()">发送</button>
+		        </td>
+		    </tr>
+		</table>
+	</form>
+</div>
+</body>
+</html>

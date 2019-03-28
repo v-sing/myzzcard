@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>红色黑名单</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+
+    <style type="text/css">
+        body {  padding-bottom: 40px;  }
+        .sidebar-nav {  padding: 9px 0;  }
+        @media (max-width: 980px) {  .navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  }  }
+    </style>
+</head>
+<body>
+<form class="form-inline definewidth m20"  method="get">
+	<div class="control-group">100名红色通缉令名单</div>
+    <div class="control-group">
+        <input type="text" name="name" class="abc input-default" placeholder="会员名称" value="{$name}">&nbsp;&nbsp;
+        <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp;
+        <a href="{:U("Searchs/redlist_excel")}" target="_blank" class="btn btn-mini"><i class="Hui-iconfont">&#xe640;</i>导出EXCEL</a>
+    </div>
+    <!-- <div class="control-group">
+   	年龄：
+    	<input type="text" name="rolename" id="rolename"class="abc input-mini" placeholder="" value="">&nbsp;&nbsp;
+    	收入：
+    <input type="text" name="rolename" id="rolename"class="abc input-medium" placeholder="" value="">&nbsp;&nbsp;<br />
+	</div> -->
+
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>职务</th>
+        <th>证件号码</th>
+        <th>护照号码</th>
+        <th>出逃时间</th>
+        <th>出逃国家/地区</th>
+        <th>立案单位</th>
+        <th>罪名</th>
+        <th>立案时间</th><th>立案编号</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+        <tr>
+            <td>{$k}</td>
+            <td>{$vo.name}</td><td>{$vo.sex}</td>
+            <td>{$vo.career}</td><td>{$vo.personid}</td><td>{$vo.passportid}</td><td>{$vo.runtime}</td>
+            <td>{$vo.runcountry}</td><td>{$vo.unit}</td><td>{$vo.crime}</td><td>{$vo.registertime}</td>
+            <td>{$vo.registerid}</td>
+            </td>
+        </tr>
+    </volist>
+    </table>
+    <div class="inline pull-right page">{$page}</div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>

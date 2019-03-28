@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>卡充值审核</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+    	$('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+
+    	$('#btn').click(function(){
+            var cname= $.trim($('#cname').val());
+            var customsid= $.trim($('#customsid').val());
+            var linktel= $.trim($('#linktel').val());
+            $.ajax({
+                type:'POST',
+                url:'{:U("Card/getcustoms")}',
+                data:{cname:cname,customsid:customsid,linktel:linktel},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                    	var data=eval(res.data);
+                    	var rese='';	
+			        	for(var i=0;i<data.length;i++){
+			        		var xstr=data[i]['customid'];
+			        		rese+='<tr id='+xstr+' onclick=ckstr("'+xstr+'")><td style="width:160px">'+data[i]['customid']+'</td><td style="width:160px">'+data[i]['namechinese']+'</td><td style="width:160px">'+data[i]['customlevel']+'</td><td style="width:160px">'+data[i]['linktel']+'</td></tr>';
+						}
+			            $('#list').html(rese).show();
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#checkyes').click(function(){
+            var is_submit=$('#is_submit').val();
+            var xflag = $.trim($('#xflag').val());
+            var purchaseid= $.trim($('#xpurchaseid').val());
+            var cardno=$.trim($('#cardno').val());
+            var readStatus=$.trim($('#readStatus').val());
+            if(purchaseid==''){
+                alert('请选取充值单号');
+                return false;
+            }
+            if(cardno==''){
+                alert('请输入充值卡号');
+                return false;
+            }
+            if(xflag!='未审核'){
+                alert('此购卡单已经审核过，不允许再审！');
+                return false;
+            }
+            if(readStatus==0){
+                alert('请先读卡');
+                return false;
+            }else if(readStatus==2){
+                alert('读卡失败，请换卡重试');
+                return false;
+            }
+            if(is_submit!=0){
+                alert('已经提交，无需重复提交');
+                return false;
+            }
+            $('#type').val(0);
+            $('#is_submit').val(1);
+            document.form3.submit();
+        });
+        $('#checkno').click(function(){
+            var is_submit=$('#is_submit').val();
+            var xflag = $.trim($('#xflag').val());
+            var purchaseid= $.trim($('#xpurchaseid').val());
+            var description1 = $.trim($('#description1').val());
+            if(purchaseid==''){
+                alert('请选取充值单号');
+                return false;
+            }
+            if(xflag!='未审核'){
+                alert('此充值单已经审核过，不用再审！');
+                return false;
+            }
+            if(is_submit!=0){
+                alert('已经提交，无需重复提交');
+                return false;
+            }
+            if(description1==''){
+                alert('审核不通过必须添写审核备注');
+                return false;
+            }
+            $('#type').val(1);
+            $('#is_submit').val(1);
+            document.form3.submit();
+        });
+        $('#getbay').click(function(){
+            var cardno = $.trim($('#cardno').val());
+            var customid = $.trim($('#xcustomid').val());
+            if(cardno==''){
+                alert('请输入充值卡号');
+                return false;
+            }
+            if(customid==''){
+                alert('请选择充值单');
+                return false;
+            }
+            var type='00';
+            var status='Y';
+            $.ajax({
+                type:'POST',
+                url:'{:U("Card/getcardpay")}',
+                data:{cardno:cardno,type:type,customid:customid,status:status},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        $('#readStatus').val(1);
+                        $('#yes_disabled').hide();
+                        $('#checkyes').show();
+                        alert('读取成功，此卡可正常使用');
+                    }else{
+                        $('#readStatus').val(2);
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#cardno').change(function(){
+            $('#readStatus').val(0);
+            $('#yes_disabled').show();
+            $('#checkyes').hide();
+        });
+        $('#cardno').keyup(function(e){
+            var e = (e) ? e : window.event;
+            if(e.keyCode==13){
+                var string= $.trim($(this).val());
+                string=string.replace(/\D/g,'');
+                string=string.substr(0,19);
+                $(this).val(string);
+            }
+        });
+	})
+	function ckstr(strs){
+        $('#is_submit').val(0);
+        $('#readStatus').val(0);
+        $('#yes_disabled').show();
+        $('#checkyes').hide();
+		var table = document.getElementById(strs);
+		document.getElementById('xpurchaseid').value=table.cells[0].innerHTML;
+		document.getElementById('xcustomid').value=table.cells[1].innerHTML;
+        document.getElementById('paymenttype').value=table.cells[6].innerHTML;
+		document.getElementById('totalmoney').value=table.cells[8].innerHTML;
+		document.getElementById('realamount').value=table.cells[9].innerHTML;
+        document.getElementById('xflag').value=table.cells[7].innerHTML;
+        document.getElementById('description').value=table.cells[14].innerHTML;
+        document.getElementById('description1').value=table.cells[15].innerHTML;
+
+	}
+    </script>
+<div  class="dv">
+    <div class="div-inline definewidth m10">
+        <div style="border: 1px solid #D6D6D6;padding: 5px; width:350px;height:245px;float:left;margin-right:10px;">
+            <form action="{:U("Card/paycheck")}" method="get">
+
+                <table>
+                    <tr>
+                        <td>充值单号:</td>
+                        <td><input type="text" name="purchaseid" id="purchaseid" class="abc input-medium" placeholder="充值单号" value="{$purchaseid}"></td>
+                    </tr>
+                    <tr>
+                        <td>审核状态:</td>
+                        <td>
+                            <select name="flag" style="width:120px; margin-right:10px;">
+                             <option value="" selected>请选择</option><option value="0"<if condition="$flag eq '0'"> selected</if>>未审核</option><option value="1"<if condition="$flag eq '1'"> selected</if>>审核通过</option><option value="2"<if condition="$flag eq '2'"> selected</if>>审核未通过</option></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>会员编号:</td>
+                        <td><input type="text" name="customid" id="customid" class="abc input-medium" placeholder="会员编号" value="{$customid}" style="width:120px; margin-right:7px;"></td>
+                    </tr>
+                    <tr>
+                        <td>会员名称:</td>
+                        <td><input type="text" name="cname" id="cname" class="abc input-default" placeholder="会员名称" value="{$cname}"></td>
+                    </tr>
+                    <tr>
+                        <td>登记日期:</td>
+                        <td><input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/>---<input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:5px;"/></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                        	<button type="submit" class="btn btn-mini btn-primary">查询</button> 
+                        	<input type="button" value="重置" onclick="window.location='{:U("Card/cardcheck")}'" class="btn btn-mini btn-danger" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div style="border: 1px solid #D6D6D6;padding: 5px; width: 550px;height:245px;float:left;">
+            <form name="form3" method="post" action="{:U("Card/paycheck")}">
+                <table>
+                    <tr>
+                        <td>充值单号:</td>
+                        <td><input type="text" name="xpurchaseid" class="abc input-medium un-write" readonly="true" id="xpurchaseid" style="margin-right:5px;"/></td>
+                        <td>会员编号:</td>
+                        <td><input type="text" name="xcustomid" class="abc input-medium un-write" readonly="true" id="xcustomid" style="margin-right:5px;"/></td>
+                    </tr>
+                    <tr>
+                        <td>支付方式:</td>
+                        <td><input type="text" name="paymenttype" class="abc input-default un-write" readonly="true" id="paymenttype" style="width:120px; margin-right:5px;"/></td>
+                        <td>充值总额:</td>
+                        <td><input type="text" value="" name="totalmoney" id="totalmoney" class="abc input-default un-write" style="width:120px; margin-right:5px;"/></td>
+                    </tr>
+                    <tr>
+                        <td>实收金额:</td>
+                        <td><input type="text" value="" name="realamount" id="realamount" class="abc input-default un-write" style="width:120px; margin-right:5px;"/></td>
+                        <td>审核状态:</td>
+                        <td><input type="text" name="xflag" class="abc input-default un-write" readonly="true" id="xflag" style="width:70px; margin-right:5px;"/></td>
+                    </tr>
+                    <tr>
+                        <td>描  述:</td>
+                        <td colspan="3"><input type="text" value="" name="description" id="description" class="abc input-default un-write" style="width:240px; margin-right:5px;"/></td>
+                    </tr>
+                    <tr>
+                        <td>审核备注:</td>
+                        <td colspan="3"><input type="text" value="" name="description1" id="description1" style="width:240px; margin-right:5px;"/>(审核不通过时必填)</td>
+                    </tr>
+                    <tr>
+                        <td>卡号:</td>
+                        <td ><input type="text" value="" name="cardno" id="cardno" style="width:180px; margin-right:5px;"/></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="3">
+                            <input type="button" class="btn btn-mini btn-primary" value="审核通过" id='yes_disabled' style="margin-right:10px;" disabled/>
+                            <input type="button" class="btn btn-mini btn-primary" value="审核通过" id='checkyes' style="margin-right:10px;display:none;"/>
+                            <input type="button" class="btn btn-mini btn-primary" value="读取充值卡号" style="margin-right:10px;" id='getbay'/>
+                            <input type="button" class="btn btn-mini btn-danger" value="审核不通过" id='checkno'/>
+                    </tr>
+                </table>
+                <input type="hidden" value="0" id="is_submit"/>
+                <input type="hidden" value="" name="type" id="type">
+                <input type="hidden" value="0" name="readStatus" id="readStatus">
+            </form>
+        </div>
+    </div>
+    <div class="div-inline definewidth m10" style="float:left;">
+        <table class="table table-bordered table-hover definewidth">
+        <thead>
+        <tr>
+            <th>充值单号</th>
+            <th>会员编号</th>
+            <th>会员名称</th>
+            <th>类型</th>
+            <th>登记日期</th>
+            <th>登记时间</th>
+            <th>支付方式</th>
+            <th>审核状态</th>
+            <th>充值总额</th>
+            <th>实收总额</th>
+            <th>登记员</th>
+            <th>审核日期</th>
+            <th>审核时间</th>
+            <th>审核员</th>
+            <th>描述</th>
+            <th>审核备注</th>
+        </tr>
+        </thead>
+        <volist name="list" id="vo">
+        <tr id="{$vo.purchaseid}" onclick="ckstr('{$vo.purchaseid}')">
+            <td>{$vo.purchaseid}</td>
+            <td>{$vo.customid}</td>
+            <td>{$vo.namechinese}</td>
+            <td>{$gctype[$vo['tradeflag']]}</td>
+            <td>{$vo.placeddate}</td>
+            <td>{$vo.placedtime}</td>
+            <td>{$paytype[$vo['paymenttype']]}</td>
+            <td>{$chetype[$vo['flag']]}</td>
+            <td>{$vo.totalmoney}</td>
+            <td>{$vo.realamount}</td>
+            <td>{$vo.username}</td>
+            <td>{$vo.checkdate}</td>
+            <td>{$vo.checktime}</td>
+            <td>{$vo.aditid}</td>
+            <td>{$vo.description}</td>
+            <td>{$vo.description1}</td>
+        </tr>
+        </volist>
+        </table>
+        <div class="inline pull-right page">{$page}</div>
+    </div>
+    </div>
+</body>
+</html>

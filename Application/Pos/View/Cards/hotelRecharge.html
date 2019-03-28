@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店单卡充值</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+     	#remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+    	#key{margin:0;}
+    	#remind #key li:hover{background-color:#ccc;cursor: pointer;}
+        select{display:inline-block;}
+
+		.tabBar {}
+		.tabBar span {background-color: #f5f5f5;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px; padding-bottom: 4px;padding-top: 8px;margin-bottom: 10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;}
+		.tabBar span.current{background-color: #222;color: #fff;margin-bottom: 10px;}
+		.tabCon {display: none;}
+		.nume{margin: 0 0 5px;}
+
+    </style>
+    <script type='text/javascript'>
+        function intOnly1(obj){
+            obj.value=obj.value.replace(/^(0\d?)|[^\d]/g,'');
+        }
+        function intOnly2(obj){
+            obj.value=obj.value.replace(/^(0\d?)|[^\dX]/g,'');
+        }
+	</script>
+	</head>
+<body>
+<div class="dv">
+	<div class="nume">
+		<div id="tab_xuan" class="choice m10  table definewidth" >
+		<form method="post" id="form1" enctype="multipart/form-data" >
+				<table class="table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+					<tr>
+						<td style="width:150px;text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>姓名</td>
+						<td>
+							<input id="namechinese" type="text"   autocomplete="off" placeholder="请输入姓名" name="namechinese"/>
+						</td>
+					</tr>
+                    <tr>
+                        <td style="width:150px;text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>性别</td>
+                        <td>
+                            <label style="display:inline;"><input type="radio" name="sex" value="男" checked="checked"/>男</label>
+                            <label style="display:inline;"><input type="radio" name="sex" value="女"/>女</label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>电话</td>
+                        <td>
+                            <input id="linktel" type="text"  name="linktel" onkeyup="intOnly1(this)"/>
+                        </td>
+                    </tr>
+					<tr>
+						<td style="text-align:right;background-color:#f5f5f5;">证件类型</td>
+						<td>
+                            <select name="personidtype" class="form-control" >
+                                <option value="身份证">身份证</option>
+                                <option value="护照">护照</option>
+                                <option value="军官证">军官证</option>
+                            </select>
+						</td>
+					</tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">证件号码</td>
+                        <td>
+                            <input type="text" name="personid" id="personid" maxlength="20" onkeyup="intOnly2(this)"/>
+                        </td>
+                    </tr>
+                    <!--tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">卡属酒店</td>
+                        <td>
+                            <select name="panterid">
+                                <volist name="list" id="vo">
+                                    <option value="{$vo.panterid}">{$vo.pname}</option>
+                                </volist>
+                            </select>
+                        </td>
+                    </tr-->
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;">详细地址</td>
+                        <td>
+                            <input type="text" name="residaddress" style="width:400px;" maxlength="60" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>充值卡号</td>
+                        <td>
+                            <input id="cardno" type="text"  name="cardno" onkeyup="clearNoNum(this)"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>充值金额</td>
+                        <td>
+                            <input id="amount" type="text"  name="amount" onkeyup="clearNoNum(this)"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align:right;background-color:#f5f5f5;"><span class="emphasis"> *</span>是否开发票</td>
+                        <td>
+                            <label style="display:inline;"><input type="radio" name="isBill" value="1"/>是</label>
+                            <label style="display:inline;"><input type="radio" name="isBill" value="0" checked="checked"/>否</label>
+                        </td>
+                    </tr>
+				</table>
+				<table class=" table-bordered  table-hover " style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;border-top-left-radius: 0;border-top-right-radius: 0;width:100%;border-width: 0 1px 1px 0;">
+					<tr>
+						<td colspan="2" style="padding-left:150px;background-color:#f5f5f5;">
+                            <input type="submit" value="开卡充值" id="sub" class="btn btn-primary"/>&nbsp;&nbsp;
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#form1').submit(function(){
+            var namechinese= $.trim($('#namechinese').val());
+            var linktel=$.trim($('#linktel').val());
+            var amount= $.trim($('#amount').val());
+            var cardno= $.trim($('#cardno').val());
+            if(namechinese==''){
+                alert('姓名必填');
+                return false;
+            }
+            if(linktel==''){
+                alert('手机号必填');
+                return false;
+            }
+            if(amount==''){
+                alert('充值金额必填');
+                return false;
+            }
+            if(cardno==''){
+                alert('至尊卡号必填');
+                return false;
+            }
+            document.getElementById('sub').disabled=true;
+            document.getElementById('sub').value='正在充值中...';
+        })
+    })
+</script>
+</body>
+</html>

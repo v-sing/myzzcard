@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>缴费充值</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+        $('#personidissuedate').datepicker({dateFormat: 'yymmdd',yearRange:"1953:2020"});
+        $('#personidexdate').datepicker({dateFormat: 'yymmdd',yearRange:"1953:2050"});
+        $(":radio[name='scene']").click(function () {
+            var scene = $(this).val();
+            if (scene == 1) {
+                $('#tr_1').hide();
+                $('#tr_2').hide();
+            } else {
+                $('#tr_1').show();
+                $('#tr_2').show();
+            }
+        });
+        $('#subup').click(function(){
+            var cardno = $.trim($('#cardno').val());
+            var namechinese = $.trim($('#namechinese').val());
+            var linktel = $.trim($('#linktel').val());
+            var personid = $.trim($('#personid').val());
+            var residaddress = $.trim($('#residaddress').val());
+            var personidissuedate = $.trim($('#personidissuedate').val());
+            var personidexdate = $.trim($('#personidexdate').val());
+            var amount = $.trim($('#amount').val());
+            if(cardno==''){
+                alert('卡号不能为空,请选择!');
+                return false;
+            }
+            if(namechinese==''){
+                alert('用户名不能为空,请选择!');
+                return false;
+            }
+            if(residaddress==''){
+                alert('用户地址不能为空,请选择!');
+                return false;
+            }
+            if(linktel==''){
+                alert('联系方式必须填写');
+                return false;
+            }
+            var d = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
+            var r = d.test(linktel);
+            if(!r){
+                alert("手机号码格式错误");
+                return false;
+            }
+            if(personid==''){
+                alert('证件号码必须填写');
+                return false;
+            }
+            var c = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(personid);
+            if(!c){
+                alert("身份证号格式错误!!");
+                return false;
+            }
+            if(personidissuedate==''){
+                alert('请填写证件签发日期');
+                return false;
+            }
+            if(personidexdate==''){
+                alert('请填写证件有效期截止日');
+                return false;
+            }
+            if(amount==''){
+                alert('充值金额不能为空');
+                return false;
+            }
+            $("#subup").attr("disabled", true);
+            document.form3.submit();
+        })
+    })
+</script>
+<div  class="dv" style="margin-left:25px;">
+    <form name="form3" method="post" action="{:U('Tianzhu/cardRecharge')}">
+        <table class="table table-bordered table-hover m10 ">
+            <tr>
+                <td>卡号</td><td><input type="text" class="abc input-default" name="cardno" id="cardno"/></td>
+            </tr>
+            <tr><td>客户名称</td><td><input type="text" name="namechinese" class="abc input-default"  id="namechinese"/></td></tr>
+            <tr><td>家庭住址</td><td><input type="text" name="residaddress" class="abc input-default" id="residaddress"/></td></tr>
+             <tr><td>身份证号码</td><td><input type="text" name="personid" class="abc input-default"  id="personid"/></td></tr>
+             <tr><td>联系电话</td><td><input type="text" class="abc input-default" name="linktel" id="linktel"/></td></tr>
+            <tr><td>证件签发日期</td><td><input type="text" class="abc input-default" name="personidissuedate" maxlength="8" id="personidissuedate"/></td></tr>
+            <tr><td>证件有效期截止日</td><td><input type="text" class="abc input-default" name="personidexdate" maxlength="8" id="personidexdate"/></td></tr>
+            <tr>
+                <td width="10%" class="tableleft">充值类型&nbsp;<span style="color:#ff0700;">*</span></td>
+                <td>
+                    <label style="display: inline;"><input type="radio" name="scene" value="1" />普通充值</label>
+                    <label style="display: inline;"><input type="radio" name="scene" value="2" checked/>物业缴费充值</label>
+                </td>
+            </tr>
+            <tr id="tr_1">
+                <td width="10%" class="tableleft">户型&nbsp;<span style="color:#ff0700;">*</span></td>
+                <td>
+                    <select name="sizecode">
+                        <option value="0">请选择户型（平米）</option>
+                        <option value="1">两室两厅一卫（80平米）</option>
+                        <option value="2">两室两厅一卫（90平米）</option>
+                        <option value="3">三室两厅两卫（150平米）</option>
+                        <option value="4">三室两厅两卫（160平米）</option>
+                        <option value="5">四室两厅两卫（230平米）</option>
+                        <option value="6">四室两厅两卫（240平米）</option>
+                        <option value="7">五室两厅三卫（280平米）</option>
+                        <option value="8">五室两厅三卫（290平米）</option>
+                        <option value="9">五室两厅三卫（300平米）</option>
+                        <option value="10">五室两厅四卫（320平米）</option>
+                        <option value="11">五室两厅四卫（330平米）</option>
+                        <option value="12">六室两厅三卫（410平米）</option>
+                        <option value="13">六室两厅三卫（420平米）</option>
+                        <option value="14">七室两厅七卫（450平米）</option>
+                        <option value="15">六室两厅四卫（460平米）</option>
+                        <option value="16">五室三厅四卫（500平米）</option>
+                        <option value="17">五室三厅四卫（510平米）</option>
+                        <option value="18">五室三厅四卫（600平米）</option>
+                        <option value="19">五室三厅四卫（610平米）</option>
+                        <option value="20">五室三厅四卫（660平米）</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="tr_2">
+                <td width="10%" class="tableleft">月数&nbsp;<span style="color:#ff0700;">*</span></td>
+                <td>
+                    <select name="months">
+                        <option value="0">请选择月数</option>
+                        <option value="1">1个月</option>
+                        <option value="2">2个月</option>
+                        <option value="3">3个月</option>
+                        <option value="4">4个月</option>
+                        <option value="5">5个月</option>
+                        <option value="6">6个月</option>
+                        <option value="7">7个月</option>
+                        <option value="8">8个月</option>
+                        <option value="9">9个月</option>
+                        <option value="10">10个月</option>
+                        <option value="11">11个月</option>
+                        <option value="12">12个月</option>
+                        <option value="13">18个月</option>
+                        <option value="14">24个月</option>
+                        <option value="15">30个月</option>
+                        <option value="16">36个月</option>
+                        <option value="17">42个月</option>
+                        <option value="18">48个月</option>
+                        <option value="19">54个月</option>
+                        <option value="20">60个月</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>充值金额</td><td><input type="text" class="abc input-default" name="amount" id="amount"/></td>
+            </tr>
+            <tr><td>支付类型</td><td><select name="paymenttype" id="paymenttype" class="abc input-default" >
+                <foreach name="paytype" item="vo"><option value="{$key}">{$vo}</option></foreach></select></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit" class="btn btn-mini btn-primary" id="subup" style="width:80px;right:10px;">充值</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>成功补卡列表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .rt{border:1px solid #eee;}
+        .btn-primary1{
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #006dcc;
+            *background-color: #0044cc;
+            background-repeat: repeat-x;
+            border-color: #0044cc #0044cc #002a80;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+        }
+    </style>
+</head>
+<body>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("AfterSales/reissueList")}" method="POST">
+    <input type="text" name="oldcard" value='{$oldcard}' style="width:165px; margin-right:7px;" placeholder="旧卡号"/>
+    <input type="text" name="newcard" value='{$newcard}' style="width:165px; margin-right:7px;" placeholder="新卡号"/>
+    <input type="text" name="cuname" value='{$cuname}' style="width:70px; margin-right:7px;" placeholder="会员名称"/>
+    <input type="text" name="customid" value='{$customid}' style="width:90px; margin-right:10px;" placeholder="会员编号"/>
+    <input type="text" name="personid" value='{$personid}' style="width:110px; margin-right:7px;" placeholder="证件号"/>
+    <input type="text" name="linktel" value='{$linktel}' style="width:110px; margin-right:7px;" placeholder="联系电话"/>
+    <button type="submit" class="btn btn-primary" id="sub">查询</button>
+    <input type="button" value="清空" onclick="window.location='{:U("AfterSales/reissueList")}'" class="btn btn-danger" />
+    <button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th>卡号</th><th>补卡新卡号</th><th>会员编号</th><th>会员名称</th><th>证件号</th><th>联系电话</th><th>卡余额</th><th>积分余额</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+        <tr>
+            <td>{$vo.cardno}</td><td>{$vo.newcard}</td><td>{$vo.customid}</td><td>{$vo.cuname}</td><td>{$vo.personid}</td><td>{$vo.linktel}</td>
+            <td>{$vo.balanceamount}</td><td>{$vo.pointamount}</td>
+        </tr>
+    </volist>
+</table>
+<div class="inline pull-right page">{$page}</div>
+    </div>
+</body>
+<script>
+    $(function () {
+        $('#backid').click(function(){
+            window.location.href="{:U("AfterSales/reissueCard")}";
+        });
+    });
+</script>
+</html>

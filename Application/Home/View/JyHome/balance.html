@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>余额记录</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css"/>
+<script src="__PUBLIC__/JyHome/jquery-1.12.1.js"></script>
+<link href="__PUBLIC__/JyHome/Staff_Credits.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="top">
+    	<span style="font-size:1.2em; line-height:3em;">冯昶，您好！</span>
+        <span style="font-size:1.2em;">共<span style="font-size:4em; display:inline; margin:auto 10px;font-family:'Adobe 黑体 Std';">{$balance}</span>分</span>
+    </div>
+
+
+
+    <div class="top_4">
+    	<div class="top_4_01">
+        	<a href="#"><span class="underline_all">全部</span></a>
+			<a href="#"> <span class="underline_in">充值</span></a>
+			<a href="#"><span class="underline_out">消费</span></a>
+        </div>
+		<foreach name="list" item="vo">
+        <div class="top_4_jl">
+        	<div class="top_4_jl_t">
+				<span style="float:left;font-size:1.2em; color:#8bdf13;">消费</span>
+				<span style="float:right;font-size:1.2em; text-align:right;color:#8bdf13;">-{$vo.tradepoint}</span>
+			</div>
+            <div class="top_4_jl_t" style="border-bottom:1px solid #ddd;color:#8d8fa1; padding-bottom:2%; margin-top:4px;">
+				<span style="float:left;font-size:1em;">{$vo.placeddate} &nbsp; {$vo.placedtime}</span>
+			</div>
+        </div>
+		</foreach>
+		<div class="scott" style="margin-left:0px;font-size:0.5em;">{$show}</div>
+    </div>
+    
+    <!--<div class="gd" onclick="loadMore()">查看更多</div>-->
+</body>
+</html>
+<script>
+	loadMore()
+</script>

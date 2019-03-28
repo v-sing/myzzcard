@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>卡库存监控</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .tb-box{overflow-y:auto; width:100%;min-height:120px;max-height:300px;}
+        .tb-box td{width:160px;}
+        .tb-box td.td-f{border-left:none;width:159px}
+    </style>
+</head>
+<body>
+<div  class="dv">
+    <form class="form-inline m20" action='{:U("CardStock/createFile")}' method="get" onsubmit="return checkForm1();">
+    <table class="table table-bordered table-hover definewidth m10" id="lists">
+    <thead>
+    <tr>
+        <th>商户编号</th>
+        <th>卡属商户</th>
+        <th>卡池数量</th>
+        <th>终端类型</th>
+        <th>卡质类型</th>
+        <th>描述</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="key">
+        <tr>
+            <td>{$vo.panterid}</td>
+            <td>{$vo.pname}</td>
+            <td>{$vo.c}</td>
+            <td>{$vo.cardkind}</td>
+            <td>{$vo.cardfee}</td>
+            <td>{$vo.desc}</td>
+        </tr>
+        </volist>
+        </table>
+<!--div class="inline pull-right page sabrosus">{$page}</div-->
+    </div>
+    </div>
+</body>
+</html>

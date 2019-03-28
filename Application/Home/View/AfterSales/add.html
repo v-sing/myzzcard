@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.validate.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .tabBar {}
+        .tabBar span {background-color: #f5f5f5;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px; padding-bottom: 4px;padding-top: 8px;margin-bottom: 10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;}
+        .tabBar span.current{background-color: #222;color: #fff;margin-bottom: 10px;}
+        .tabCon {display: none;}
+        .nume{margin: 0 0 5px;}
+    </style>
+</head>
+<script>
+    jQuery.choice =function(tabBar,tabCon,class_name,tabEvent,i){
+        var $tab_menu=$(tabBar);
+        // 初始化操作
+        $tab_menu.removeClass(class_name);
+        $(tabBar).eq(i).addClass(class_name);
+        $(tabCon).hide();
+        $(tabCon).eq(i).show();
+
+        $tab_menu.bind(tabEvent,function(){
+            $tab_menu.removeClass(class_name);
+            $(this).addClass(class_name);
+            var index=$tab_menu.index(this);
+            $(tabCon).hide();
+            $(tabCon).eq(index).show();
+        });
+    }
+    $(function(){
+        $.choice("#tab_xuan .tabBar span","#tab_xuan .tabCon","current","click","0");
+    });
+</script>
+<body>
+<div class="dv">
+    <div class="nume">
+        <div id="tab_xuan" class="choice m10  table definewidth" >
+            <form action="{:U("AfterSales/add")}" method="post" name="form1" enctype="multipart/form-data">
+            <table class="tabCon table-bordered table-hover  m10" style="border-top-left-radius: 4px;border-top-right-radius: 4px;width:100%;">
+                <tr>
+                    <td rowspan="4" style="width:100px;text-align:center;vertical-align:middle;">卡号风险控制</td>
+                    <td class="tableleft">卡编号</td>
+                    <td><input type="text" name="customid" id="customid" onkeyup="clearNoNum(this)" maxlength="10" /><span class="emphasis"> *</span></td>
+                <tr>
+                    <td class="tableleft">日消费限制累计额度</td>
+                    <td><input type="text" name="account" id="account" value="5000" onkeyup="clearNoNum(this)" maxlength="10" /><span class="emphasis"> *</span></td>
+                </tr>
+                <tr>
+                    <td class="tableleft">每日消费次数</td>
+                    <td><input type="text" name="sumnumber" id="sumnumber" value="5" onkeyup="clearNoNum(this)" maxlength="10"/><span class="emphasis"> *</span></td>
+                </tr>
+                <tr>
+                    <td class="tableleft">每笔刷卡限额</td>
+                    <td><input type="text" name="oneaccount" id="oneaccount" value="1000" onkeyup="clearNoNum(this)" maxlength="10"/><span class="emphasis"> *</span></td>
+                </tr>
+                <tr>
+            </table>
+            <table class=" table-bordered  table-hover " style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;border-top-left-radius: 0;border-top-right-radius: 0;width:100%;border-width: 0 1px 1px 0;">
+                <tr>
+                    <!-- <td class="tableleft"></td> -->
+                    <td>
+                        <button type="submit" class="btn btn btn-primary" type="button" id="saveform" style="margin-left:200px;">保存</button>&nbsp;&nbsp;<button type="button" class="btn btn btn-success" name="backid" id="backid">返回列表</button>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(function () {
+        $('#backid').click(function(){
+            window.location.href="{:U("AfterSales/cardinfo_qa")}";
+        });
+        $('#saveform').click(function(){
+            var customid=$.trim($('#customid').val());
+            var account=$.trim($('#account').val());
+            var sumnumber=$.trim($('#sumnumber').val());
+            var oneaccount=$.trim($('#oneaccount').val());
+
+            if(customid==''){
+                alert('卡编号不能为空!');
+                return false;
+            }
+            if(account==''){
+                alert('每日消费限制不能为空!');
+                return false;
+            }
+            if(sumnumber==''){
+                alert('每日消费次数不能为空!');
+                return false;
+            }
+            if(oneaccount==''){
+                alert('每笔刷卡限额不能为空!');
+                return false;
+            }
+            document.form1.submit();
+        })
+    });
+
+
+</script>

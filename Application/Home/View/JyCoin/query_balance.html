@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>至尊卡余额充值</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<!--<meta name="viewport" content="width=640,user-scalable=no,target-densitydpi=device-dpi" />-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes" />
+<script type="text/javascript" src="__PUBLIC__/jquery-1.12.1.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/sweetalert.css"/>
+<script type="text/javascript" src="__PUBLIC__/sweetalert.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/sweetalert.min.js"></script>
+<load href="__PUBLIC__/tools.js" />
+
+<style>
+@media (min-width:800px) and (max-width:1024px) {*{font-size:11px;}}
+@media (min-width:1025px) and (max-width:1440px) {*{font-size:12px;}}
+@media (min-width:1441px) and (max-width:1600px){*{font-size:13px;}}
+
+*{ padding:0; margin:0;}
+li,ul{ list-style:none;}
+body{ font-family:'微软雅黑';font-size:14px;color:#333; margin:0 auto; padding:0; background:#f7f7f9; }
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{zoom:1;}
+a:hover{ text-decoration:none;}
+a:link,a:visited{ text-decoration:none;}
+
+.kyye{ background:#fff; padding:6% 5%; overflow:hidden;border-bottom:1px solid #ddd; width:90%;}
+.kyye img{ display:block; width:10%; float:left; vertical-align:middle;}
+.kyye span{ display: inline-block; float:left; vertical-align:middle; font-size:1.2em; margin-left:10px; margin-top:4px;}
+.pice{ color:#8bdf13; font-size:1.2em; vertical-align:middle;}
+
+.cz{ overflow:hidden; background:#fff; border-top:1px solid #ddd; border-bottom:1px solid #ddd;padding:4% 5%; width:90%; margin-top:10px;}
+.cz span{ font-size:1.2em; color:#999; line-height:2em; width:10%;}
+.cz ul {overflow:hidden; padding:10px 0 20px 0; border-bottom:1px solid #ddd;}
+.cz ul li{ list-style-type:none; float:left; color:#8bdf13; padding:3% 5%; font-size:1.2em; border:1px solid #8bdf13; border-radius:3px; width:20%; margin-left:3%; text-align:center;}
+.ipt_cz{ border:none; color:#999; font-size:1em; width:70%;}
+.decz{ overflow:hidden; padding:10px 0 0px 0; line-height:2em;}
+.zzk_wxts{ width:90%; margin-left:5%; font-size:1em; color:#999; padding:20px 0 30px 0; line-height:1.6em;}
+
+.bon{ background:#8bdf13; color:#fff; font-size:1.2em; width:90%; margin-left:5%; margin-top:20px; border:none; line-height:2.4em; border-radius:3px;}
+
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+}
+input::-webkit-outer-spin-button {
+-webkit-appearance: none;
+}
+input{ outline:none;border:none;-moz-appearance:none;-webkit-appearance:none;-webkit-tap-highlight-color: transparent;}
+
+</style>
+<script>
+
+$(function(){
+	$('.x').on("click", function() {
+			$(this).css({"background-color":"#a2e442","color":"#fff","border":"1px solid #a2e442"}).siblings().css({"background-color":"","color":"","border":""})
+		})
+
+})
+</script>
+</head>
+<body>
+	<div class="kyye">
+    <img src="__ROOT__/Public/images/zzk_ye.png"/><span>可用余额</span><span class="pice">¥ {$balance}</span>
+    </div>
+
+    <div class="cz">
+        <span>定额充值：</span>
+        <ul>
+        	<li class="x" style=" margin-left:0px;" onclick="fixMoney(50);">50元</li>
+            <li class="x" onclick="fixMoney(200);">200元</li>
+            <li class="x" onclick="fixMoney(500);">500元</li>
+        </ul>
+
+        <div class="decz">
+        <span>大额充值：</span>
+        <input type="tel" value="" autocomplete="off" placeholder="充值500元以上任意整数金额" name="chargeMoney" class="ipt_cz">
+        </div>
+    </div>
+
+    <div class="zzk_wxts">
+    温馨提示：至尊卡余额充值目前支持50元、200元、500元定额充
+值，500元以上可以任意金额。
+	</div>
+
+
+     <button class="bon" onclick="but();">确认充值</button>
+
+
+
+</body>
+<script>
+function fixMoney(money){
+	var pre = /[50|200|500]/;
+	var bool = pre.test(money);
+	if(bool){
+
+		swal({
+			  title:"",
+			  text:"前往收银台，请稍后...",
+			  showConfirmButton:false,
+			  imageUrl:"__ROOT__/Public/images/move.gif",
+			  confirmButtonColor:"#fff",
+			  confirmButtonText: "取消",
+			  timer:8000
+			});
+
+		$.ajax({
+			url:"__URL__/create_order",
+			type:"post",
+            async: false,
+			data:{chargeMoney:money},
+			dataType:"json",
+			success:function(res){
+				if(res==null){
+				swal("",'订单提交失败！', "");
+				}else{
+					if(res.code!='100')
+					{
+			          swal("OMG!", res.msg, "error");
+					}else{
+						sendMsgToApp('nativeapi://topay?orderid='+res.data.orderId+'&orderprice='+res.data.totalAmount+'&ordercode='+res.data.orderFormIds+'&orderdes='+res.data.orderName+'&canJycoinDeduct=false&channel=nosupervip,nojycoin');
+					}
+				}
+			},
+		   error: function(XMLHttpRequest, textStatus, errorThrown) {
+			   swal("",'网络超时', "");
+                }
+		})
+	}
+}
+
+function but(){
+	  var money = parseInt($(':input[name=chargeMoney]').val());
+	  if(money < 0 || !money){
+		  swal("",'金额有误', "");
+		  return;
+	  }
+	  swal({
+		  title:"",
+		  text:"前往收银台，请稍后...",
+		  showConfirmButton:false,
+		  imageUrl:"__ROOT__/Public/images/move.gif",
+		  confirmButtonColor:"#fff",
+		  confirmButtonText: "取消",
+		  timer:8000
+		});
+
+	$.ajax({
+		url:"__URL__/create_order",
+		type:"post",
+        async: false,
+		data:{chargeMoney:money},
+		dataType:"json",
+		success:function(res){
+			if(res==null){
+			swal("",'订单提交失败！', "");
+			}else{
+				if(res.code!='100')
+				{
+		          swal("OMG!", res.msg, "error");
+				}else{
+					sendMsgToApp('nativeapi://topay?orderid='+res.data.orderId+'&orderprice='+res.data.totalAmount+'&ordercode='+res.data.orderFormIds+'&orderdes='+res.data.orderName+'&canJycoinDeduct=false&channel=nosupervip,nojycoin,noqpay');
+				}
+			}
+		},
+	   error: function(XMLHttpRequest, textStatus, errorThrown) {
+		   swal("",'网络超时', "");
+            }
+	})
+
+}
+
+function sendMsgToApp(url){
+     __tools.sendMsgToApp(url);
+   /* var iFrame;
+    iFrame = document.createElement("iFrame");
+    iFrame.setAttribute("src", url);
+    iFrame.setAttribute("style", "display:none;");
+    iFrame.setAttribute("height", "0px");
+    iFrame.setAttribute("width", "0px");
+    iFrame.setAttribute("frameborder", "0");
+    document.body.appendChild(iFrame);
+    iFrame.parentNode.removeChild(iFrame);
+    iFrame=null;*/
+}
+</script>
+</html>

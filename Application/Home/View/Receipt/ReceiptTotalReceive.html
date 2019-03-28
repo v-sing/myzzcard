@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="title">累计收票金额</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-datetimepicker.min.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+</head>
+<body>
+
+<div style="padding-left: 40px;padding-top: 20px">
+    <form class="form-inline definewidth m20"  method="get" action="{:U('ReceiptTotalReceive')}">
+        <input type="text" name="panterName"  class=" input-default" value="{:I('get.panterName','')}" style="width:100px;" autocomplete="off" placeholder="法人单位"/>
+        <button type="submit" class="btn  btn-primary">查询</button>
+        <input type="reset" value="重置"  class="btn  btn-danger" />
+        <button type="button"  class="btn" id="excel">
+            导出EXCEL</button>
+    </form>
+</div>
+
+<table class="table table-striped " >
+    <thead id="thead">
+        <th>法人单位</th>
+        <th>累计应开票金额</th>
+        <th>实际收票金额</th>
+        <th>差额</th>
+        <th>状态</th>
+    </thead>
+    <tbody id="tbody">
+            <volist name="data" id="val">
+                        <tr>
+                             <td>{$val.operator}</td>
+                             <td>{$val.tactualmoney}</td>
+                             <td>{$val.tmoney}</td>
+                             <td>
+                                      {:bcsub($val['tactualmoney'],$val['tmoney'],2)}
+                             </td>
+                             <if condition="(bcsub($val['tactualmoney'],$val['tmoney'],2)) eq 0">
+                                        <td>核对正确</td>
+                                 <else/>
+                                      <td>核对错误</td>
+                             </if>
+
+                        </tr>
+            </volist>
+    </tbody>
+
+</table>
+<div class="pagination pull-right">
+    <ul>
+        {$page}
+    </ul>
+</div>
+
+
+
+</body>
+</html>
+<script>
+    var urlExcel = "{:U('Excel')}";
+</script>

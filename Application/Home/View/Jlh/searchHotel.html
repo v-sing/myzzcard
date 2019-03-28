@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+<meta charset="utf-8" />
+<title>酒店会员查询</title>
+<meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<link rel="stylesheet" href="__PUBLIC__/Jlh/css/bootstrap.min.css" type="text/css" />
+<style>
+.form-control{ border:2px solid #c29267; height:40px; }
+.btn-default{ background:#c29267;border:2px solid #c29267; color:#fff;height:40px;border-bottom-left-radius:0;border-top-left-radius:0;font-family:'微软雅黑';}
+.col-lg-6{ margin-top:10%; width:100%;}
+.input-group{border-collapse: separate;display: table; position: relative;}
+.top{text-align:right;color:#90979D;padding-right:3%;padding-top:1%;}
+.dv {margin-top:14%;width:60%;padding-left:15px}
+.dv table{border-top:1px solid #c29267;border-left:1px solid #c29267;}
+.dv table td{border-right:1px solid #c29267;border-bottom:1px solid #c29267;line-height:2em;text-align:center;}
+</style>
+</head>
+
+<body>
+	<div class="top">
+	    <a href="https://zz.9617777.com/zzkp.php">至尊卡系统登录</a>
+	</div>
+<form action="{:U('Jlh/searchHotel')}" method="post">
+<div class="zs">
+	<div style="text-align:center;padding:10%">
+		<div class="logo">
+		<img src="__PUBLIC__/Jlh/img/logo_jd.png" width="20%"/>
+		</div>
+       <div class="col-lg-6">
+            <div class="input-group">
+							<input type="text"  class="form-control"  name="data"  maxlength="100" class="round" placeholder="请输入姓名/电话/身份证号" autocomplete="off" value="{$data}"/>
+               <span class="input-group-btn">
+                  <button class="btn btn-default" type="submit">
+                    搜索
+                  </button>
+               </span>
+            </div>
+         </div>
+				 <if condition="$list neq null">
+				 <div class="dv">
+						 <table width="100%" cellspacing="0" cellpadding="3" >
+
+								 <tbody>
+								 <tr bgcolor="#FFFFFF">
+										 <td width="100">姓名：</td>
+										 <td>{$list.namechinese}</td>
+										 <td width="100">性别：</td>
+										 <td>{$list.sex}</td>
+								 </tr>
+								 <tr bgcolor="#FFFFFF">
+										 <td width="100">电话：</td>
+										 <td>{$list.linktel}</td>
+										 <td width="100">身份证号：</td>
+										 <td>{$list.personid}</td>
+								 </tr>
+								 <tr bgcolor="#FFFFFF">
+										 <td width="100">卡号：</td>
+										 <td>{$list.cardno}</td>
+										 <td width="100">归属：</td>
+										 <td>{$list.unitname}</td>
+								 </tr>
+								 </tbody>
+						 </table>
+				 </div>
+						 </if>
+		</div>
+	</div>
+</body>
+</html>

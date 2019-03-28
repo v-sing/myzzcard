@@ -1,0 +1,1 @@
+ip:127.0.0.1||2018-11-22  16:33:46：admin人员--save操作： UPDATE tenantextra SET pantername='滑县建业城市发展有限公司',company='11',linktel='1111w',orderno='231231231',address='郑州',bank='工商',bankaccount='1111111' WHERE ( tenantid = 22 )

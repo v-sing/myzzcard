@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商圈信息管理</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jquery-ui-timepicker-addon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/select2.min.css" />
+
+
+
+
+
+
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/select2.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-timepicker-zh-CN.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.ui.datepicker-zh-CN.js"></script>
+
+
+
+<style type="text/css"></style>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .sidebar-nav {padding: 9px 0;}
+        @media (max-width: 980px) {.navbar-text.pull-right {float: none;  padding-left: 5px;  padding-right: 5px;  } }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div class="dv">
+<form class="form-inline definewidth m20" action="{:U("Fang/order_lists")}" method="post">
+订单日期:
+      <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;" />---<input
+         type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:5px;" />
+    <input type="text" name="o_sn" id='o_sn' value='{$o_sn}' style="width:120px; margin-right:7px;" placeholder="订单号"/>
+    <input type="text" name="o_name" id='o_name' value='{$o_name}' style="width:70px; margin-right:7px;" placeholder="姓名"/>
+    <input type="text" name="o_phone" id='o_phone' value='{$o_phone}' style="width:120px; margin-right:7px;" placeholder="手机号"/>
+    <input type="text" name="o_card" id='o_card' value='{$o_card}' style="width:160px; margin-right:7px;" placeholder="身份证号码"/>
+    <select name="nameenglish" class="nameenglish" id ="panterid" style="width:170px" onChange="findClass()">
+        <option value="" <?php if($nameenglish=='') echo 'selected';?> >项目简称</option>
+        <volist name="pantername" id="vo" key="k">
+        <option value="{$vo.panterid}" <?php if($nameenglish == $vo['panterid']) echo 'selected';?> >{$vo.nameenglish}</option>    
+        </volist>
+    </select>
+
+    <select name="store_name" class="store_name" id="storeid" style="width:170px">
+        <option value="" <?php if($store_name=='') echo 'selected';?> >项目分期</option>
+        <volist name="storename" id="vo" key="k">
+        <option value="{$vo.storeid}" <?php if($store_name == $vo['storeid']) echo 'selected';?> >{$vo.name}</option>    
+        </volist>
+    </select>
+
+<!--     <input type="text" name="nameenglish" id='nameenglish' value='{$nameenglish}' style="width:180px; margin-right:7px;" placeholder="项目简称"/>
+ -->    
+<!--  <input type="text" name="store_name" id='store_name' value='{$store_name}' style="width:180px; margin-right:7px;" placeholder="项目分期"/>
+ -->    订单状态:
+    <select name="o_status" style="width:100px">
+        <option value="5" <?php if($o_status=='5') echo 'selected';?> >全部</option>
+        <option value="0" <?php if($o_status=='0') echo 'selected';?> >待支付</option>
+        <option value="1" <?php if($o_status=='1') echo 'selected';?> >已支付</option>
+        <option value="2" <?php if($o_status=='2') echo 'selected';?> >已完成</option>
+        <option value="3" <?php if($o_status=='3') echo 'selected';?> >已取消</option>
+        <option value="4" <?php if($o_status=='4') echo 'selected';?> >付款中</option>
+        <option value="4" <?php if($o_status=='4') echo 'selected';?> >已退款</option>
+    </select>
+    冻结状态:
+    <select name="is_freeze" style="width:100px">
+        <option value="3" <?php if($is_freeze=='3') echo 'selected';?> >全部</option>
+        <option value="1" <?php if($is_freeze=='1') echo 'selected';?> >冻结</option>
+        <option value="2" <?php if($is_freeze=='2') echo 'selected';?> >未冻结</option>
+    </select>    
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+     <button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U("fang/order_load")}';">导出报表</button>
+
+</form>
+
+
+
+
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <form class="form-inline definewidth m20" method="post" action="{:U("Fang/order_verification")}" >
+    <tr>
+      <th class="hidden-xs center">
+        <label class="pos-rel"><input type="checkbox" class="ace"  id='chkAll' onclick='CheckAll(this.form)' value="全选"/><span class="lbl"></span></label></th>
+        <th>订单号</th><th>订单时间</th><th>姓名</th><th>手机号</th><th>身份证号</th><th>项目名称</th><th>项目分期</th><th>商品名称</th><th>订单金额(元)</th><th>订单状态</th><th>冻结状态</th><th>同步明源</th><th>支付流水号</th><th>已付金额</th><th>操作</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+	     <tr>
+             <td class="hidden-xs" align="center">
+                <label class="pos-rel">
+                    <input name='o_id[]' id="navid" class="ace"  type='checkbox' value='{$vo.o_id}'>
+                    <span class="lbl"></span>
+                </label>
+             </td>
+             <td>{$vo.o_sn}</td>
+             <td>{$vo.ctime}</td>
+             <td>{$vo.o_name}</td>
+             <td>{$vo.o_phone}</td>
+             <td>{$vo.o_card}</td>
+             <td>{$vo.nameenglish}</td>
+             <td>{$vo.name}</td>
+			 <td>{$vo.goods_name}</td>
+             <td>{$vo.o_price}</td>
+             <td>{$vo.status}</td>
+             <td>{$vo.freeze}</td>
+             <td>{$vo.my}</td>
+             <td>{$vo.snno}</td>
+             <td>{$vo.o_paymoney}</td>
+
+        <td>
+<!--             <button type="button" class="btn btn-mini btn-primary"  onclick="changes({$vo['o_id']})">详情</button>&nbsp&nbsp
+ -->        <button type="button" class="btn btn-mini btn-primary addpaylog" value="{$vo.o_sn}"   >添加支付明细</button>&nbsp&nbsp	
+            <button type="button" class="btn btn-mini btn-primary" onclick="window.location='{:U('order_detail',array('o_id'=>$vo['o_id']))}'">详情</button>&nbsp&nbsp
+        	
+<!--             <?php if($vo['o_status'] == 1) echo $vo['edit'];?>&nbsp&nbsp-->            
+            <?php  echo $vo['edit'];?>&nbsp&nbsp
+            <?php if($vo['is_freeze']=='1' && $vo['o_status'] == 1 && $vo['price_type'] == 2) echo $vo['freeze_link'];?>
+            
+
+<!--             <span style="color:#ff7700;margin-left:10px;font-weight:600" id="addpaylog">+添加支付明细</span>
+ -->        </td>
+        </tr>
+
+    </volist>
+</table>
+ <!-- &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp <button type="button">核销</button> -->
+
+ <div class="input-group-btn margintop5" >
+ &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button class="btn btn-sm btn-danger" id="clearform">
+
+            <i class="ace-icon fa fa-bolt bigger-110"></i>
+            核销订单
+            </button>
+        </div>
+ </form>
+<div class="inline pull-right page sabrosus">{$page}</div>
+    </div>
+
+
+
+    <div class="modal fade in myModaledits"  hidden="hidden"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <form class="form-horizontal cardform" name="member_group_runedit" method="post" action="{:U('Fang/paylog_add')}">
+        <div class="modal-dialog" >
+          <input type="hidden" name="auid" id="auid" value="" />
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close"  data-dismiss="modal"
+                  aria-hidden="true">×
+              </button>
+              <h4 class="modal-title" id="myModalLabel">
+                添加支付明细
+              </h4>
+            </div>
+            <div class="modal-body" >
+            <span style="color: red">  添加支付明细会改变订单的已付金额，请谨慎处理！</span><br>
+            <span style="color: red">  只有确认在通道方平台上已有成功支付记录的方可添加明细；</span><br>
+              <div class="row">
+                <div class="col-xs-12">
+                    
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 订单号：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" class="o_sn" value="" disabled="disabled" />*请检查一下订单号
+                      </span>
+                      <!-- /section:elements.form.input-icon -->
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 支付金额：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" id="o_paymoney"  name="o_paymoney" value="" required/>
+                      </span>
+                      <!-- /section:elements.form.input-icon -->
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 支付方式：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                         <select name="paytype" style=" margin-top:-8px;">
+                            <option value="1">银行卡</option>
+                             <option value="2">微信</option>
+                             <option value="3">支付宝</option>
+                          </select>
+                      </span>
+
+                    </div>
+                  </div>
+                  <br>
+                  <input type="hidden" name="o_sn" class="o_sn" value="">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 支付时间：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" name="startdates" id="startdates" value=""  /> 时间选择具体到秒
+                      </span>
+                    </div>
+                  </div>
+                    <br>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 交易参考号：  </label>
+                    <div class="col-sm-10">
+                      <span class="input-icon input-icon-right">
+                        <input type="text" id="snno"  name="snno" value="" required/> 通道方平台的交易参考号
+                      </span>
+                      <!-- /section:elements.form.input-icon -->
+                    </div>
+                  </div>
+                  <div class="space-4"></div>
+                  <div class="space-4"></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary ajax-search-form-count">
+                提交保存
+              </button>
+              <button type="button" class="btn btn-default gbbs"  >
+                关闭
+              </button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </form>
+    </div><!-- /.modal -->
+</body>
+</html>
+<script>
+
+
+ $("#startdates").datetimepicker({
+    timeFormat:"HH:mm:ss",
+  }); 
+
+ $('#ui-datepicker-div').hide();
+  $(".nav p").click(function(){
+    var ul=$(".new");
+    if(ul.css("display")=="none"){
+      ul.slideDown();
+    }else{
+      ul.slideUp();
+    }
+  });
+
+$('.addpaylog').click(function(){
+    var sn = $(this).val();
+    $(".myModaledits").show(300);
+    $('.o_sn').val(sn);
+});
+$(document).ready(function() {
+    $('.nameenglish').select2();
+    $('.store_name').select2();
+    $(".close").click(function () {
+        $(".myModaledits").hide(200);
+    });
+    $(".gbbs").click(function () {
+        $(".myModaledits").hide(200);
+    });
+    $(".gbbbs").click(function () {
+        $(".myModaledits").hide(200);
+    });
+});
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+
+function CheckAll(form) {
+    for (var i = 0; i < form.elements.length; i++) {
+        var e = form.elements[i];
+        if (e.Name != 'chkAll' && e.disabled == false) {
+            e.checked = form.chkAll.checked;
+        }
+    }
+}
+
+
+$('#clearform').click(function(){
+if (confirm("确定核销订单吗")) { 
+} else {
+    return false;
+}
+});
+
+function changes(o_id) {
+var url = "/zzkp.php/Fang/is_freeze/o_id/"+o_id;
+if (confirm("确定要解冻吗")) { 
+   window.location= url;
+} else {
+    return false;
+}
+}
+
+function findClass(){  
+        var panterid = $("#panterid").val();
+        var arrs;
+        $.ajax({  
+           url:"__URL__/ajax",
+            type:"post",  
+            data:{panterid:panterid},  
+            dataType:'json',
+            success:function(data){ 
+                $("#storeid option").remove();  
+                for ( var i = 0; i < data.length; i++) {  
+                    var classId = data[i].storeid;  
+                    var className = data[i].name;  
+                    $("#storeid").append("<option value="+classId+">" + className + "</option>");  
+                }
+            },  
+            error : function(XMLResponse) {  
+                alert('false');  
+            }  
+        });  
+    }  
+</script>

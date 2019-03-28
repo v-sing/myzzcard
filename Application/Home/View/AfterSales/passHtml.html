@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jQuery Easy UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/after/pass.js" ></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css" />
+<style type='text/css'>
+ ul li {
+ 	list-style-type:none;
+ }
+</style>
+</head>
+<body style="margin:3px 6px;">
+<table id="box">
+</table>
+</body>
+</html>
+<script>
+function okyes(obj,id){
+    var pur= obj.value;
+	//var pur=document.getElementById('pur').value;
+  $.messager.confirm('确认对话框','确认同意撤销充值么？',function(flag){
+    if(flag){
+      $.ajax({
+      	url:'__URL__/passHandler',
+      	type:'post',
+      	data:{pur:pur},
+      	dataType:'json',
+      	success:function(data){
+              $.messager.alert('提示框',data.msg,'info',function(){
+                var bool= true;
+                if(bool){
+                  location.reload();
+                }
+              })
+              // location.reload();
+                }
+      });
+    }
+  }
+   );
+}
+function cancles(obj,id){
+    var pur= obj.value;
+  //	var pur=document.getElementById('pur').value;
+    $.messager.prompt('请示框','请填写撤销原因!',function(flag){
+      if(flag==''){
+        alert('请填写撤销原因!');
+        return false;
+      }
+      if(flag==null){
+        return false;
+      }
+      $.ajax({
+        url:'__URL__/undo',
+        type:'post',
+        data:{pur:pur,description:flag},
+        dataType:'json',
+        success:function(data){
+              $.messager.alert('提示框',data.msg,'info',function(){
+                var bool= true;
+                if(bool){
+                  location.reload();
+                }
+             })
+          }
+      });
+    });
+}
+</script>

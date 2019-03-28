@@ -1,0 +1,30 @@
+<table id="customsList" class="easyui-datagrid"   width="100%" height="460" 
+       data-options="
+                        url:'getCardsInfo?customid={$_GET["customid"]}',
+                        pagination:true,
+                        pageSize:20,
+                        pageList:[20,50,100,200],
+                        singleSelect: false,
+                        method: 'get',
+                        striped:true,
+                        loadMsg:'正在加载数据',
+                        fitColumns:true,
+                        onHeaderContextMenu: function(e, field){
+                            e.preventDefault();
+                            if (!cmenu){
+                                createColumnMenu();
+                            }
+                            cmenu.menu('show', {
+                                left:e.pageX,
+                                top:e.pageY
+                            });
+                        }
+                        ">
+    <thead>       
+        <tr>
+            <th data-options="field:'cardno',width:100,align:'center'">卡号</th>
+            <th data-options="field:'exdatetime',width:100,align:'center'">有效期</th>
+            <th data-options="field:'cardnostatus',width:100,align:'center'">卡状态</th>
+        </tr>
+    </thead>
+</table>

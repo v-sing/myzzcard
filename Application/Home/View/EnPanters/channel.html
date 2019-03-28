@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>POS管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dv">
+<form class="form-inline definewidth m20" action="__URL__/channel" method="post">
+	<div class="control-group">
+    通道序号：
+    <input type="text" name="channel_id" id="channel_id"class="abc input-medium" placeholder="通道序号" value="{$channel_id}" maxlength="30">&nbsp;&nbsp;
+    通道：
+    <input type="text" name="channel" id="channel" class="abc input-medium" placeholder="通道" value="{$channel}" maxlength="30">&nbsp;&nbsp;
+    <button type="submit" class="btn btn-mini btn-primary" onclick="window.location.href='{:U("Panters/channel")}';">查询</button>&nbsp;&nbsp;<button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U("Panters/addchannel")}';">新增通道</button>
+
+</div>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+
+        <th style="text-align: center;">序号</th>
+        <th style="text-align: center;">通道</th>
+          <th style="width: 100px;overflow: hidden;text-align: center;">编辑</th>
+    </tr>
+    </thead>
+    <volist name="lists" id="vo">
+        <tr>
+            <td style="text-align: center;">{$vo.channel_id}</td>
+            <td style="text-align: center;">{$vo.channel}</td>
+            <td style="text-align: center;">
+                <button type="button" onclick="window.location.href='{:U('editchannel',array('channel_id'=>$vo['channel_id']))}'">编辑</button>
+            </td>
+        </tr>
+        </volist>
+        </table>
+        <div class="inline pull-right page sabrosus" style="font-size: 16px;">{$page}</div>
+    </div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>
+<script>
+ $(function(){
+   $('#input_time').datepicker({dateFormat: 'yymmdd',yearRange:"2016:2050"});
+   $("#ui-datepicker-div").hide();
+   $('#out_time').datepicker({dateFormat: 'yymmdd',yearRange:"2016:2050"});
+   $("#ui-datepicker-div").hide();
+ })
+</script>
+</body>
+</html>

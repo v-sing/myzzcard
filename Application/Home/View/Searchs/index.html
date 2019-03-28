@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>反恐黑名单</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+
+    <style type="text/css">
+        body {  padding-bottom: 40px;  }
+        .sidebar-nav {  padding: 9px 0;  }
+        @media (max-width: 980px) {  .navbar-text.pull-right {  float: none;  padding-left: 5px;  padding-right: 5px;  }  }
+
+
+    </style>
+</head>
+<body>
+<form class="form-inline definewidth m20"  method="get">
+	<div class="control-group">
+        <input type="text" name="cusname" class="abc input-default" placeholder="会员名称" value="{$cusname}">&nbsp;&nbsp;
+        <input type="text" name="personid" class="abc input-default" placeholder="证件号码" value="{$personid}">&nbsp;&nbsp;
+        <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp;
+    </div>
+    <!-- <div class="control-group">
+   	年龄：
+    	<input type="text" name="rolename" id="rolename"class="abc input-mini" placeholder="" value="">&nbsp;&nbsp;
+    	收入：
+    <input type="text" name="rolename" id="rolename"class="abc input-medium" placeholder="" value="">&nbsp;&nbsp;<br />
+	</div> -->
+
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+		<th style="width: 10px; text-align: center;"></th>
+        <th>信息编号</th>
+        <th>姓名</th>
+        <th>证件号码</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo">
+        <tr>
+			<td style="text-align: center;">{$key+1}</td>
+            <td>{$vo.searchid}</td>
+            <td>{$vo.namechinese}</td>
+            <td>{$vo.personid}</td>
+               <td> <button type="button" class="btn btn-mini btn-primary" onclick="window.location='__URL__/edit/searchid/{$vo.searchid}'">编辑</button>
+            </td>
+        </tr>
+    </volist>
+    </table>
+    <div class="inline pull-right page">{$page}</div>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>

@@ -1,0 +1,33 @@
+<div class="menu_dropdown  bk_2 hide " id="tongbao">
+	<dl id="menu-article" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt><i class="Hui-iconfont">&#xe616;</i> 通宝管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO']['TBPOOL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tongbao/tbPool")}" href="javascript:void(0)">通宝池</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO']['TBPOOLDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tongbao/tbPoolDetail")}" href="javascript:void(0)">通宝赠送（入金）</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO']['ISSUE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tongbao/issue")}" href="javascript:void(0)">通宝领取(出金)</a></li>
+					<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO']['CONSUME'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tongbao/consume")}" href="javascript:void(0)">兑换(消费)明细</a></li>
+						<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO']['QJS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tongbao/qjs")}" href="javascript:void(0)">清结算报表1.0</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO']['QJSNEW'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tongbao/qjsNew")}" href="javascript:void(0)">清结算报表2.0</a></li>
+                <li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RBAC']['BATCHOPENOUTACCOUNT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Rbac/batchOpenOutAccount")}" href="javascript:void(0)">外拓分账户1</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO']['WHITELIST'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tongbao/whiteList")}" href="javascript:void(0)">白名单</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['TONGBAO']['REFRESHREAL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Tongbao/refreshReal")}" href="javascript:void(0)">实名认证</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<dl id="menu-receipt" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RECEIPT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+	<dt><i class="Hui-iconfont">&#xe616;</i> 开票收票流程<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+	<dd>
+		<ul>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RECEIPT']['CHANGEPOINT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Receipt/changePoint")}" href="javascript:void(0)">通宝发行金额调整</a></li>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RECEIPT']['MESSAGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("ReceiptMessage/index")}" href="javascript:void(0)">开票信息管理</a></li>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RECEIPT']['INDEX'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PanterReceipt/index")}" href="javascript:void(0)">备付金开票管理</a></li>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RECEIPT']['SERVICE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PanterReceipt/service")}" href="javascript:void(0)">服务费开票管理</a></li>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RECEIPT']['LOGS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("PanterReceipt/printLogs")}" href="javascript:void(0)">已开发票记录</a></li>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RECEIPT']['RECEIVES'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Receipt/invoiceReceive")}" href="javascript:void(0)">兑换方收票</a></li>
+			<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['RECEIPT']['RECEIVEMESSAGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("ReceiptMessage/receiptImgMessage")}" href="javascript:void(0)">收票数据</a></li>
+		</ul>
+	</dd>
+	</dl>
+
+</div>

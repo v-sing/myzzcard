@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>礼品退还管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .rt{border:1px solid #eee;}
+    </style>
+</head>
+<body>
+<div class="dv">
+<form name="form1" method="post" id="form1">
+    <div class="rt">
+        <input type="hidden" name="is_read" value="0" id="is_read"/>
+        <input type="hidden" name="bool" value="1" id="bool"/>
+        <input type="hidden" name="bool1" value="1" id="bool1"/>
+    <table class="table table-bordered table-hover m10" >
+        <tr>
+            <td>交易流水号</td><td><input type="text" class="abc input-default" name="tradeid" id="tradeid"/></td>
+            <td>兑换机构</td><td><input type="text" name="pname" class="abc input-default un-write" readonly="true" id="pname"/></td>
+            <td>会员编号</td><td><input type="text" name="customid" class="abc input-default un-write" readonly="true" id="customid"/></td>
+        </tr>
+         <tr>
+             <td>卡号</td><td><input type="text" class="abc input-default" name="cardno" id="cardno"readonly="true"/></td>
+             <td>会员姓名</td><td><input type="text" name="cuname" class="abc input-default un-write" readonly="true" id="cuname"/></td>
+             <td>退换积分</td><td><input type="text" name="returnpoint" class="abc input-default un-write" readonly="true" id="returnpoint"/></td>
+        </tr>
+        <tr>
+            <td>礼品编号</td><td><input type="text" class="abc input-default un-write" name="goodsid" readonly="true" id="goodsid"/></td>
+            <td>礼品名称</td>
+            <td>
+                <input type="text" class="abc input-default un-write" name="goodsname" readonly="true" id="goodsname" readonly="true"/>
+            </td>
+            <td>数量</td><td><input type="text" class="abc input-default" name="amount" id="amount" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>兑换日期</td><td><input type="text" class="abc input-default" name="date" id="date" readonly="true"/></td>
+            <td>当前积分余额 </td><td><input type="text" class="abc input-default" name="cardpoint" id="cardpoint" readonly="true"/></td>
+            <td>
+                <button type="button" class="btn btn-mini btn-primary" style="width:50px;" id="btn1">查询</button>
+                <input type="button"  class="btn btn-mini btn-primary" value="礼品退还" style="width:70px;" id="btn"/>
+            </td>
+        </tr>
+    </table>
+        </div>
+    </form>
+<form class="form-inline definewidth m20" action="{:U("PointsMan/returnGift")}" method="GET">
+    礼品退还日期：
+    <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:100px;"/> ---
+    <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:100px; margin-right:7px;"/>
+    <input type="text" name="cardno" value='{$cardno}' style="width:165px; margin-right:7px;" placeholder="卡号" />
+    <input type="text" name="cuname" value='{$cuname}' style="width:70px; margin-right:7px;" placeholder="会员名称" />
+    <input type="text" name="customid" value='{$customid}' style="width:90px; margin-right:10px;" placeholder="会员编号"/>
+    <button type="submit" class="btn btn-mini btn-primary" id="sub">查询</button>
+    <input type="button" value="清空" onclick="window.location='{:U("PointsMan/returnGift")}'" class="btn btn-mini btn-danger" />
+</form>
+<table class="table table-bordered table-hover definewidth m10" id="tb">
+    <thead>
+    <tr>
+        <th>交易流水号</th><th>会员编号</th><th>会员名称</th><th>卡号</th>
+        <th>退换时间</th><th>礼品编号</th><th>礼品名称</th><th>礼品单价</th>
+        <th>退换积分</th><th>操作员编号</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="k">
+        <tr id="no_{$vo.cardno}">
+            <td>{$vo.tradeid}</td><td>{$vo.cuid}</td><td>{$vo.cuname}</td><td>{$vo.cardno}</td>
+            <td>{$vo.placeddate}</td><td>{$vo.goodsid}</td><td>{$vo.goodsname}</td><td>{$vo.price}</td>
+            <td>{$vo.account}</td><td>{$vo.userid}</td>
+        </tr>
+    </volist>
+</table>
+<div class="inline pull-right page">{$page}</div>
+    </div>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+        $('#btn1').click(function(){
+            $('#is_read').val(0);
+            $('#form1 input[type="text"][name!="tradeid"]').val('');
+            
+            var tradeid= $.trim($('#tradeid').val());
+            var bool= $.trim($('#bool').val());
+            if(tradeid==''){
+                alert('请输入兑换单号');
+                return false;
+            }
+            if(bool!=1){
+                alert('正在执行上一次操作，请稍后！');
+                return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("PointsMan/getGifttrade")}',
+                data:{tradeid:tradeid},
+                dataType:'json',
+                beforeSend:function(){
+                    $('#bool').val(0);
+                },
+                success:function(res){
+                    if(res.success==1){
+                        $('#pname').val(res.data.pname);
+                        $('#customid').val(res.data.cuid);
+                        $('#cardno').val(res.data.cardno);
+                        $('#cuname').val(res.data.cuname);
+                        $('#returnpoint').val(res.data.tradeamount);
+                        $('#goodsid').val(res.data.goodid);
+                        $('#goodsname').val(res.data.goodsname);
+                        $('#amount').val(res.data.goodamount);
+                        $('#date').val(res.data.placeddate);
+                        $('#cardpoint').val(res.data.cardpoint);
+                        $('#is_read').val(1);
+                    }else{
+                        alert(res.msg);
+                        $('is_read').val(2);
+                    }
+                    $('#bool').val(1);
+                }
+            });
+        })
+        $('#btn').click(function(){
+            var is_read=$('#is_read').val();
+            var bool= $.trim($('#bool1').val());
+            if(is_read==0){
+                alert('请先读卡');return false;
+            }else if(is_read==2){
+                alert('查无此记录');return false;
+            }
+            if(bool!=1){
+                alert('正在执行上一次操作，请稍后！');
+                return false;
+            }
+            var tradeid= $.trim($('#tradeid').val());
+            var returnpoint= parseInt($.trim($('#returnpoint').val()));
+            var cardpoint= parseInt($.trim($('#cardpoint').val()));
+            if(tradeid==''){
+                alert('请输入兑换单号');return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("PointsMan/returnGiftDo")}',
+                data:{tradeid:tradeid},
+                dataType:'json',
+                beforeSend:function(){
+                    $('#bool1').val(0);
+                },
+                success:function(res){
+                    if(res.success==1){
+                        alert('礼物退还成功');
+                        cardpoint=cardpoint+returnpoint;
+                        $('#cardpoint').val(cardpoint);
+                    }else{
+                        alert(res.msg);
+                    }
+                    $('#bool1').val(1);
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>

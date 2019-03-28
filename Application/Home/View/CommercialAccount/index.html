@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dv">
+<form class="form-inline definewidth m20" action="" method="get">
+	<div class="control-group">
+    <input type="text" name="panterid" id="panterid"class="abc input-default" placeholder="商户编号" value="" maxlength="60">&nbsp;&nbsp;
+    <input type="text" name="pantername" id="pantername"class="abc input-medium" placeholder="商户名称" value="" maxlength="20">&nbsp;&nbsp;
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp; <button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U("CommercialAccount/addaccount")}';">新增商户账户</button>
+ <button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U("exportIn")}';">导出报表</button>
+</div>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th style="width: 10px; text-align: center;"></th>
+        <th>商户编号</th>
+        <th style="width: 100px;overflow: hidden;">商户名称</th>
+        <th style="width: 100px;overflow: hidden;">余额</th>
+        <th>账户类型</th>
+       <!--  <th>预警值</th> -->
+
+        <th>操作</th>
+        <th>账户状态</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo">
+        <tr>
+            <td style="text-align: center;">{$key+1}</td>
+            <td>{$vo.panterid}</td>
+            <td>{$vo.pantername}</td>
+            <td>{$vo.amount}</td>
+            <td>
+              <switch name='vo.type'>
+                <case value="1">备付金</case>
+              </switch>
+                 </td>
+
+            <td>
+               <!--  <button type="button" class="btn btn-mini btn-primary"
+                onclick="window.location='{:U('CommercialAccount/editaccount',
+                array('accountid'=>$vo['accountid'],'pantername'=>$vo['pantername'],'type'=>$vo['type'],'waring'=>$vo['waring']))}'">修改</button>
+                &nbsp;&nbsp; -->
+                <button type="button" class="btn btn-mini btn-secondary radius"
+                onclick="window.location='{:U('CommercialAccount/recharge',
+                array('accountid'=>$vo['accountid'],'pantername'=>$vo['pantername'],'type'=>$vo['type'],'panterid'=>$vo['panterid']))}'">充值</button>
+
+            </td>
+            <td>
+              <if condition="$vo.status eq 1">
+              <button type="button" class="btn btn-success radius"
+              onclick="disable({$key},{$vo.accountid})" id='status{$key}'>启用</button>
+              <else />
+              <button type="button" class="btn btn-disable radius"
+              onclick="disable({$key},{$vo.accountid})" id='status{$key}'>禁用</button>
+            </if>
+            </td>
+        </tr>
+        </volist>
+        </table>
+        <div class="inline pull-right page sabrosus">{$page}</div>
+    </div>
+
+<script type="text/javascript">
+
+      function disable(a,b){
+        var str = "#status"+a;
+        $.ajax({
+            type: "POST",
+            url:  "{:U('statuschange')}",
+            data:{accountid:b},
+            dataType:'json',
+            success: function(data){
+                  if(data.status == 1){
+                    $(str).attr("class","btn btn-success radius");
+                    $(str).html('启用');
+                  }else{
+                  $(str).attr("class","btn btn-disable radius");
+                  $(str).html('禁用');
+                }
+            }
+               });
+      }
+
+
+
+
+</script>
+</body>
+</html>
+<script>
+$(function(){
+if(!placeholderSupport()){   // 判断浏览器是否支持 placeholder
+    $('[placeholder]').focus(function() {
+        var input = $(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+    }).blur(function() {
+        var input = $(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+        }
+    }).blur();
+};
+})
+function placeholderSupport() {
+    return 'placeholder' in document.createElement('input');
+}
+</script>
+</body>
+</html>

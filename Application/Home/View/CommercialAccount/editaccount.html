@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+     #remind{  -moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background: #fff none repeat scroll 0 0;border-color: -moz-use-text-color #a7a6aa #a7a6aa;border-image: none;border-style: none solid solid;border-width: 0 1px 1px;display: none;float: right;height: 180px;overflow-y: scroll;position: absolute;width: 207px;margin-top: -10px;list-style: none;z-index: 1000;}
+    #key{margin:0;}
+    #remind #key li:hover{background-color:#ccc;cursor: pointer;}
+    </style>
+</head>
+<body>
+<div class="dv">
+<form action="{:U('CommercialAccount/doedit')}" method="post" class="definewidth m20">
+<table class="table table-bordered table-hover ">
+	<tr>
+        <td width="10%" class="tableleft">商户</td>
+        <td>
+            <div>
+                {$pantername}
+                <input type="hidden" name="accountid" value='{$accountid}' />
+            </div>
+		</td>
+    </tr>
+    <tr>
+        <td class="tableleft">账户类型</td>
+        <td >
+          <switch name='type'>
+            <case value="0">现金</case>
+            <case value="1">通宝</case>
+          </switch>
+          </td>
+    </tr>
+    <tr>
+        <td class="tableleft">预警金额</td>
+        <td >
+          <input id="warning" type="number" value={$waring} placeholder="" name="waring" class="keyy"/>
+          </td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <button type="submit" class="btn btn-primary" >修改</button> &nbsp;&nbsp;<button type="button" class="btn btn-success" name="backid" id="backid" onclick="window.location.href='__URL__'">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+    </div>
+</body>
+</html>
+<script>
+
+</script>

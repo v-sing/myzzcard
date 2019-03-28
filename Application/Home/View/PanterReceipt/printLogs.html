@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="title">开票记录</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/index.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('.datetime').datepicker();
+        $("#ui-datepicker-div").hide();
+        $("#cb").click(function(){
+            $(":checkbox[name='consumeid[]']").attr("checked",this.checked);
+        });
+    })
+</script>
+<div style="padding-left: 40px;padding-top: 20px">
+    <form class="form-inline definewidth m20"  method="get" action="{:U('printLogs')}">
+    <input type="text" name="start" class="datetime input-default" value="{:I('get.start','')}" style="width:100px;" autocomplete="off" placeholder="开始日期"/>
+    <input type="text" name="end" id="start" class="datetime input-default" value="{:I('get.start','')}" style="width:100px;" autocomplete="off" placeholder="结束日期"/>
+    <input type="text" name="lsorder"  value="{:I('get.lsorder','')}" style="width:165px; margin-right:7px;" placeholder="流水号"/>
+    <button type="submit" class="btn  btn-primary">查询</button>
+    <input type="reset" value="重置"  class="btn  btn-danger" />
+        <button type="button"  class="btn" id="excel">
+            导出EXCEL</button>
+    </form>
+
+</div>
+
+<table class="table table-striped " >
+    <thead id="thead">
+        <th>开票时间</th>
+        <th>开票流水号</th>
+        <th>法人单位</th>
+        <th>项目名称</th>
+        <th>开票金额</th>
+        <th>开票种类</th>
+        <th>开票类型</th>
+    </thead>
+    <tbody id="tbody">
+    <volist name="data" id="val" key="k">
+        <tr>
+            <td>{$val.printdate}</td>
+            <td>{$val.lsorder}</td>
+            <td>{$val.panterReceipt.extra.pantername}</td>
+            <td>{$val.panterReceipt.extra.company}</td>
+            <td>{$val.panterReceipt.receiptmoney}</td>
+            <td >
+                <if condition="$val['panterReceipt']['printtype'] eq 1">
+                    <button class="btn  btn-danger print" >备付金</button>
+                    <else/>
+                    <button class="btn  btn-success Open" data-index="{$val.panterReceipt.printtype}">服务费</button>
+                </if>
+            </td>
+            <td >
+                <if condition="$val['panterReceipt']['invoicetype']  eq 007">
+                    <button class="btn  btn-danger print">普票</button>
+                </if>
+                <if condition="$val['panterReceipt']['invoicetype']  eq 004">
+                    <button class="btn  btn-danger print">专票</button>
+                </if>
+                <if condition="$val['panterReceipt']['invoicetype']  eq 026">
+                    <button class="btn  btn-danger print">电子票</button>
+                </if>
+                <if condition="$val['panterReceipt']['invoicetype']  eq 025">
+                    <button class="btn  btn-danger print">卷票</button>
+                </if>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+
+</table>
+<div class="pagination pull-right">
+    <ul>
+        {$page}
+    </ul>
+</div>
+</body>
+</html>
+<script>
+    var urlExcel = "{:U('Excel')}";
+    $(function () {
+        var panterArr = [];
+        //全选
+        $('#allCheck').on('click',function () {
+            if($('#allCheck').attr('checked')){
+                $('.smallcheck').attr('checked',true);
+            }else{
+                $('.smallcheck').removeAttr('checked',true);
+            }
+        });
+        //批量开票
+        $('#allOpen').on('click',function () {
+            panterArr = [];
+            var checkedInput =   $('.smallcheck:checked');
+            $.each(checkedInput,function () {
+                panterArr.push($(this).data('index').replace(/\'/g,""));
+            });
+            sellOpenReceipt();
+        });
+        $('.Open').on('click',function () {
+            console.log(123);
+            panterArr = [];
+            panterArr.push($(this).data('panterid').replace(/\'/g,""));
+            sellOpenReceipt();
+        });
+
+
+        function sellOpenReceipt() {
+            var url = $('#allOpen').data('index');
+            url = url.replace(/\s+/g,'');
+            console.log(url);
+            if(url != 'openReceipt'){
+                var data = {
+                    panterids:panterArr,
+                    year:$('input[name="year"]').val(),
+                    quarter:$('select[name="quarter"]').val()
+                };
+            }else{
+                var data = {
+                    panterids:panterArr,
+                    start:$('input[name="start"]').val()
+                };
+            }
+            url = "{:U('"+url+"')}";
+            $.post(url,data,function (resp) {
+                if(resp.code == 0)
+                {
+                    layer.open({
+                        content:"开票成功"
+                    });
+                    $.each(resp.panterid,function(index,val)
+                    {
+                        $('#panter'+val).html("已开票");
+                        $('#isPrint'+val).html("<button class='btn  btn-danger print' data-panterid='{$val.panterid}'>打印</button>");
+                    });
+                }else{
+                    layer.open({
+                        content:"开票失败"
+                    });
+                }
+            });
+        }
+
+        $('body').on('click','.print',function () {
+            var index =  $(this).parent().siblings('.sell').data('index');
+            var type  = 1;
+
+            if($('#allOpen').data('index').replace(/\s+/g,'') != 'openReceipt'){
+                var data = {
+                    "openreceiptid":index.replace(/\'/g,''),
+                    "type":2,
+                    year:$('input[name="year"]').val(),
+                    quarter:$('select[name="quarter"]').val()
+                }
+            }else{
+                var data = {
+                    "openreceiptid":index.replace(/\'/g,''),
+                    "type":1,
+                    receiptdate:$('#start').val()
+                }
+            }
+            $.post("{:U('sendPrint')}",data,function (resp) {
+                layer.open({
+                    'content': resp.msg
+                });
+            });
+
+        });
+
+
+
+    })
+</script>

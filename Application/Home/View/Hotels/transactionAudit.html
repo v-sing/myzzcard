@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店交易撤销审核</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body  style="padding:6px;">
+    <table id="transactionList" class="easyui-datagrid" title="酒店交易撤销审核"  width="100%" height="820"
+           data-options="
+                    url:'getTransactionAudit',
+                    pagination:true,
+                    pageSize:20,
+                    pageList:[20,50,100,200],
+                    singleSelect: true,
+                    method: 'get',
+                    striped:true,
+                    toolbar:tb,
+                    loadMsg:'正在加载数据',
+                    fitColumns:true,
+                    showFooter:true,
+                    onHeaderContextMenu: function(e, field){
+                        e.preventDefault();
+                        if (!cmenu){
+                            createColumnMenu();
+                        }
+                        cmenu.menu('show', {
+                            left:e.pageX,
+                            top:e.pageY
+                        });
+                    }
+                    ">
+        <thead>
+            <tr>
+                <th data-options="field:'auditid',width:180,align:'left'">ID</th>
+                <th data-options="field:'cardno',width:180,align:'left'">卡号</th>
+                <th data-options="field:'username',width:80">会员名称</th>
+                <th data-options="field:'linktel',width:100,align:'left'">联系电话</th>
+                <th data-options="field:'namechinese',width:300,align:'left'">商户名称</th>
+                <th data-options="field:'type',width:80,align:'center'">交易类型</th>
+                <th data-options="field:'time',width:80,align:'left'">交易时间</th>
+                <th data-options="field:'tradeid',width:150,align:'left'">交易流水号</th>
+                <th data-options="field:'originaltradeamounts',width:80,align:'center'">原交易金额(券数量)</th>
+                <th data-options="field:'tradeamounts',width:80,align:'center'">交易金额(券数量)</th>
+                <th data-options="field:'operateperson',width:100,align:'left'">发起人</th>
+                <th data-options="field:'operatedate',width:80,align:'left'">发起时间</th>
+                <th data-options="field:'auditperson',width:80,align:'left'">审核人</th>
+                <th data-options="field:'auditdate',width:150,align:'left'">审核时间</th>
+                <th data-options="field:'remark',width:150,align:'left'">备注</th>
+                <th data-options="field:'status',width:80,align:'left'">审核状态</th>
+                <th data-options="field:'tradesource',width:80,align:'left'">来源</th>
+            </tr>
+        </thead>
+    </table>
+    <div style="visibility:hidden;display: none;" id="_box">
+        <div id="dialog_details" class="easyui-window" closed="true" title="详情" style="width:450px;height:260px;" data-options="shadow: true,modal: true,collapsible:false">
+            <div class="easyui-panel"  style="padding:30px 60px;border:none;">
+                <form id="detailsform" method="post">
+                    <div style="margin-bottom:5px">
+                        备注：<input class="easyui-textbox" data-options="multiline:true"  style="width:300px;height:100px" id="remark" name="remark" >
+                    </div>
+                    <input type="hidden" id="auditid" name="auditid">
+                    <div>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" style="width:20%;height:32px" onclick="saveRemark();">保存</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="tb" style="padding:4px;height:auto;display: none;">
+            <!--<div style="padding:4px">-->
+                <!--审核时间：<input id="startdate" name="startdate" class="easyui-datebox" style="width:140px;" value="<?php echo date('Y-m-01',time());?>">-->
+                <!--&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;至：<input id="enddate" name="enddate" class="easyui-datebox" style="width:140px;">-->
+            <!--</div>-->
+            交易类型：<select  class="easyui-combobox" style="width:140px;" name='audittype' id='audittype'>
+                <option value="">交易类型</option>
+                <option value="00">至尊卡消费</option>
+                <option value="02">券消费</option>
+            </select>
+            审核状态：<select  class="easyui-combobox" style="width:140px;" name='status' id='status'>
+                <option value="">状态</option>
+                <option value="0">未审核</option>
+                <option value="1">审核通过</option>
+                <option value="2">审核驳回</option>
+                <!--<option value="3">财务审核通过</option>-->
+                <!--<option value="4">财务审核失败</option>-->
+            </select>
+            <span style="margin-left:300px;">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch()">搜索</a>&nbsp;&nbsp;
+                <!--<div <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['BRANCHADUIT'])||$_SESSION['username']=='admin'){echo 'style="float: right;margin-right: 900px;display:block;"';}else{echo 'style="float: right;margin-right: 900px;display:none;"';}?>>-->
+                    <!--<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="branchAduit('tongguo')">部门审核通过</a>&nbsp;&nbsp;-->
+                    <!--<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="branchAduit('bohui')">部门审核驳回</a>-->
+                <!--</div>-->
+                <?php
+                   if(!empty($_SESSION['_ACCESS_LIST']['HOME']['HOTELS']['FINANCEADUIT'])||$_SESSION['username']=='admin'){
+                       echo '<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="financeAduit()">审核通过</a>&nbsp;&nbsp';
+                          echo '<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="rebut()">审核驳回</a>';
+                      }
+                ?>
+            </span>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            var startdate="<?php echo date('Y-m-01',time());?>";
+            var enddate="<?php echo date('Y-m-d',time());?>";
+            $("#startdate").datebox("setValue",startdate);
+            $("#enddate").datebox("setValue",enddate);
+        })
+
+        //查询
+        function doSearch(){
+            var o={};
+//            o.startdate=$("#startdate").datebox("getValue");
+//            o.enddate=$("#enddate").datebox("getValue");
+            o.audittype=$('#audittype').combobox('getValue');
+            o.status=$("#status").combobox('getValue');
+            $('#transactionList').datagrid('load',o);
+            return false;
+        }
+
+//        //部门负责人审核
+//        function branchAduit(action){
+//            var o = {};
+//            o.tradeid = [];
+//            var rows = $('#transactionList').datagrid('getSelections');
+//            if(rows.length==0){
+//                return false;
+//            }
+//            var errMsg = '';
+//            for(var i = 0 in rows){
+//                if(rows[i].auditstatus=='未审核'){
+//                    o.tradeid.push(rows[i].tradeid);
+//                }else{
+//                    errMsg ='当前记录中包含审核通过的项目\r\n申请批次操作必须在未审核的状态下才可进行操作';
+//                    break;
+//                }
+//                confirm_msg = '您确定要对选中的记录进行审核吗?';
+//            }
+//            if(o.tradeid.length==0 || errMsg != ''){
+//                alert(errMsg);
+//                return false;
+//            }
+//            o.action=action;
+//            if(confirm(confirm_msg)){
+//                $.ajax({
+//                    type: 'post',
+//                    url:"branchAduit",
+//                    data:o,
+//                    success: function(data) {
+//                        alert(data.msg);
+//                        $('#transactionList').datagrid('reload');
+//                    }
+//                })
+//            }
+//        }
+
+        //审核
+        function financeAduit(){
+            var o = {};
+            o.auditid = [];
+            o.source = [];
+            var rows = $('#transactionList').datagrid('getSelections');
+            if(rows.length==0){
+                return false;
+            }
+            var type='',errMsg = '';
+            for(var i = 0 in rows){
+                if(type == ''){
+                    type = rows[i].tradesource;
+                }else{
+                    if(type != rows[i].tradesource){
+                        errMsg ='当前记录中包含不同的来源记录！';
+                        break;
+                    }
+                }
+                if($.trim(rows[i].status)=="未审核"){
+                    o.auditid.push(rows[i].auditid);
+                    o.source.push($.trim(rows[i].source));
+                }else{
+                    errMsg ='当前记录中包含审核通过或者审核驳回的项目\r\n申请批次操作必须在未审核的状态下才可进行操作！';
+                    break;
+                }
+                confirm_msg = '您确定要对选中的记录进行审核吗?';
+            }
+            if(o.auditid.length==0 || errMsg != ''){
+                alert(errMsg);
+                return false;
+            }
+            if(confirm(confirm_msg)){
+                $.ajax({
+                    type: 'post',
+                    url:"financeAduit",
+                    data:o,
+                    success: function(data) {
+                        alert(data.msg);
+                        $('#transactionList').datagrid('reload');
+                    }
+                })
+            }
+        }
+
+        //审核驳回
+        function rebut(){
+            var rows = $('#transactionList').datagrid('getSelections');
+            if(rows.length==0){
+                return false;
+            }else{
+                if($.trim(rows[0].status)=="未审核"){
+                    $("#auditid").val(rows[0].auditid);
+                    $("#dialog_details").window("open");
+                }else{
+                    alert("该记录已经处理,不能再次审核！");
+                }
+            }
+        }
+
+        //保存审核驳回信息
+        function saveRemark(){
+            var o={};
+            o.remark=$("#remark").textbox("getValue");
+            if(o.remark==''){
+                alert("请填写备注信息！");
+                return false;
+            }
+            o.auditid=$("#auditid").val();
+            $.ajax({
+                type: 'post',
+                url:"saveRemark",
+                data:o,
+                success: function(data) {
+                    alert(data.msg);
+                    $("#dialog_details").window("close");
+                    $('#transactionList').datagrid('reload');
+                }
+            })
+        }
+    </script>
+</body>
+</html>

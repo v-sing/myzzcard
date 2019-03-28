@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+    <link href="__PUBLIC__/kfcarnteen/css.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+    <script src="__PUBLIC__/kfcarnteen/json2.js"></script>
+</head>
+<body>
+<div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;"></div>
+<!--退菜弹窗开始-->
+<div class="tk_yue" style="position:fixed; z-index:11; overflow:hidden; width:50%; margin-left:25%; margin-top:20%; background:#fff; padding-bottom:3%; display:none;">
+    <span class="wxts" style=" width:94%; padding:3% 3%;"><span>温馨提示</span><img src="__PUBLIC__/kfcarnteen/img/tk_off.png" class="off" style=" vertical-align:middle; float: right;"/></span>
+    <div class="meun" style="margin-top:3%;">
+        <ul style=" width:60%; margin-left:24%; padding:6% 0 4% 0;">
+            <li><img id="imgsrc" src="__PUBLIC__/kfcarnteen/img/success.png" style="vertical-align:middle; display:inline-block; width:48px;"/></li>
+            <li  id="prompt" style=" font-size:30px; margin-left:4%; vertical-align:middle; display:inline-block;"></li>
+        </ul>
+    </div>
+</div>
+<!--退菜弹窗结束-->
+<div class="top ">
+    <ul>
+        <li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png"/></li>
+        <li class="text_center_02">退菜处理</li>
+    </ul>
+</div>
+<div class="main" style="max-height:560px; overflow-y:scroll;">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>菜品名称</th>
+            <th>菜品单价</th>
+            <th>购买数量</th>
+            <th>退货数量</th>
+        </tr>
+        </thead>
+        <tbody>
+        {$str}
+        </tbody>
+    </table>
+</div>
+<input type="hidden" id="cardno" name="cardno" value="{$cardno}">
+<button class="dishes_plus" type="submit">退菜</button>
+</body>
+<script type="text/javascript">
+    $(function(){
+        $("tbody tr").each(function(i){
+            var num=$("tbody").find("tr").eq(i).find("td").eq(2).html();
+            $("#id"+(i+1)).Spinner({value:0, min:0, len:3, max:num});
+        });
+
+        //退菜刷卡弹窗
+        $(".dishes_plus").click(function(){
+            var cardno=$("#cardno").val();
+            var o=[];
+            var j=0;
+            $("tbody tr").each(function(i){
+                var num=($("tbody").find("tr").eq(i).find(".Amount").val());
+                if(num>0){
+                    var goodsid=$("tbody").find("tr").eq(i).find("input[name='goodsid']").val();
+                    var type=$("tbody").find("tr").eq(i).find("input[name='type']").val();
+                    var goodsname=$("tbody").find("tr").eq(i).find("td").html();
+                    var price=$("tbody").find("tr").eq(i).find("td").eq(1).html();
+                    o[j]=[goodsid,goodsname,type,num,price];
+                    j++;
+                }
+            });
+
+            confirmOrder(o);
+            formSubmit(o,cardno,total);
+        });
+
+        //关闭刷卡或挥卡弹窗
+        $(".off").click(function(){
+            $("#mask").hide();
+            $(".tk_yue").hide();
+        })
+
+        //返回上一级
+        $(".text_l").click(function () {
+            window.location.href = "{:U('KfCarnteen/elseFunction')}";
+        });
+    });
+
+    function confirmOrder(info){
+        total = 0;
+        for(var i=0;i<info.length;i++){
+            total = (Number(total)+Number(info[i][3])*Number(info[i][4])).toFixed(2);
+        }
+    }
+
+    function formSubmit(elementValue,ca,totalsum) {
+        elementValue=elementValue.toString();
+        var turnForm = document.createElement("form");
+        //一定要加入到body中！！
+        document.body.appendChild(turnForm);
+        turnForm.method = 'post';
+        turnForm.action = "{:U('KfCarnteen/refundGoodsOrder')}";
+        //创建隐藏表单
+        var newElement = document.createElement("input");
+        newElement.setAttribute("name","order");
+        newElement.setAttribute("type","hidden");
+        newElement.setAttribute("value",elementValue);
+        var cardno     = document.createElement("input");
+        cardno.setAttribute("name","cardno");
+        cardno.setAttribute("type","hidden");
+        cardno.setAttribute("value",ca);
+        var sumorder     = document.createElement("input");
+        sumorder.setAttribute("name","total");
+        sumorder.setAttribute("type","hidden");
+        sumorder.setAttribute("value",totalsum);
+        turnForm.appendChild(newElement);
+        turnForm.appendChild(cardno);
+        turnForm.appendChild(sumorder);
+        turnForm.submit();
+    }
+</script>
+</html>

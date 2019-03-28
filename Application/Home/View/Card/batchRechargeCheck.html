@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+    })
+</script>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("Card/batchRechargecheck")}" method="get">  
+	<div class="control-group">
+	充值单号:
+    <input type="text" name="purchaseid" id="purchaseid" class="abc input-medium" placeholder="" value="{$purchaseid}">&nbsp;
+    审核状态:
+    <select name="flag" style="width:70px; margin-right:5px;"><option value="" selected>请选择</option><option value="0"<if condition="$flag eq '0'"> selected</if>>未审核</option><option value="1"<if condition="$flag eq '1'"> selected</if>>审核通过</option><option value="2"<if condition="$flag eq '2'"> selected</if>>审核未通过</option></select> 
+    会员编号:
+    <input type="text" name="customid" id="customid" class="abc input-medium" placeholder="" value="{$customid}">&nbsp;&nbsp;
+	会员名称:
+    <input type="text" name="cname" id="cname" class="abc input-medium" placeholder="" value="{$cname}">&nbsp;&nbsp; 
+	登记日期:
+    <input type="text" name="startdate" id="startdate" class="abc input-medium" value="{$startdate}" style="width:100px;"/>---<input type="text" name="enddate" id="enddate" class="abc input-medium" value="{$enddate}" style="width:100px; margin-right:5px;"/>
+    卡号:<input type="text" name="description" id="description" class="abc input-default" placeholder="" value="{$description}">&nbsp;&nbsp;
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>&nbsp;&nbsp; 	<button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U('batchRechargecheck',array('acetype'=>'check'))}';">批量审核</button>&nbsp;&nbsp; 
+    <button type="button" class="btn btn-mini btn-info" id="addnew" onclick="window.location.href='{:U('batchRechargecheck',array('acetype'=>'nocheck'))}';">审核不通过</button>
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th>充值单号</th>
+        <th>会员编号</th>
+        <th>会员名称</th>
+        <th>登记时间</th>
+        <th>支付方式</th>
+        <th>审核状态</th>
+        <th>充值总额</th>
+        <th>实收总额</th>
+        <th>备注</th>
+        <th>登记员</th>
+        <th>审核时间</th>
+        <th>审核员</th>
+        <th>审核备注</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo">
+        <tr>
+            <td>{$vo.purchaseid}</td>
+            <td>{$vo.customid}</td>
+            <td>{$vo.namechinese}</td>
+            <td><?php echo date('Y-m-d H:i:s',strtotime($vo[placeddate].$vo[placedtime]));?></td>
+            <td>{$vo.paymenttype}</td>
+            <td>{$chetype[$vo['flag']]}</td>
+            <td>{$vo.totalmoney}</td>
+            <td>{$vo.realamount}</td>
+            <td>{$vo.description}</td>
+            <td>{$vo.userid}</td>
+            <td><?php echo date('Y-m-d H:i:s',strtotime($vo[checkdate].$vo[checktime]));?></td>
+            <td>{$vo.auditid}</td>
+            <td>{$vo.description1}</td>
+        </tr>
+        </volist>
+        </table>
+        <div class="inline pull-left page">总记录数：<b>{$count}</b>条 | 充值金额合计：<b>{$amount_sum}</b>元 | 总金额合计：<b>{$totalmoney_sum}</b>元 | 实际金额合计：<b>{$realamount_sum}</b>元</div><div class="inline pull-right page">{$page}</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>补卡管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .rt{border:1px solid #eee;}
+        .btn-primary1{
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #006dcc;
+            *background-color: #0044cc;
+            background-repeat: repeat-x;
+            border-color: #0044cc #0044cc #002a80;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+        }
+    </style>
+</head>
+<body>
+<div  class="dv">
+<form name="form1" method="post" id="form1">
+    <input type="hidden" name="is_read" value="0" id="is_read"/>
+    <table class="table table-bordered table-hover m10" >
+         <tr>
+             <td style="width:200px;text-align:right;">卡号</td>
+             <td>
+                 <input type="text" class="abc input-default" name="cardno" id="cardno" onkeyup="intOnly1(this)"/>
+                 <input type="button"  class="btn btn-mini btn-primary" value="有效期读取"  id="btn1"/>
+                 <input type="button"  class="btn btn-mini btn-primary" value="卡号重置"  id="btn2"/>
+                 <input type="hidden" name="isread" id="isread" value="0"/>
+             </td>
+        </tr>
+         <tr>
+             <td style="text-align:right;">原卡有效期</td>
+             <td><input type="text" name="yuexdate" class="abc input-default un-write" readonly="true" id="yuexdate"/>
+             </td>
+        </tr>
+         <tr>
+             <td style="text-align:right;">新有效期</td>
+             <td>
+                 <input type="text" name="exdate" class="abc input-default"  id="exdate" readonly/>
+                 <input type="button"  class="btn btn-mini btn-primary" value="重置有效期"  id="btn3"/>
+             </td>
+        </tr>
+    </table>
+    </form>
+    </div>
+<script type="text/javascript">
+    function intOnly1(obj){
+        obj.value=obj.value.replace(/^(0\d?)|[^\d]/g,'');
+    }
+    $(function(){
+        $('#exdate').datepicker({dateFormat:'yymmdd'});
+        $("#ui-datepicker-div").hide();
+        $('#btn1').click(function(){
+            var cardno= $.trim($('#cardno').val());
+            if(cardno==''){
+                alert('请输入卡号');
+                return false;
+            }
+            $.ajax({
+                type:'post',
+                url:'{:U("AfterSales/checkCardExdate")}',
+                data:{cardno:cardno},
+                dataType:'json',
+                success:function(res){
+                    if(res.status==1){
+                        $('#yuexdate').val(res.info.exdate);
+                        $('#isread').val('1');
+                        $('#cardno').attr('readonly',true).addClass('un-write');
+                    }else{
+                        alert(res.msg);
+                        $('#isread').val('2');
+                    }
+                }
+            });
+        })
+        $('#btn2').click(function(){
+            $('#isread').val('0');
+            $('#cardno').attr('readonly',false).removeClass('un-write').val('');
+            $('#yuexdate').val('');
+        })
+        $('#btn3').click(function(){
+            var isread=$('#isread').val();
+            if(isread==0){
+                alert('请先读取卡号有效期');
+                return false;
+            }else if(isread==2){
+                alert('有效期读取失败，请填写正确的卡号');
+                return false;
+            }
+            var exdate= $.trim($('#exdate').val());
+            if(exdate==''){
+                alert('请选择新有效期');
+                return false;
+            }
+            document.form1.submit();
+        })
+    })
+</script>
+</body>
+</html>

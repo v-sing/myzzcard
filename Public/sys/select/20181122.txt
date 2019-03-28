@@ -1,0 +1,131 @@
+ip:127.0.0.1||2018-11-22  16:29:38：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:29:41：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:29:43：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:29:43：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:31:08：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:31:18：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:31:18：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:31:20：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875480 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:31:21：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875481 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:31:21：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875481 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:31:50：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875510 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:31:50：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875510 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:32:03：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:32:03：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875523 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:32:03：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875523 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:32:05：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875525 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:32:05：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875525 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:33:11：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875591 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:33:12：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875592 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:33:21：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:33:21：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:33:23：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875603 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:33:23：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875603 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:33:30：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:33:48：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875628 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:33:49：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:33:49：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:33:49：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:33:54：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542875634 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:35:48：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:35:52：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:35:56：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:35:59：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:18：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:18：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:25：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:25：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:29：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:29：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:45：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:46：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:47：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:37:50：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:38:00：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:38:00：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:38:04：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:38:04：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:38:42：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:38:45：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:42:36：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542876156 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:42:36：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542876156 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:42:37：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:42:37：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  16:42:37：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542876157 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:43:44：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:43:45：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:45:15：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:45:15：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:48:02：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:48:02：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:49:14：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:49:15：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:49:46：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:49:47：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:50:16：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:50:16：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:51:04：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:51:04：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  16:51:10：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542876670 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  16:51:10：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM panterchange WHERE ( changedate>=1541148994 and changedate<=1542876670 )) thinkphp )  WHERE (numrow>0) AND (numrow<=1)
+ip:127.0.0.1||2018-11-22  17:09:54：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.zsamount as zsamount,p.namechinese as pname FROM (select sum(rechargeamount) zsamount,
+                                  panterid from coin_account
+                                  where (placeddate between 20180101 and 20181231)
+                                  group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  17:09:54：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   a.totalamount dhamount,p.namechinese pname FROM (select sum(amount) totalamount,panterid from coin_consume where (placeddate between 20180101 and 20181231) group by panterid) a INNER JOIN panters p on p.panterid=a.panterid ) thinkphp ) 
+ip:127.0.0.1||2018-11-22  17:09:55：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)
+ip:127.0.0.1||2018-11-22  17:09:55：admin人员--查询操作： SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM tenantextra) thinkphp )  WHERE (numrow>0) AND (numrow<=20)

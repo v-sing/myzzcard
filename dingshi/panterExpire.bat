@@ -1,0 +1,1 @@
+C:/wamp/bin/php/php5.5.12/php.exe C:/wamp/www/zzkpay/cli.php Pos/Time/checkPersonidexdate

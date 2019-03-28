@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link href="__PUBLIC__/kfcarnteen/login.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+<script type="text/javascript" lang="javascript">
+	var clearmsg = false;
+	var ispoint = true;
+	function show(obj){
+		var data =	obj.value;
+		var text = document.getElementById("text");
+		var textvallen = text.value.length;
+			if(textvallen==6){
+				alert("管理员密码最多输入六位");
+				return false;	
+				}
+		if(clearmsg){
+			//text.value = "";
+			clearmsg=false;
+		}
+		if(data == "+" || data == "-" || data == "*" || data == "/"){
+			ispoint = true;
+		}
+		if(data == "0" && text.value == "0"){
+			text.value = parseInt(text.value) + 0;	
+		}else if(text.value == "0" && data != "+" && data != "-" && data != "*" && data != "/"){
+			text.value = parseInt(text.value) + parseInt(data);
+		}else{
+			text.value += data;
+		}
+	}
+	
+	//计算结果
+	function getResult(){
+		var data = document.getElementById("text");
+		try{
+			ispoint = true;
+			data.value = eval(data.value);
+			clearmsg = true;
+			//alert(ispoint);
+		}catch(err){
+			alert("这怎么算!");
+			data.value = "0";
+		}
+	}
+
+	//点
+	function point(){
+		var p = document.getElementById("point12");
+		var text = document.getElementById("text");
+		var ispoint=true;
+
+		if(ispoint){
+			text.value += p.value;
+			ispoint = false;
+		}
+		//if(text.value.indexOf(".") == true ){
+		//}else{
+		//	text.value += p.value;
+		//}
+	}
+
+	//清空
+	function funclear(){
+		var a = document.getElementById("text").value = "0";
+		clearmsg = false;
+		ispoint = true;
+		//if(a==null || a==""){
+		//	alert("null");
+		//}else{
+		//	alert(a);
+		//}
+	}
+	//退格键
+	function funback(){
+		var text = document.getElementById("text");
+		if(text.value == "0" || text.value == ""){
+			text.value = "";
+		}else{
+			document.getElementById("text").value=document.getElementById("text").value.slice(0,-1);
+		}
+	}
+</script>
+</head>
+<body>
+	<div class="bg">
+		<form name="computer" action="__APP__/KfCarnteen/checkLogin.html" method="post">
+			<div class="login">
+				<img src="__PUBLIC__/kfcarnteen/img/login.png"/>
+				<input type="password" name="text" maxlength="6" id="text"  />
+			</div>
+			<!--计算器开始-->
+			<div style=" width:50%; margin:auto;overflow: hidden; margin-top:-140px; ">
+				<div id="container">
+						<div class="buttons">
+							<input type="button" value="1" class="button" id="1" onClick="show(this)">
+							<input type="button" value="2" class="button" id="2" onClick="show(this)">
+							<input type="button" value="3" class="button" id="3" onClick="show(this)">
+
+							<input type="button" value="4" class="button" id="4" onClick="show(this)">
+							<input type="button" value="5" class="button" id="5" onClick="show(this)">
+							<input type="button" value="6" class="button" id="6" onClick="show(this)">
+
+							<input type="button" value="7" class="button" id="7" onClick="show(this)">
+							<input type="button" value="8" class="button" id="8" onClick="show(this)">
+							<input type="button" value="9" class="button" id="9" onClick="show(this)">
+
+							<input type="button" value="0" class="button" id="0" onClick="show(this)">
+							<input type="button" value="删除" class="button" id="dele" onClick="funback()">
+							<input type="submit" value="确定" class="button" id="queding">
+
+						</div>
+				</div>
+			</div>
+			<!--计算器结束-->
+		</form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>结算报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(function () {
+            $('#startdate').datepicker();
+            $('#enddate').datepicker();
+            $("#ui-datepicker-div").hide();
+        })
+    </script>
+    <div class="dv">
+        <form class="form-inline definewidth m20" action="{:U('EquityFund/settlement')}" method="get">
+            提现日期：
+            <input type="text" name="startdate" id="startdate" class="abc input-default" value="<php>echo $_GET['startdate'];</php>"
+                style="width:100px;" />
+            <!--select name="starthour" style="width:50px;">{$starthours}</select> :
+            <select name="startminite" style="width:50px;">{$startminites}</select-->
+            ---
+            <input type="text" name="enddate" id="enddate" class="abc input-default" value="<php>echo $_GET['enddate'];</php>"
+                style="width:100px; margin-right:10px;" />
+            <!--select name="endhour" style="width:50px;">{$endhours}</select> :
+            <select name="endminite" style="width:50px;">{$endminites}</select-->
+
+            <input type="text" name="panterid" placeholder="商户编码" id="" value="<php>echo $_GET['panterid'];</php>">
+            
+            <input type="text" name="settlebankid" placeholder="结算账户" id="" value="<php>echo $_GET['settlebankid'];</php>">
+
+            <button type="submit" class="btn btn-mini btn-primary">查询</button>
+            <input type="button" value="重置" onclick="window.location='{:U(EquityFund/settlement)}'" class="btn btn-mini btn-danger" />
+            <a href="{:U("EquityFund/settlement_excel")}" class="btn btn-mini" target="_blank"><i class="Hui-iconfont">&#xe640;</i>导出EXCEL</a>
+
+        </form>
+        <br />
+        <form action="{:U('EquityFund/settlement')}" method="post" name="form1" onsubmit="return checkPost();">
+            <table class="table table-bordered table-hover definewidth m10">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;"><input type='checkbox' id="cb" /></th>
+                        <th>商户编码</th>
+                        <th>结算商户</th>
+                        <th>结算日期</th>
+                        <th>交易笔数</th>
+                        <th>交易金额</th>
+                        <th>结算比例</th>
+                        <th>结算手续费</th>
+                        <th>结算金额</th>
+                        <th>结算户名</th>
+                        <th>结算银行</th>
+                        <th>结算账户</th>
+                        <th>开户行</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <volist name="list" id="vo" key="key">
+                    <tr>
+                        <php>
+                            $data = "o_sn=" . $vo['settlementid'] . "&user_name=" . $vo['pname'] .
+                            "&user_phone=" . $vo['conpermobno'] . "&a_name=商家" .
+                            "&bank_name=" . $vo['settlebank'] . "&bank_no=" . $vo['settlebankid'] .
+                            "&amount=" . $vo['retailamount'] . "&elecchequeno=" . "nfzg" . date('Ymd') . mt_rand(1000, 9999) .
+                            "&payeetype=0&account_type=1&cause=5";
+                        </php>
+                        <td style="text-align: center;">
+                            <if condition="$vo.status eq 0">
+                                <input type='checkbox' name="tradeid[]" value="<php> echo $data;</php>" id="<php> echo $vo['settlementid'];</php>" />
+                            </if>
+                        </td>
+                        <td>{$vo.panterid}</td>
+                        <td>{$vo.pname}</td>
+                        <td>{$vo.statdate}</td>
+                        <td>{$vo.num}</td>
+                        <td><?php echo floatval($vo['tradeamount']);?></td>
+                        <td>{$vo.rate}%</td>
+                        <td><?php echo floatval($vo['proxyamount']);?></td>
+                        <td><?php echo floatval($vo['retailamount']);?></td>
+                        <td>{$vo.settleaccountname}</td>
+                        <td>{$vo.settlebank}</td>
+                        <td>{$vo.settlebankid}</td>
+                        <td>{$vo.settlebankname}</td>
+                        <!-- <td>{$vo.conpermobno}</td> -->
+                        <!-- <td>
+                            <if condition="$vo['banktype'] === 0">对公
+                                <elseif condition="$vo['banktype'] eq 1" />对私一卡通
+                                <elseif condition="$vo['banktype'] eq 3" />对私信用卡
+                            </if>
+                        </td>
+                        <td>{$vo.datetime|date="Y-m-d H:i:s",###}</td>
+                        <td>
+                            <php>echo C("t_ransomType.".$vo['type']);</php>
+                        </td> -->
+                        <td>
+                            <if condition="$vo['status'] == 0">
+                                <a href="javascript:void(0)" value="<php> echo $data;</php>" id="<php> echo $vo['settlementid'];</php>">同步银企直联</a>
+                                <elseif condition="$vo['status'] eq 1" />已同步
+                            </if>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+        </form>
+        <div class="inline pull-right page">{$page}</div>
+        <div class="inline pull-left" style="margin-left:35px;">
+            <input type="text" name="syncbatchno" style="background:#EE9A49;" placeholder="同步批次号" id="syncbatchno" value=""> 说明：批次号会自动拼接操作员账号。例：批次号_admin；若不填将自动生成 日期时间_操作员账户 批次号<br>
+            <button type="button" id="saveform" onclick="send()" class="btn btn-XL btn-info">同步银企直联</button>
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        $("#cb").click(function () {
+            var bool = $(this).attr('checked');
+            if (bool == 'checked') {
+                bool = true;
+            } else {
+                bool = false;
+            }
+            $(":checkbox[name='tradeid[]']").each(function () {
+                if ($(this).attr('disabled') != 'disabled') {
+                    $(this).attr('checked', bool);
+                }
+            })
+        });
+    })
+
+    $("a").click(function () {
+        // console.log($(this)[0]['attributes']['value']['nodeValue'])
+        var id = $(this).attr('id');
+        var time = Math.round(new Date / 1000);
+        var batchno = changeDate(time) + "<php>echo '_'.$_SESSION['username'];</php>";
+        $.ajax({
+            type: 'GET',
+            // url:"http://192.168.2.1/index.php/Important/tbRefund",
+            url: "http://192.168.3.128:8089/index.php/Important/tbRefund",
+            data: $(this).attr('value') + '&batchno=' + batchno + '&post_time=' + time,
+            dataType: 'jsonp',
+            jsonp: 'callback',
+            success: function (jsonp) {
+                console.log(jsonp);
+                if (jsonp.status == 2) {
+                    $.post("{:U('EquityFund/settlementCode')}", { 'id': id, 'batchno': batchno, 'code': jsonp.code }, function (codes) {
+                        console.log(codes);
+                        alert(codes);
+                        window.location.href = "{:U('EquityFund/settlement')}";
+                        // alert(codes.status);
+                    });
+                } else {
+                    alert(jsonp.msg);
+                }
+            }
+        });
+    })
+
+    function changeDate(datetimes) {
+        var date = new Date(datetimes * 1000);
+        Y = date.getFullYear();
+        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+        D = date.getDate();
+        h = date.getHours();
+        m = date.getMinutes();
+        s = date.getSeconds();
+        //年 月 日 时 分 秒
+        return Y +''+ M +''+ D +''+ h +''+ m +''+ s;
+    }
+
+    function send() {
+        $("input:checked").each(function (i) {
+            // if (i == 0) {
+            //     return true;
+            // }
+            var data = $("input:checked").eq(i).attr('value');
+            var id = $("input:checked").eq(i).attr('id');
+            var batchno = $("#syncbatchno").attr('value');
+
+            // var time = Date.parse(new Date());
+            var time = Math.round(new Date / 1000);
+            if (batchno == '') {
+                batchno = changeDate(time);
+            }
+            batchno = batchno + "<php>echo '_'.$_SESSION['username'];</php>";
+            
+            if (data != undefined) {
+                data = data + '&batchno=' + batchno + '&post_time=' + time;
+                console.log(data);
+                // console.log(id);
+                // console.log(changeDate(time));
+                // console.log(time);
+                $.ajax({
+                    type: 'GET',
+                    // url:"http://192.168.2.1/index.php/Important/tbRefund",
+                    url: "http://192.168.3.128:8089/index.php/Important/tbRefund",
+                    data: data,
+                    dataType: 'jsonp',
+                    jsonp: 'callback',
+                    success: function (jsonp) {
+                        console.log(jsonp);
+                        if (jsonp.status == 2) {
+                            $.post("{:U('EquityFund/settlementCode')}", { 'id': id, 'batchno': batchno, 'code': jsonp.code }, function (codes) {
+                                console.log(codes);
+                                alert(codes);
+                                window.location.href = "{:U('EquityFund/settlement')}";
+                                // alert(codes.status);
+                            });
+                        } else {
+                            alert(jsonp.msg);
+                        }
+                    }
+                });
+            }
+
+
+        });
+
+    }
+
+</script>
+
+</html>

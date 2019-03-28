@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>卡充值登记</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .tb-box{overflow-y:auto; width:100%;min-height:120px;max-height:300px;}
+        .tb-box td{width:160px;}
+        .tb-box td.td-f{border-left:none;width:159px}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+    	$('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("#ui-datepicker-div").hide();
+
+    	$('#btn').click(function(){
+            var cname= $.trim($('#cname').val());
+            var customsid= $.trim($('#customsid').val());
+            var linktel= $.trim($('#linktel').val());
+            if(cname==''&&customsid==''&&linktel==''){
+                alert('请输入查询条件');return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("Card/getcustoms")}',
+                data:{cname:cname,customsid:customsid,linktel:linktel},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                    	var data=eval(res.data);
+                    	var rese='';
+			        	for(var i=0;i<data.length;i++){
+                  // var data[i]['customid']=$.trim(data[i]['customid']);
+			        		var xstr=data[i]['customid'];
+                  var xstr=$.trim(xstr);
+			        		rese+='<tr id='+xstr+' onclick=ckstr("'+xstr+'")><td style="width:160px">'+data[i]['customid']+'</td><td style="width:160px">'+data[i]['namechinese']+'</td><td style="width:160px">'+data[i]['customlevel']+'</td><td style="width:160px">'+data[i]['linktel']+'</td></tr>';
+						}
+			            $('#list').html(rese).show();
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#btns').click(function(){
+        	var xcname= $.trim($('#xcname').val());
+            var xcustomsid= $.trim($('#xcustomsid').val());
+            var xlinktel= $.trim($('#xlinktel').val());
+            var xcustomlevel= $.trim($('#xcustomlevel').val());
+            $('#customid').val(xcustomsid);
+            $('#cnames').val(xcname);
+            $('#cnameid').val(xcustomsid+' '+xcname);
+            if(xcustomlevel!='null'){
+            	$('#customlevel').val(xcustomlevel);
+            }else{
+            	$('#customlevel').val('');
+            }
+            $('#totalmoney').val('0');
+            $('#realamount').val('0');
+        });
+        $('#addbtn').click(function(){
+            var customid= $.trim($('#customid').val());
+            var cnames= $.trim($('#cnames').val());
+            var tradeflag= $.trim($('#tradeflag').val());
+            var customlevel= $.trim($('#customlevel').val());
+            var paymenttype= $('#paymenttype  option:selected').text();
+            var totalmoney= $.trim($('#totalmoney').val());
+            var realamount= $.trim($('#realamount').val());
+            var description= $.trim($('#description').val());
+            var checkno  = $.trim($('#checkno').val());
+            $.ajax({
+                type:'POST',
+                url:'{:U("Card/addcustoms")}',
+                data:{cnames:cnames,customid:customid,tradeflag:tradeflag,customlevel:customlevel,totalmoney:totalmoney,realamount:realamount,description:description,paymenttype:paymenttype},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                    	var data=eval(res.data);
+                    	var rese='';
+			        	for(var i=0;i<data.length;i++){
+			        		var xstr=data[i]['customid'];
+			        		rese+='<tr><td>'+i+1+'</td><td>'+data[i]['purchaseid']+'</td><td>'+data[i]['customid']+'</td><td>'+data[i]['namechinese']+'</td><td>'+data[i]['tradeflag']+'</td><td>'+data[i]['totalmoney']+'</td><td>'+data[i]['realamount']+'</td></tr>';
+						}
+			            $('#lists').html(rese).show();
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#paymenttype').bind('click',function(){
+            var type=$('#paymenttype').val();
+            if(type=='02')$('#checknos').show();else $('#checknos').hide();
+        });
+        $('#realamount').focus(function(){
+            var czje=$('#totalmoney').val();
+            $('#realamount').val(czje);
+        });
+        $('#addbills').click(function(){
+            var permit = '{$permit}';
+            var customid = $.trim($('#customid').val());
+            var paymenttype = $.trim($('#paymenttype').val());
+            var totalmoney = $.trim($('#totalmoney').val());
+            var realamount = $.trim($('#realamount').val());
+            var checkno = $.trim($('#checkno').val());
+            if(customid==''){
+                alert('会员编号不能为空');
+                return false;
+            }
+            if(paymenttype==''){
+                alert('支付类型不能为空');
+                return false;
+            }
+            if(paymenttype=='02' && checkno==''){
+                alert('支票号不能为空');
+                return false;
+            }
+            if(totalmoney==''){
+                alert('充值金额不能为空');
+                return false;
+            }
+            if(realamount==''){
+                alert('实收金额不能为空');
+                return false;
+            }
+            if(permit==0){
+                if(totalmoney>5000){
+                    alert('充值金额不能大于5000元');
+                    return false;
+                }
+                if(realamount>5000){
+                    alert('实收金额不能大于5000元');
+                    return false;
+                }
+            }
+            document.form3.submit();
+        })
+	})
+	function ckstr(strs){
+		var table = document.getElementById(strs);
+		document.getElementById('xcname').value=table.cells[1].innerHTML;
+		document.getElementById('xcustomsid').value=table.cells[0].innerHTML;
+		document.getElementById('xlinktel').value=table.cells[3].innerHTML;
+		document.getElementById('xcustomlevel').value=table.cells[2].innerHTML;
+		//table.style.backgroundColor='blue';
+	}
+    </script>
+<div  class="dv">
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">会员选择</h4>
+        </div>
+            <form class="form-inline definewidth m20" action="{:U("Card/getcustoms")}" id="form1" method="post"><input type="text" name="cname" id='cname' value='{$cname}' style="width:90px; margin-right:7px;" placeholder="会员名称"/>
+			    <input type="text" name="customsid" id='customsid' value='{$customsid}' style="width:120px; margin-right:7px;" placeholder="会员编号"/>
+			    <input type="text" name="linktel" id='linktel' value='{$linktel}' style="width:120px; margin-right:7px;" placeholder="会员电话"/>
+			    <input type="button" value="查询" class="btn btn-primary" id="btn"/><br/>
+			</form>
+			<table class="table table-bordered table-hover definewidth m10">
+		    	<thead>
+				    <tr>
+				        <th style="width:160px">会员编号</th>
+				        <th style="width:160px">会员名称</th>
+				        <th style="width:160px">用户类型</th>
+				        <th style="width:160px">联系电话</th>
+				    </tr>
+			    </thead>
+			    <tr>
+			    	<td colspan="4" style="padding:0px;">
+			    		<div class="tb-box">
+                            <table id="list">
+                                <if condition="$recentCustoms neq null">
+                                    <volist name="recentCustoms" id="vo">
+                                        <tr id="{$vo.customid}" onclick="ckstr('{$vo.customid}')">
+                                            <td class="td-f">{$vo.customid}</td><td>{$vo.namechinese}</td>
+                                            <td>{$vo.customlevel}</td><td>{$vo.linktel}</td>
+                                        </tr>
+                                    </volist>
+                                </if>
+                            </table>
+			    	</div></td>
+			    </tr>
+        	</table>
+	        <form class="form-inline definewidth m20" action="{:U("Card/getcustoms")}" id="form2" method="post">
+	        选中值:<input type="text" name="xcname" id='xcname' value='' style="width:90px; margin-right:7px;" placeholder="会员名称"/>
+	    	<input type="text" name="xcustomsid" id='xcustomsid' value='' style="width:100px; margin-right:7px;" placeholder="会员编号"/>
+	    	<input type="text" name="xcustomlevel" id='xcustomlevel' value='' style="width:90px; margin-right:7px;" placeholder="用户类型"/>
+	    	<input type="text" name="xlinktel" id='xlinktel' value='' style="width:110px; margin-right:7px;" placeholder="会员电话"/>
+	        <div class="modal-footer">
+	        	<button type="button" class="btn btn-default"
+	               data-dismiss="modal">关闭
+	            </button> <button type="submit" class="btn btn-primary" id="btns" data-dismiss="modal">确定</button>
+	        </div>
+	        </form>
+    </div>
+</div>
+
+<form name="form3" method="post" action="{:U("Card/cardpay")}" class="form-inline definewidth m10" style="border: 1px solid #D6D6D6;padding: 5px;">
+	<input type="hidden" name="is_read" value="0" id="is_read"/>
+	<input type="hidden" name="customid" value="" id="customid"/>
+	<input type="hidden" name="cnames" value="" id="cnames"/>
+	<input type="hidden" name="tradeflag" id="tradeflag" value="1">
+	充值单 会员编号:<input type="text" name="cnameid" class="abc input-default un-write" readonly="true" id="cnameid" style="width:120px; margin-right:5px;"/>
+	<button class="btn btn-mini btn-primary" data-toggle="modal" data-target="#myModal">选择</button>
+	会员类型:<input type="text" name="customlevel" class="abc input-default un-write" readonly="true" id="customlevel" style="width:120px; margin-right:5px;"/>
+	支付类型:<select name="paymenttype" id="paymenttype" style="width:83px; margin-right:7px;">
+    <foreach name="paytype" item="vo"><option value="{$key}">{$vo}</option></foreach></select><span id="checknos" style="display:none;">支票号:<input type="text" value="" name="checkno" id="checkno" style="width:120px; margin-right:5px;"/></span>充值金额:<input type="text" value="" name="totalmoney" id="totalmoney" style="width:120px; margin-right:5px;" onkeyup="clearNoNum(this)"/> 实收金额:<input type="text" value="" name="realamount" id="realamount" style="width:120px; margin-right:5px;" onkeyup="clearNoNum(this)"/> 备注:<input type="text" value="" name="description" id="description" style="width:120px; margin-right:5px;"/>
+    <input type="button" value="生成单据" class="btn btn-mini btn-primary" id="addbills"/>
+    <input type="hidden" name="permit" value="{$permit}" id="permit"/>
+</form>
+
+<form class="form-inline definewidth m20" action="{:U("Card/cardpay")}" method="get">
+    日期:
+    <input type="text" name="startdate" id="startdate" class="abc input-default" value="{$startdate}" style="width:120px;"/> --- <input type="text" name="enddate" id="enddate" class="abc input-default" value="{$enddate}" style="width:120px; margin-right:5px;"/>
+    会员编号:<input type="text" name="customsid" id='customsid' value='{$customsid}' style="width:120px; margin-right:7px;" placeholder="会员编号"/>
+    会员名称:<input type="text" name="cuname" id='cuname' value='{$cuname}' style="width:90px; margin-right:7px;" placeholder="会员名称"/><button type="submit" class="btn btn-mini btn-primary">查询</button> <input type="button" value="清空" onclick="window.location='{:U("Card/cardpay")}'" class="btn btn-mini btn-danger" /><br/>
+</form>
+    <table class="table table-bordered table-hover definewidth m10" id="lists">
+    <thead>
+    <tr>
+        <th></th>
+        <th>充值单编号</th>
+        <th>会员编号</th>
+        <th>会员名称</th>
+        <th>类型</th>
+        <th>充值总额</th>
+        <th>实收总金额</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="key">
+        <tr>
+            <td>{$key}</td>
+            <td>{$vo.purchaseid}</td>
+            <td>{$vo.customid}</td>
+            <td>{$vo.namechinese}</td>
+            <td>{$gctype[$vo['tradeflag']]}</td>
+            <td>{$vo.totalmoney}</td>
+            <td>{$vo.realamount}</td>
+        </tr>
+        </volist>
+        </table>
+        <div class="inline pull-right page sabrosus">{$page}</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<div class="menu_dropdown  bk_2 hide " id="catering">
+
+	<dl id="menu-green" <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>>
+		<dt>
+			<i class="Hui-iconfont">&#xe620;</i>启封故园<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+		</dt>
+
+		<dd>
+			<ul>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['CHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/charge")}" href="javascript:void(0)">充值统计</a></a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['DALIYBALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/daliyBalance")}" href="javascript:void(0)">每日统计</a></a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['STALLSTATISTICS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/chargeReturn")}" href="javascript:void(0)">充退报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['BALANCE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/balance")}" href="javascript:void(0)">卡交易查询</a></a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['STALL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/stall")}" href="javascript:void(0)">各个档口交易明细</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['STALLSTATISTICS'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/stallStatistics")}" href="javascript:void(0)">各个档口交易合计</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['GIFT'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/gift")}" href="javascript:void(0)">特惠充值</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['TEAM'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/team")}" href="javascript:void(0)">团卡报表</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['STAFFCHARGE'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/staffCharge")}" href="javascript:void(0)">员工卡充值</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['STAFF'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/staff")}" href="javascript:void(0)">员工卡查询</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['STAFFDETAIL'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/staffDetail")}" href="javascript:void(0)">员工卡充值详情</a></li>
+				<li <?php if(!empty($_SESSION['_ACCESS_LIST']['HOME']['QIFENG']['STAFFOFF'])||$_SESSION['username']=='admin'){ echo 'style="display:block;"'; } ?>><a _href="{:U("Qifeng/staffOff")}" href="javascript:void(0)">员工离职</a></li>
+			</ul>
+		</dd>
+	</dl>
+
+
+</div>

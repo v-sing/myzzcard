@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店卡初始管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+    </style>
+</head>
+<body>
+<div  class="dv">
+<form name="form1" method="post" id="form1">
+<input type="hidden" name="is_read" value="0" id="is_read"/>
+    <table class="table table-bordered table-hover m10" >
+        <tr>
+             <td style="width:200px;text-align:right;">卡号</td><td><input type="text" class="abc input-default" name="cardno" id="cardno"/></td>
+        </tr>
+        <tr>
+        	<td style="text-align:right;">会员姓名</td><td><input type="text" name="cuname" class="abc input-default un-write" readonly="true" id="cuname"/></td>
+        </tr>
+        <tr>
+        	<td style="text-align:right;">会员编号</td><td><input type="text" name="customid" class="abc input-default un-write" readonly="true" id="customid"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">卡状态</td><td><input type="text" class="abc input-default un-write" name="card_status" readonly="true" id="card_status"/></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;">卡余额</td><td><input type="text" class="abc input-default un-write" name="cardbalance" readonly="true" id="card_money"/></td>
+        </tr>
+        <!-- <tr>
+            <td style="text-align:right;">通用积分</td><td><input type="text" class="abc input-default un-write" name="cardbalance1" readonly="true" id="card_points"/></td>
+        </tr> -->
+        <tr>
+            <td style="text-align:right;">实退金额</td><td><input type="text" class="abc input-default" name="amount" id="amount"/></td>
+        </tr>
+        <tr>
+        	<td colspan="2" style="text-align:left;padding-left:185px;">
+        		<input type="button"  class="btn btn-mini btn-primary" value="读卡"  id="btn"/>
+                <input type="button"  class="btn btn-mini btn-primary" value="初始化" style="margin-left:15px;" id="btn1"/>
+                <!-- <if condition="$is_hotel eq 1"><a href="{:U('Hotels/returnCard/back/1')}" style="margin-left:10px;">
+                <else/>
+                    <a href="{:U('Finance/returnCard/back/1')}" style="margin-left:10px;">
+                </if>
+                    查看退卡记录</a> -->
+        	</td>
+        </tr>
+    </table>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#btn').click(function(){
+            var cardno= $.trim($('#cardno').val());
+            $('#form1 input[type="text"][name!="cardno"]').val('');
+            if(cardno==''){
+                alert('请输入卡号');
+                return false;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{:U("Hotels/card_query")}',
+                data:{cardno:cardno,style:2},
+                dataType:'json',
+                success:function(res){
+                    if(res.success==1){
+                        $('#customid').val(res.data.customid);
+                        $('#cuname').val(res.data.cuname);
+                        $('#card_status').val('正常卡');
+                        $('#card_money').val(res.data.card_money);
+                        // $('#card_points').val(res.data.card_points);
+                        $('#is_read').val(1);
+                        $('#amount').val(res.data.card_money);
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            })
+        });
+        $('#btn1').click(function(){
+            var is_read= $.trim($('#is_read').val());
+            var card_status= $.trim($('#card_status').val());
+            var description= $.trim($('#description').val());
+            var amount= $.trim($('#amount').val());
+            if(is_read==0){
+                alert('请先读卡');
+                return false;
+            }
+            if(card_status!='正常卡'){
+                alert('非正常卡不能退款！');
+                return false;
+            }
+            if(amount==''){
+                alert('退款金额必填');
+                return false;
+            }
+            document.form1.action="__URL__/initcard";
+            document.form1.submit();
+        })
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<script src="__PUBLIC__/Js/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/Js/jquery.iframe-transport.js"></script>
+<script src="__PUBLIC__/Js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/H-ui/lib/layer/1.9.3/layer.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery.fileupload.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery.fileupload-ui.css" />
+
+<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Excel导入</span>
+    <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+    </span>
+
+<br>
+<br>
+<!-- The global progress bar -->
+<div class="progress progress-striped active">
+    <div class="bar" style="width: 0%;"></div>
+</div>
+<div id="files" class="files"></div>
+<script>
+    'use strict';
+    // Change this to the location of your server-side upload handler:
+    $('.progress').hide();
+    $('#fileupload').fileupload({
+        url: url,
+        dataType: 'json',
+        done: function (e, data) {
+                      if(data.result.preview ==1){
+                             var html = "";
+                             $.each(data.result.data,function (index,val) {
+                                   $.each(val,function (i,v) {
+                                       html += "<dt>"+i+":</dt><dd>"+v+"</dd>";
+                                   })
+                             });
+                          $('#ExcelContent').html(html);
+                           $('#excelExport').modal('show');
+                      }else{
+                          layer.open({
+                              "content":data.result.msg
+                          });
+                      }
+
+        },
+        progressall: function (e, data) {
+
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('.progress').show();
+            $('.bar').css(
+                'width',
+                progress + '%'
+            );
+            $('.bar').html(progress + '%');
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+</script>
+
+<!-- Modal -->
+<div id="excelExport" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">×</button>
+        <p id="changdata">详细信息</p>
+    </div>
+    <div class="modal-body">
+        <dl class="dl-horizontal" id="ExcelContent">
+            <dt>...</dt>
+            <dd>...</dd>
+        </dl>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" id="submit">确定</button>
+        <button class="btn btn-success cancel" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>

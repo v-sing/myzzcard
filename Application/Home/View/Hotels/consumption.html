@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店消费排行报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body  style="padding:6px;">
+    <div>
+        <table id="consumptionList" class="easyui-datagrid" title="酒店消费排行报表"  width="100%" height="675"
+               data-options="
+                                url:'getConsumptionList',
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,50,100,200],
+                                singleSelect: false,                              
+                                method: 'get',
+                                striped:true,
+                                toolbar:'#tb',
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+            <thead>
+                <tr>
+                    <th data-options="field:'customid',width:80,align:'center'">会员编号</th>
+                    <th data-options="field:'cname',width:80,align:'center'">会员名称</th>
+                    <th data-options="field:'cardno',width:120,align:'center'">卡号</th>
+                    <th data-options="field:'panterid',width:80,align:'center'">商户编号</th>
+                    <th data-options="field:'pname',width:300">商户名称</th>
+                    <th data-options="field:'tradeamount',width:120,align:'center'">消费金额</th>
+                    <th data-options="field:'tradepoint',width:60,align:'center'">交易积分</th>
+                    <th data-options="field:'tradetype',width:60,align:'center'">交易类型</th>
+                </tr>
+            </thead>   
+        </table>
+    </div>
+    <div style="visibility:hidden" id="__box">
+        <div id="tb" style="padding:4px;height:auto;display: none;">
+            <div style="padding:4px">交易时间:<input class="easyui-datebox" id="startdate" name="startdate" style="width:140px;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至:<input class="easyui-datebox" id="enddate" name="enddate" style="width:140px;"><span style="margin-left:100px;"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="doSearch()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U("Hotels/consumption_excel")}" class="easyui-linkbutton" data-options="iconCls:'icon-redo'">导出</a></span></div>
+        </div>
+    </div>    
+    <script type="text/javascript">
+        $(function(){
+            var startdate="<?php echo date('Y-m-01',time());?>";
+            var enddate="<?php echo date('Y-m-d',time());?>";
+            $("#startdate").datebox("setValue",startdate);
+            $("#enddate").datebox("setValue",enddate);
+        })
+        //查询
+        function doSearch(){
+            var o={};
+            o.startdate=$("#startdate").datebox("getValue");
+            o.enddate=$("#enddate").datebox("getValue");
+            $('#consumptionList').datagrid('load',o);
+            return false;
+        }
+        //重置查询项
+        function resetting(){
+            var o={};
+            o.startdate=$("#startdate").datebox("setValue",'');
+            o.enddate=$("#enddate").datebox("setValue",'');
+            $('#consumptionList').datagrid('load',o);
+            return false;
+        }
+    </script>
+</body>
+</html>
+

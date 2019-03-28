@@ -1,0 +1,17 @@
+@charset "utf-8";
+/* 你自己的样式 */
+#verifyImg{
+	cursor: pointer;
+}
+
+#Hui-nav{
+	min-width:600px;
+}
+
+.menu_dropdown dl{
+	display: none;
+}
+
+.menu_dropdown dl dd ul li{
+	display: none;
+}

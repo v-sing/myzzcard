@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>卡类型管理</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .tb-box{overflow-y:auto; width:100%;min-height:120px;max-height:300px;}
+        .tb-box td{width:160px;}
+        .tb-box td.td-f{border-left:none;width:159px}
+    </style>
+</head>
+<body>
+<script language="JavaScript"></script>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("CardStock/cardBrand")}" method="post">
+    <input type="hidden" name="id" value="{$appInfo.id}">
+    卡种类编号:<input type="text" name="brandid" value='{$brandid}' style="width:120px; margin-right:7px;"/>
+    卡种类名称:<input type="text" name="brandname" value='{$brandname}' style="width:160px; margin-right:7px;"/>
+    状态:<input type="text" name="flag" value='{$flag}' style="width:160px; margin-right:7px;"/>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+    <input type="button"  class="btn btn-mini btn-primary" onclick="window.location='__URL__/addBrand'" value="添加卡类型"/>
+    <br/>
+</form>
+    <table class="table table-bordered table-hover definewidth m10" id="lists">
+    <thead>
+    <tr>
+        <th>卡种类编号</th>
+        <th>卡种类名称</th>
+        <th>状态</th>
+        <th>折扣率</th>
+        <th>通用积分兑换率</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="key">
+        <tr>
+            <td>{$vo.brandid}</td>
+            <td>{$vo.brandname}</td>
+            <td>{$vo.flag}</td>
+            <td>{$vo.discount}</td>
+            <td>{$vo.rate}</td>
+        </tr>
+        </volist>
+        </table>
+<!--div class="inline pull-right page sabrosus">{$page}</div-->
+    </div>
+    </div>
+</body>
+</html>

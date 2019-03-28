@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>卡片入库</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/page.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {padding-bottom: 40px;}
+        .w1{width:50%;margin:20px;border:none;}
+        .w1 td{border:none;}
+        .abc{width:160px;}
+        input[type="text"].un-write{background:#C8C8C8;}
+        .rt{border-bottom: 1px solid #eee;}
+        a{text-decoration: none;}
+        a:hover{color:#ff2222;text-decoration:underline;}
+        .tb-box{overflow-y:auto; width:100%;min-height:120px;max-height:300px;}
+        .tb-box td{width:160px;}
+        .tb-box td.td-f{border-left:none;width:159px}
+    </style>
+</head>
+<body>
+<script language="JavaScript">
+    $(function(){
+        $("#cb").click(function(){
+            var bool=$(this).attr('checked');
+            if(bool=='checked'){
+                bool=true;
+            }else{
+                bool=false;
+            }
+            $(":checkbox[name='cardno[]']").each(function(){
+                if($(this).attr('disabled')!='disabled'){
+                    $(this).attr('checked',bool);
+                }
+            })
+        });
+    })
+    function checkForm(){
+        document.getElementById('sub').disabled=true;
+        document.getElementById('sub').value='正在入库中...';
+    }
+</script>
+<div  class="dv">
+<form class="form-inline definewidth m20" action="{:U("CardStock/cardRestore")}" method="get">
+    制卡流水号:<input type="text" name="makecardid" value='{$makecardid}' style="width:120px; margin-right:7px;"/>
+    起始卡号:<input type="text" name="startcardno" value='{$startcardno}' style="width:160px; margin-right:7px;"/>
+    终止卡号:<input type="text" name="endcardno" value='{$endcardno}' style="width:160px; margin-right:7px;"/>
+    卡种名称:<input type="text" name="brandname" value='{$brandname}' style="width:120px; margin-right:7px;"/>
+    <button type="submit" class="btn btn-mini btn-primary">查询</button>
+</form>
+    <form class="form-inline m20" action='{:U("CardStock/restore")}' method="get" onsubmit="return checkForm();">
+    <if condition="$list neq null">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="submit" class="btn btn-mini btn-primary" value="全部入库" id="sub"/>
+    </if>
+    <table class="table table-bordered table-hover definewidth m10" id="lists">
+    <thead>
+    <tr>
+        <th>卡号</th>
+        <th>卡号生成日期</th>
+        <th>卡号生成时间</th>
+        <th>卡种名称</th>
+        <th>卡种类</th>
+        <th>卡状态</th>
+        <th>制卡流水号</th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo" key="key">
+        <tr>
+            <td>{$vo.cardno}</td>
+            <td>{$vo.makedate}</td>
+            <td>{$vo.maketime}</td>
+            <td>{$vo.brandname}</td>
+            <td>{$vo.brandid}</td>
+            <td>无卡</td>
+            <td>{$vo.makecardid}</td>
+        </tr>
+        </volist>
+        </table>
+<!--div class="inline pull-right page sabrosus">{$page}</div-->
+    </div>
+    </div>
+</body>
+</html>

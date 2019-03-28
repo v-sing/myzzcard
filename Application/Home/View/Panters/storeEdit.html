@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>新增门店/项目</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .charges input{
+            width: 80px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dv">
+        <form action="{:U("Panters/storeEdit")}" method="post" name="form1" enctype="multipart/form-data">
+            <table class="table table-bordered table-hover definewidth m10">
+                <tr>
+                    <td rowspan="14" style="width:100px;text-align:center;vertical-align:middle;">新增门店/项目</td>
+                    <td width="10%" class="tableleft">商户ID</td>
+                    <td><input type="text" name="panterid" id="PANTERID" value="{$zzk_store.panterid}" maxlength="10" /><span class="emphasis"> *</span></td>
+                </tr>
+                <tr>
+                    <td class="tableleft">门店/项目名称:</td>
+                    <td><input type="text" name="name" id="NAME" value="{$zzk_store.name}" maxlength="60" /><span class="emphasis"> *</span></td>
+                </tr>
+                <tr>
+                    <td class="tableleft">结算费率:</td>
+                    <td class = "charges">
+                        <input name="bankCharges"  type="radio" value="T"  <php>if($zzk_charges['type']=='T')echo ' checked';</php>/><span class="emphasis">T+1结算</span><br><br>
+                        借记卡：<input type="text" name="t_debitCardRate" id="t_debitCardRate" value="{$zzk_tradetype['debitcardrate']}" maxlength="60"/>%/笔  &nbsp;&nbsp;&nbsp;    封顶：<input type="text" name="t_debitCardLimit" id="t_debitCardLimit" value="{$zzk_tradetype['debitcardlimit']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无封顶。</span><br>
+                        贷记卡：<input type="text" name="t_creditCardRate" id="t_creditCardRate" value="{$zzk_tradetype['creditcardrate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;    封顶：<input type="text" name="t_creditCardLimit" id="t_creditCardLimit" value="{$zzk_tradetype['creditcardlimit']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无封顶。</span><br>
+                        微&nbsp;&nbsp;&nbsp; 信：<input type="text" name="t_weChatRate" id="t_weChatRate" value="{$zzk_tradetype['wechatrate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;    封顶：<input type="text" name="t_weChatLimit" id="t_weChatLimit" value="{$zzk_tradetype['wechatlimit']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无封顶。</span><br>
+                        支付宝：<input type="text" name="t_aliPayRate" id="t_aliPayRate" value="{$zzk_tradetype['alipayrate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;    封顶：<input type="text" name="t_aliPayLimit" id="t_aliPayLimit" value="{$zzk_tradetype['alipaylimit']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无封顶。</span><br>
+                        <input type="hidden" name="chargesid" value="{$zzk_charges.chargesid}">
+                        
+                        <input name="bankCharges" type="radio" value="D" <php>if($zzk_charges['type']=='D')echo ' checked';</php>/><span class="emphasis">D+0结算</span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额外手续费<br><br>
+                        借记卡：<input type="text" name="d_debitCardRate" id="d_debitCardRate" value="{$zzk_daytype['debitcardrate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;    封顶：<input type="text" name="d_debitCardLimit" id="d_debitCardLimit" value="{$zzk_daytype['debitcardlimit']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无封顶。&nbsp;&nbsp;&nbsp;&nbsp;</span> <input type="text" name="debitCardExtraRate" id="debitCardExtraRate" value="{$zzk_daytype['debitcardextrarate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;封顶：<input type="text" name="debitCardLeast" id="debitCardLeast" value="{$zzk_daytype['debitcardleast']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无保底。</span><br>
+                        贷记卡：<input type="text" name="d_creditCardRate" id="d_creditCardRate" value="{$zzk_daytype['creditcardrate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;    封顶：<input type="text" name="d_creditCardLimit" id="d_creditCardLimit" value="{$zzk_daytype['creditcardlimit']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无封顶。&nbsp;&nbsp;&nbsp;&nbsp;</span> <input type="text" name="creditCardExtraRate" id="creditCardExtraRate" value="{$zzk_daytype['creditcardextrarate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;封顶：<input type="text" name="creditCardLeast" id="creditCardLeast" value="{$zzk_daytype['creditcardleast']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无保底。</span></span><br>
+                        微&nbsp;&nbsp;&nbsp;&nbsp;信：<input type="text" name="d_weChatRate" id="d_weChatRate" value="{$zzk_daytype['wechatrate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;封顶：<input type="text" name="d_weChatLimit" id="d_weChatLimit" value="{$zzk_daytype['wechatlimit']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无封顶。</span>&nbsp;&nbsp;&nbsp;&nbsp;</span> <input type="text" name="weChatExtraRate" id="weChatExtraRate" value="{$zzk_daytype['wechatextrarate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;封顶：<input type="text" name="weChatLeast" id="weChatLeast" value="{$zzk_daytype['wechatleast']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无保底。</span><br>
+                        支付宝：<input type="text" name="d_aliPayRate" id="d_aliPayRate" value="{$zzk_daytype['alipayrate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;    封顶：<input type="text" name="d_aliPayLimit" id="d_aliPayLimit" value="{$zzk_daytype['alipaylimit']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无封顶。</span>&nbsp;&nbsp;&nbsp;&nbsp;</span> <input type="text" name="aliPayExtraRate" id="aliPayExtraRate" value="{$zzk_daytype['alipayextrarate']}" maxlength="60" />%/笔  &nbsp;&nbsp;&nbsp;封顶：<input type="text" name="aliPayLeast" id="aliPayLeast" value="{$zzk_daytype['alipayleast']}" maxlength="60" />元  &nbsp;&nbsp; <span style="color:gray">0表示无保底。</span><br>
+                    </td>
+                     <td class = "charges">
+                     
+                     </td>
+
+                </tr>
+               <input type="hidden" name="storeid" value="{$zzk_store.storeid}">
+                <tr>
+                    <td class="tableleft"></td>
+                    <td>
+                        <button class="btn btn-small btn-primary" type="button" id="saveform">保存</button>&nbsp;&nbsp;<button
+                            type="button" class="btn btn-small btn-success" name="backid" id="backid" onclick="{:U("Panters/store")}">返回列表</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+
+</html>
+<script>
+    $(function () {
+        $('#backid').click(function () {
+            window.location.href = '{:U("Panters/store")}';
+        });
+        $('#add_time').datepicker({ dateFormat: 'yymmdd', yearRange: "2016:2050" });
+        $("#ui-datepicker-div").hide();
+        $('#saveform').click(function () {
+            var PANTERID = $.trim($("#PANTERID").val());
+            var NAME = $.trim($("#NAME").val());
+            if (PANTERID == '') {
+                alert("商户ID不能为空!");
+                return false;
+            }
+            if (PANTERID.length != 8) {
+                alert("商户ID为8位!");
+                return false;
+            }
+            if (NAME == '') {
+                alert("门店/项目名称不能为空!");
+                return false;
+            }
+            document.form1.submit();
+
+        });
+    })
+</script>

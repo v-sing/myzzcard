@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>设置菜品</title>
+<link href="__PUBLIC__/kfcarnteen/else.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/kfcarnteen/js/jquery.Spinner.js"></script>
+<script>
+	$(function(){
+        $('.under').click(function(){
+            var goodsid = $(this).attr('value');
+            var o = $(this);
+            $.ajax({
+                url:"{:U('KfCarnteen/removeDish')}",
+                type:'post',
+                data:{'goodsid':goodsid},
+                dataType:'json',
+                success:function(data){
+                    if(data.status=='1'){
+                        console.log('121');
+                        o.html('上架');
+                        o.attr('style','color:green; float:right');
+                        o.attr('class','ondish');
+                    }
+                }
+            });
+        });
+        $('.ondish').click(function(){
+            var goodsid = $(this).attr('value');
+            var o = $(this);
+            $.ajax({
+                url:"{:U('KfCarnteen/onDish')}",
+                type:'post',
+                data:{'goodsid':goodsid},
+                dataType:'json',
+                success:function(data){
+                    if(data.status=='1'){
+                        o.html('下架');
+                        o.attr('style','color:#f88b0f; float:right;');
+                        o.attr('class','under');
+                    }
+                }
+            });
+        });
+        $('.dishes_plus').click(function(){
+            window.location.href = "{:U('KfCarnteen/addDish')}";
+        })
+	})
+</script>
+
+</head>
+
+<body>
+
+
+		<div id="mask" style="width:100%; z-index:10; height:100%; background:#333; position:fixed; top:0px; left:0px; opacity:0.6;filter:alpha(opacity=60);-moz-opacity:0.6; display:none;"></div>
+
+    	<div class="top ">
+        	<ul>
+            	<li class="text_l"><img src="__PUBLIC__/kfcarnteen/img/back.png"/></li>
+                <li class="text_center_02">设置菜品</li>
+            </ul>
+        </div>
+    
+    	
+        <div class="main" style="max-height:560px; overflow-y:scroll; margin-bottom:15%;">
+          {$str}
+        </div>
+        
+        <button class="dishes_plus">+添加新的菜品</button>
+    
+
+</body>
+</html>

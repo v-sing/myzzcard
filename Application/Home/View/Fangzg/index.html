@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>房掌柜同步数据</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+    <link href="__PUBLIC__/H-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ckform.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery-ui-datepicker.js"></script>
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(function () {
+            $('#start').datepicker();
+            $('#end').datepicker();
+            $("#ui-datepicker-div").hide();
+        })
+    </script>
+    <div class="dv">
+        <form class="form-inline definewidth m20" action="{:U('Fangzg/index')}" method="post">
+            订单日期：
+            <input type="text" name="start" id="start" value="{$start}" class="abc input-default" style="width:100px;" />            ---
+            <input type="text" name="end" id="end" value="{$end}" class="abc input-default" style="width:100px; margin-right:10px;" />            选择项目：
+            <select name="panterid">
+                <option value="0">请选择</option>
+                <volist name="fcList" id="vo">
+                    <option value="{$vo.panterid}">{$vo.namechinese}</option>
+                </volist>
+            </select>
+
+            <button type="submit" class="btn btn-mini btn-primary">同步房掌柜数据</button>
+        </form>
+        <form enctype="multipart/form-data" class="form-inline definewidth m20" action="{:U('Fangzg/upload')}" method="post">
+            上传excel文件：
+            <input type="file" name="myfile">
+            <button type="submit" class="btn btn-mini btn-primary">提交</button>
+        </form>
+    </div>
+</body>
+
+</html>

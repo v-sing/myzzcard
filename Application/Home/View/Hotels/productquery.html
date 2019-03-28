@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店营销券余额报表</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/demo/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  style="padding:6px;">
+    <div>
+        <table id="productQueryList" class="easyui-datagrid" title="酒店营销券余额报表"  width="100%" height="735"
+               data-options="
+                                url:'getProductQueryList',
+                                pagination:true,
+                                pageSize:20,
+                                pageList:[20,50,100,200],
+                                singleSelect: false,                              
+                                method: 'get',
+                                striped:true,
+                                toolbar:'#tb',
+                                loadMsg:'正在加载数据',
+                                fitColumns:true,
+                                onHeaderContextMenu: function(e, field){
+                                    e.preventDefault();
+                                    if (!cmenu){
+                                        createColumnMenu();
+                                    }
+                                    cmenu.menu('show', {
+                                        left:e.pageX,
+                                        top:e.pageY
+                                    });
+                                }
+                                ">
+
+            <thead>
+                <tr>
+                    <th data-options="field:'cardno',width:180,align:'left'">卡号</th>
+                    <th data-options="field:'newcard',width:300,align:'left'">补卡卡号</th>
+                    <th data-options="field:'customid',width:80,align:'center'">会员编号</th>
+                    <th data-options="field:'namechinese',width:80,align:'left'">会员名称</th>
+                    <th data-options="field:'quanid',width:80,align:'center'">营销产品编号</th>
+                    <th data-options="field:'quanname',width:340,align:'left'">营销产品名称</th>
+                    <th data-options="field:'accountid',width:80,align:'center'">账户编号</th>
+                    <th data-options="field:'quanprice',width:80,align:'center'">劵单价</th>
+                    <th data-options="field:'fnrecharamount',width:80,align:'center'">充值数量</th>
+                    <th data-options="field:'fnrecharmoney',width:80,align:'center'">充值金额</th>
+                    <th data-options="field:'fntradeamount',width:80,align:'center'">消费数量</th>
+                    <th data-options="field:'fntrademoney',width:80,align:'center'">消费金额</th>
+                    <th data-options="field:'fnsearamount',width:80,align:'center'">查询剩余数量</th>
+                    <th data-options="field:'fnsearmoney',width:80,align:'center'">查询剩余余额</th>
+                    <th data-options="field:'fnamount',width:80,align:'center'">实际剩余数量</th>
+                    <th data-options="field:'fnsuramount',width:80,align:'center'">实际剩余金额</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="visibility:hidden" id="__box">
+        <div id="tb" style="padding:4px;height:auto;display: none;">
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交易时间:<input class="easyui-datebox" id="startdate" name="startdate" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至:<input class="easyui-datebox" id="enddate" name="enddate" style="width:140px;"></div>
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卡号:<input class="easyui-textbox" id="cardno" name="cardno" style="width:140px;"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onClick="cardnoSearch()" style="height:21px;"></a><font color="red">(注：加号为多卡号查询)</font></div>
+            <div style="padding:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会员编号:<input class="easyui-textbox" id="customid" name="customid" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会员名称:<input class="easyui-textbox" id="cuname" name="cuname" style="width:140px;"></div>
+            <div style="padding:4px">营销产品编号:<input class="easyui-textbox" id="quanid" name="quanid" style="width:140px;">&nbsp;&nbsp;&nbsp;&nbsp;营销产品名称:<input class="easyui-combobox" id="quanname" name="quanname" style="width:140px;"><span style="margin-left:200px;"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="doSearch()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="resetting()">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U("Hotels/productquery_excel")}" class="easyui-linkbutton" data-options="iconCls:'icon-redo'">导出</a></span></div>        
+        </div>
+    </div>
+    <div id='dialogProductQueryCard'   title="多卡号查询" style="display:none;"        data-options="
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        cardnoDialog();
+                    }
+                }]">
+        <table>
+            <tr>
+                <td></td>
+                <td><span style="color:red">注:多个卡号请以回车(Enter)或半角逗号分隔</span></td>
+            </tr>
+            <tr>
+                <td>卡号:</td>
+                <td><input class="easyui-textbox" data-options="multiline:true" style="width:300px;height:120px" id="cardnos" name="cardnos"></td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            $('#quanname').combobox({
+                url:'getALLquankinds',
+                valueField:'quanid',
+                textField:'quanname'
+            });
+        });
+        //查询
+        function doSearch(){
+            var o={};
+            o.startdate=$("#startdate").datebox("getValue");
+            o.enddate=$("#enddate").datebox("getValue");
+            o.cardno=$("#cardno").textbox('getValue');
+            o.customid=$("#customid").textbox('getValue');
+            o.cuname=$("#cuname").textbox('getValue');
+            o.quanid=$("#quanid").textbox('getValue');
+            o.quanname=$("#quanname").combobox('getValue');
+            $('#productQueryList').datagrid('load',o);
+            return false;
+        }
+        //清空查询条件
+        function resetting(){
+            var o={};
+            o.startdate=$("#startdate").datebox("setValue",'');
+            o.enddate=$("#enddate").datebox("setValue",'');
+            o.cardno=$("#cardno").textbox('setValue','');
+            o.customid=$("#customid").textbox('setValue','');
+            o.cuname=$("#cuname").textbox('setValue','');
+            o.quanid=$("#quanid").textbox('setValue','');
+            o.quanname=$("#quanname").combobox('setValue','');
+            $('#productQueryList').datagrid('load',o);
+            return false;
+        }
+        //多卡号查询
+        function cardnoSearch(){
+            $("#dialogProductQueryCard").show();
+            $("#dialogProductQueryCard").dialog({
+                title: "添加",
+                width: 400,
+                height: 220,
+                padding:10,
+            });
+        }   
+        //点击卡号文本框弹出多行卡号对话框
+        function cardnoDialog(){
+            var s,cardnos,newStr=""; 
+            cardnos=$("#cardnos").textbox('getValue');
+            cardnos=cardnos.replace(/\n/g,","); 
+            s=cardnos.charAt(cardnos.length-1);
+            if(s==","){
+                newStr=cardnos.substring(0,cardnos.length-1);
+                $('#cardno').textbox('setValue',newStr);
+            }else{
+                $('#cardno').textbox('setValue',cardnos);   
+            }
+            $("#dialogProductQueryCard").dialog('close');
+        }
+    </script>
+</body>
+</html>
+
